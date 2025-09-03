@@ -19,8 +19,11 @@ sustainability, affordability, and convenience.
 
 ### User Stories
 
-- As a new college student, I want to get a good deal on what I need for class, so I can save money and start strong.
+- As a new college student, I want to get a good deal on what I need for class,
+so I can save money and start strong.
 
-- As a graduate, I want to sell my used class materials that I no longer need, so I can declutter and earn back some costs.
+- As a graduate, I want to sell my used class materials that I no longer need,
+so I can declutter and earn back some costs.
 
-- As an instructor, I want somewhere I can send my students for cheaper class materials, so they're better prepared without financial.
+- As an instructor, I want somewhere I can send my students for cheaper class
+materials, so they're better prepared without financial.
