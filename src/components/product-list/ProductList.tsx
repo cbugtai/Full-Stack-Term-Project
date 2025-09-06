@@ -5,6 +5,7 @@ import "./ProductList.css";
 
 function ProductList() {
   const productList: JSX.Element[] = [];
+  // use the list of products to generate a list of product cards
   products.forEach((p, i) =>
     productList.push(<ProductCard product={p} key={i} />)
   );
@@ -20,7 +21,7 @@ function ProductList() {
 }
 
 function ProductCard({ product }: { product: Product }) {
-  // use the seed to generate random image
+  // use the seed to generate random image, rather than use the original same image url in sample data
   const randomImgUrl = `https://picsum.photos/seed/${Math.random()}/165`;
 
   return (
