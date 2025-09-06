@@ -3,5 +3,9 @@ header {
   flex-direction: row;
   padding: 10px;
   gap: 10px;
-  background-color: lightyellow;
+  background-color: var(--primary-color);
+}
+
+header strong {
+  font-size: larger;
 }
