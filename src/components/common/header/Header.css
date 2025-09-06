@@ -1,0 +1,7 @@
+header {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  gap: 10px;
+  background-color: lightyellow;
+}
