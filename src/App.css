@@ -6,7 +6,9 @@
 
 /*Colour palette */
 :root {
-  --primary-color: lightyellow;
-  --link-font-color: #4a50e0;
-  --gray-color: #666666;
+  --primary-color: #3364ad;
+  --second-color: #274b82;
+  --third-color: #648ed4;
+  --forth-color: #4c79c1;
+  --fifth-color: #1a3257;
 }
