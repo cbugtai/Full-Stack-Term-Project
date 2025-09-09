@@ -1,8 +1,14 @@
 .top-sellers{
-    background-color: #c82044;
-    font-family: Arial, Helvetica, sans-serif;
-    border: 5px outset #636d73;
+    background-color: #244774;
     width: fit-content;
+    border-radius: 5px;
+}
+
+.top-sellers h2{
+    color: white;
+    margin-bottom: 0px;
+    padding: 10px;
+    justify-self: center;
 }
 .top-sellers__list{
     border: solid 3px rgb(58, 58, 58);
@@ -24,10 +30,10 @@
     padding: 5px;
     display: grid;
     place-items: center;
-    grid-template-columns: 75px 1fr 1fr 75px;
+    grid-template-columns: 75px 1fr 125px 75px;
     grid-column-gap: 10px;
     width: 600px;
-    background-color: #eef2ff;
+    background-color: var(--third-color);
 }
 
 img{
@@ -65,4 +71,41 @@ img{
     grid-row: 1/3;
     font-size: 36px;
     justify-self: center;
+    color: black;
+}
+
+.seller-rank .gold{
+    color: #FFD700;
+}
+.seller-rank .silver{
+    color: #C0C0C0;
+}
+.seller-rank .bronze{
+    color: #CD7F32 ;
+}
+
+
+
+.star-ratings {
+  float: left;
+  display: block;
+  unicode-bidi: bidi-override;
+  color: lightgray;
+  font-size: 30px;
+  position: relative;
+  margin-left: 10px;
+}
+
+.star-ratings .star-ratings-top {
+  color: gold;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+  display: block;
+  left: 0px;
+  overflow: hidden;
+}
+
+.star-ratings .star-ratings-bottom {
+  z-index: 0;
 }
