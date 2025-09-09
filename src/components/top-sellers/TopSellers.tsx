@@ -47,14 +47,55 @@ function SellerCard({ seller, index }: { seller: Seller, index: number }) {
                 {seller.username}
             </div>
             <div className="seller-rating">
-                Trustworthiness Rating: {seller.rating}/100
+                < StarRating rating={seller.rating}/>
             </div>
             <div className="seller-sold">
                 {seller.completed_sales} Completed Sales
             </div>
             <div className="seller-rank">
-                #{index+1}
+                <RankingCss index={index} />
             </div>
         </div>
     );
+}
+
+function RankingCss({index}: {index:number}){
+    let ranking = `unranked` 
+
+    if(index == 0){
+        ranking = 'gold'
+    }
+    if(index == 1){
+        ranking = 'silver'
+    }
+    if(index == 2){
+        ranking = 'bronze'
+    }
+    return(
+        <div className={ranking}>
+            #{index +1}
+        </div>
+    )
+}
+
+function StarRating({rating}: {rating:number}){
+
+    return(
+        <div className="star-ratings">
+            <div className="star-ratings-top" id="star-ratings-top1" style={{width: `${rating}%`}}>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+            </div>
+            <div className="star-ratings-bottom">
+                <span>☆</span>
+                <span>☆</span>
+                <span>☆</span>
+                <span>☆</span>
+                <span>☆</span>
+            </div>
+        </div>
+    )
 }
