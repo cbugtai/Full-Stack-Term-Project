@@ -31,7 +31,7 @@ function ListDisplay({sellers}: {sellers:Seller[]}) {
 
     return (
         <section className="top-sellers">
-            <h2>Top Sellers By Rating:</h2>
+            <h2>Top Sellers By Rating</h2>
             <div className="top-sellers__list">
                 {topSellersList}
             </div>
