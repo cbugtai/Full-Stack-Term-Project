@@ -1,0 +1,251 @@
+type Condition =
+  | "New"
+  | "Open box"
+  | "Excellent"
+  | "Very Good"
+  | "Good"
+  | "Used"
+  | "For parts not working"
+  | "Not Specified";
+type Category =
+  | "Electronics"
+  | "Text Books"
+  | "Furnitures"
+  | "Vehicles"
+  | "Clothes"
+  | "Others";
+
+export type Product = {
+  description: string;
+  category: Category;
+  brand: string;
+  condition: Condition;
+  inventNum: number;
+  soldNum: number;
+  currentPrice: number;
+  originalPrice: number;
+  imgUrl: string;
+};
+
+export const products: Product[] = [
+  {
+    description: "Introduction to Algorithms textbook",
+    category: "Text Books",
+    brand: "MIT Press",
+    condition: "Used",
+    inventNum: 5,
+    soldNum: 2,
+    currentPrice: 45,
+    originalPrice: 80,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "iPhone 12 64GB",
+    category: "Electronics",
+    brand: "Apple",
+    condition: "Excellent",
+    inventNum: 3,
+    soldNum: 1,
+    currentPrice: 600,
+    originalPrice: 800,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Samsung Galaxy Buds Pro",
+    category: "Electronics",
+    brand: "Samsung",
+    condition: "Excellent",
+    inventNum: 4,
+    soldNum: 0,
+    currentPrice: 100,
+    originalPrice: 150,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Wooden study desk",
+    category: "Furnitures",
+    brand: "IKEA",
+    condition: "Good",
+    inventNum: 2,
+    soldNum: 0,
+    currentPrice: 70,
+    originalPrice: 120,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Mountain bike",
+    category: "Vehicles",
+    brand: "Giant",
+    condition: "Used",
+    inventNum: 1,
+    soldNum: 0,
+    currentPrice: 200,
+    originalPrice: 500,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Denim jacket",
+    category: "Clothes",
+    brand: "Levi's",
+    condition: "Very Good",
+    inventNum: 5,
+    soldNum: 1,
+    currentPrice: 40,
+    originalPrice: 80,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Wireless mouse",
+    category: "Electronics",
+    brand: "Logitech",
+    condition: "New",
+    inventNum: 6,
+    soldNum: 0,
+    currentPrice: 25,
+    originalPrice: 40,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Data Structures textbook",
+    category: "Text Books",
+    brand: "Pearson",
+    condition: "Used",
+    inventNum: 3,
+    soldNum: 2,
+    currentPrice: 35,
+    originalPrice: 70,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Office chair",
+    category: "Furnitures",
+    brand: "IKEA",
+    condition: "Very Good",
+    inventNum: 2,
+    soldNum: 0,
+    currentPrice: 60,
+    originalPrice: 120,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Leather backpack",
+    category: "Clothes",
+    brand: "Fossil",
+    condition: "Excellent",
+    inventNum: 4,
+    soldNum: 1,
+    currentPrice: 80,
+    originalPrice: 150,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "MacBook Pro 2019",
+    category: "Electronics",
+    brand: "Apple",
+    condition: "Open box",
+    inventNum: 2,
+    soldNum: 0,
+    currentPrice: 1200,
+    originalPrice: 1800,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Calculus textbook",
+    category: "Text Books",
+    brand: "McGraw-Hill",
+    condition: "Good",
+    inventNum: 5,
+    soldNum: 3,
+    currentPrice: 30,
+    originalPrice: 60,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Gaming keyboard",
+    category: "Electronics",
+    brand: "Razer",
+    condition: "Very Good",
+    inventNum: 3,
+    soldNum: 0,
+    currentPrice: 80,
+    originalPrice: 130,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Electric guitar",
+    category: "Electronics",
+    brand: "Yamaha",
+    condition: "Used",
+    inventNum: 1,
+    soldNum: 0,
+    currentPrice: 250,
+    originalPrice: 500,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Science Fiction novel",
+    category: "Text Books",
+    brand: "Penguin",
+    condition: "New",
+    inventNum: 10,
+    soldNum: 2,
+    currentPrice: 12,
+    originalPrice: 25,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Study lamp",
+    category: "Furnitures",
+    brand: "Philips",
+    condition: "New",
+    inventNum: 5,
+    soldNum: 0,
+    currentPrice: 20,
+    originalPrice: 40,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Bicycle helmet",
+    category: "Clothes",
+    brand: "Giro",
+    condition: "Excellent",
+    inventNum: 3,
+    soldNum: 1,
+    currentPrice: 35,
+    originalPrice: 60,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Portable hard drive 1TB",
+    category: "Electronics",
+    brand: "Seagate",
+    condition: "Good",
+    inventNum: 6,
+    soldNum: 2,
+    currentPrice: 45,
+    originalPrice: 80,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Winter coat",
+    category: "Clothes",
+    brand: "North Face",
+    condition: "Used",
+    inventNum: 4,
+    soldNum: 1,
+    currentPrice: 60,
+    originalPrice: 200,
+    imgUrl: "https://picsum.photos/165",
+  },
+  {
+    description: "Used car - Honda Civic 2010",
+    category: "Vehicles",
+    brand: "Honda",
+    condition: "For parts not working",
+    inventNum: 1,
+    soldNum: 0,
+    currentPrice: 1500,
+    originalPrice: 8000,
+    imgUrl: "https://picsum.photos/165",
+  },
+];
