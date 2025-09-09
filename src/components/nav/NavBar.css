@@ -7,7 +7,7 @@ nav ul {
 }
 
 nav ul a {
-  color: var(--link-font-color);
+  color: var(--forth-color);
 }
 
 nav ul a:hover {
