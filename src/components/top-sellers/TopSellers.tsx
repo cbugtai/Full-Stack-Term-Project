@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import sellers from "./sellers_list.json"
 import type { Seller } from "./sellerModel"
-
+import "./TopSellers.css"
 
 export default function TopSellers() {
     return (
@@ -42,17 +42,17 @@ function ListDisplay({sellers}: {sellers:Seller[]}) {
 function SellerCard({ seller, index }: { seller: Seller, index: number }) {
     return (
         <div className="seller-card">
-            <img src={seller.photo} alt="Seller Avatar" width="50" height="50"/>
+            <img src={seller.photo} alt="Seller Avatar" width="50" height="50" />
             <div className="seller-name">
-                Name: {seller.username}
+                {seller.username}
             </div>
             <div className="seller-rating">
                 Trustworthiness Rating: {seller.rating}/100
             </div>
             <div className="seller-sold">
-                Total Items Sold: {seller.completed_sales}
+                {seller.completed_sales} Completed Sales
             </div>
-            <div>
+            <div className="seller-rank">
                 #{index+1}
             </div>
         </div>
