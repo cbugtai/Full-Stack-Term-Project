@@ -90,7 +90,7 @@ img{
   float: left;
   display: block;
   unicode-bidi: bidi-override;
-  color: lightgray;
+  color: gray;
   font-size: 30px;
   position: relative;
   margin-left: 10px;
