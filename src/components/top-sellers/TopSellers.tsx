@@ -6,9 +6,7 @@ import "./TopSellers.css"
 export default function TopSellers() {
     return (
         <>
-            <main>
-                <ListDisplay sellers={sellers}/>
-            </main>
+            <ListDisplay sellers={sellers}/>
         </>
     )
 }
