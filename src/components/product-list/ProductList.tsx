@@ -30,6 +30,7 @@ function ProductCard({ product }: { product: Product }) {
         src={randomImgUrl}
         alt="product image"
         // to make sure could load every img
+        style={{ width: "165px", height: "165px" }}
         onError={(e) => {
           // assert the target type
           const target = e.target as HTMLImageElement;
