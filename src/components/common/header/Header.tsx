@@ -5,8 +5,7 @@ function Header() {
     <header>
       <img
         src="/logo-250-250.png"
-        height={25}
-        width={25}
+        style={{ width: "25px", height: "25px" }}
         alt="application logo"
       ></img>
       <div>
