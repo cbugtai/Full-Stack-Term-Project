@@ -33,7 +33,7 @@
   grid-template-columns: 75px 1fr 125px 75px;
   grid-column-gap: 10px;
   width: 600px;
-  background-color: var(--third-color);
+  background-color: #b7caec;
 }
 
 .seller-card img {
@@ -75,13 +75,13 @@
 }
 
 .seller-rank .gold {
-  color: #ffd700;
+  color: #806c00;
 }
 .seller-rank .silver {
-  color: #c0c0c0;
+  color: #6e6e6e;
 }
 .seller-rank .bronze {
-  color: #cd7f32;
+  color: #9c6126;
 }
 
 .star-ratings {
