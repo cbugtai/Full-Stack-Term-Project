@@ -1,5 +1,5 @@
 import Slider from "react-slick";
-import testimonials from "../../assets/testimonials.json";
+import testimonials from "./testimonials.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Testimonials.css";
