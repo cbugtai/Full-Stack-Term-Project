@@ -9,11 +9,11 @@
 .testimonial-heading {
     font-size: 2.25rem;
     font-weight: 700;
-    color: #1f2d5a;
+    color: #1a3257;
     margin-bottom: 2.5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 3px solid #a3bffa;
+    border-bottom: 3px solid #648ed4;
     display: inline-block;
     padding-bottom: 0.5rem;
 }
@@ -36,7 +36,7 @@
 .testimonial-card h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: #1a3257;
     margin-bottom: 0.75rem;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .stars {
-    color: #f5b301;
+    color: #3364ad;
     font-size: 1.2rem;
     letter-spacing: 2px;
 }
