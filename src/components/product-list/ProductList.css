@@ -27,5 +27,5 @@
 }
 
 .original-price {
-  color: #666666;
+  color: var(--fifth-color);
 }

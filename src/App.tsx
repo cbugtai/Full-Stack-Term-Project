@@ -1,16 +1,22 @@
 import "./App.css";
+import Header from "./components/common/header/Header";
+import Footer from "./components/common/footer/Footer";
+import NavBar from "./components/nav/NavBar";
 import ProductList from "./components/product-list/ProductList";
 import TopSellers from "./components/top-sellers/TopSellers";
 
 function App() {
   return (
     <>
+      <Header />
       <main>
+        <NavBar />
         {/* render the featured product list */}
         <ProductList />
         {/* render list of sellers with descending reputation */}
         <TopSellers/>
       </main>
+      <Footer />
     </>
   );
 }
