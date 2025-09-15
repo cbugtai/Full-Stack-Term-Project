@@ -3,29 +3,10 @@ import testimonials from "../../assets/testimonials.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Testimonials.css";
+import type { TestimonialCardProps } from "../../types/testimonialCardProps";
+import { sliderSettings } from "./sliderSettings";
 
-const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    cssEase: 'ease-in-out',
-    pauseOnHover: true,
-    responsive: [
-        {
-        breakpoint: 768,
-        settings: {
-            slidesToShow: 1,
-            fade: true,
-        }
-        }
-    ]
-};
-
-function TestimonialCard({ name, quote, rating }) {
+function TestimonialCard({ name, quote, rating }: TestimonialCardProps) {
     const star = '\u2605';
 
     return (
@@ -41,9 +22,9 @@ function Testimonials() {
     return (
         <section className="testimonial-section">
             <h2 className="testimonial-heading">
-                See what students are saying about Campus Exchange!
+                See what students are saying about Discount Ebay!
             </h2>
-            <Slider {...settings}>
+            <Slider {...sliderSettings}>
                 {testimonials.map((testimonial, index) => (
                     <TestimonialCard key={index} {...testimonial} />
                 ))}
