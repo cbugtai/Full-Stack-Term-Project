@@ -2,7 +2,7 @@ import Slider from "react-slick";
 import testimonials from "./testimonials.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./Testimonials.css";
+import "./testimonials.css";
 import type { TestimonialCardProps } from "../../types/testimonialCardProps";
 import { sliderSettings } from "./sliderSettings";
 
