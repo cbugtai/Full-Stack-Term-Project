@@ -1,0 +1,15 @@
+nav ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  padding-left: 0;
+  gap: 20px;
+}
+
+nav ul a {
+  color: var(--primary-color);
+}
+
+nav ul a:hover {
+  text-decoration: underline;
+}

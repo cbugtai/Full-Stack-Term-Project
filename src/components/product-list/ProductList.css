@@ -1,0 +1,31 @@
+.product-list-gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  box-sizing: border-box;
+  height: 300px;
+  width: 205px;
+  padding: 10px 20px;
+}
+
+.product-card div {
+  text-align: left;
+}
+
+.product-desc,
+.cur-price {
+  font-weight: bold;
+}
+
+.original-price,
+.product-brand,
+.product-condition {
+  font-size: smaller;
+}
+
+.original-price {
+  color: var(--fifth-color);
+}
