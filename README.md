@@ -27,3 +27,17 @@ so I can declutter and earn back some costs.
 
 - As an instructor, I want somewhere I can send my students for cheaper class
 materials, so they're better prepared without financial.
+
+## Sprint 1 Contributions
+
+- **Set up Project Git Repository** - Christian Bugtai
+- **Project Initialization** - Pinyi Rao
+- **Project Readme** - Nick Gowler
+- **App Integration** - Pinyi Rao
+- **App Stylesheet** - Pinyi Rao
+- **List of Featured Products Component** - Pinyi Rao
+- **Styling List of Featured Products** - Pinyi Rao
+- **Top Sellers List Component** - Christian Bugtai
+- **Styling Top Sellers List** - Christian Bugtai
+- **Testimonials Component** - Nick Gowler
+- **Styling Testimonials** - Nick Gowler
