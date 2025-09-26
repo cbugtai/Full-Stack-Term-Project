@@ -6,12 +6,10 @@ function Footer() {
 
   return (
     <footer>
-      <div>
-        {`Copyright ©${currYear} Discount Ebay Inc. All Rights Reserved.`}{" "}
-      </div>
-      <div className="gp-member">
+      <p>{`Copyright ©${currYear} Discount Ebay Inc. All Rights Reserved.`} </p>
+      <p className="gp-member">
         Group Members: Christian Bugtai, Nick Gowler, Pinyi Rao
-      </div>
+      </p>
     </footer>
   );
 }
