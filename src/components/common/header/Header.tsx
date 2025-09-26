@@ -5,8 +5,8 @@ function Header() {
     <header>
       <img
         src="/logo-250-250.png"
-        style={{ width: "25px", height: "25px" }}
         alt="application logo"
+        className="app-logo"
       ></img>
       <div>
         <strong>Welcome to RRC Discount Ebay!</strong>

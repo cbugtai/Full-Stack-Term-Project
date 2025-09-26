@@ -10,3 +10,8 @@ header strong {
   font-size: larger;
   color: white;
 }
+
+.app-logo {
+  width: 25px;
+  height: 25px;
+}
