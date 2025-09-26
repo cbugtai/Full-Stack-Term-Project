@@ -6,8 +6,8 @@ import "./ProductList.css";
 function ProductList() {
   const productList: JSX.Element[] = [];
   // use the list of products to generate a list of product cards
-  products.forEach((p, i) =>
-    productList.push(<ProductCard product={p} key={i} />)
+  products.forEach((p) =>
+    productList.push(<ProductCard product={p} key={p.id} />)
   );
 
   return (
@@ -30,12 +30,12 @@ function ProductCard({ product }: { product: Product }) {
         src={randomImgUrl}
         alt="product image"
         // to make sure could load every img
-        style={{ width: "165px", height: "165px" }}
         onError={(e) => {
           // assert the target type
           const target = e.target as HTMLImageElement;
           target.src = randomImgUrl;
         }}
+        className="product-img"
       />
       <div className="product-desc">{product.description}</div>
       <div className="product-brand">
