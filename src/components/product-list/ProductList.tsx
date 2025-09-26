@@ -28,13 +28,7 @@ function ProductCard({ product }: { product: Product }) {
     <div className="product-card">
       <img
         src={randomImgUrl}
-        alt="product image"
-        // to make sure could load every img
-        onError={(e) => {
-          // assert the target type
-          const target = e.target as HTMLImageElement;
-          target.src = randomImgUrl;
-        }}
+        alt={product.description}
         className="product-img"
       />
       <div className="product-desc">{product.description}</div>
