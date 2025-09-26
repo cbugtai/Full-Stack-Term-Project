@@ -16,6 +16,7 @@ type Category =
   | "Others";
 
 export type Product = {
+  id: number;
   description: string;
   category: Category;
   brand: string;
@@ -29,6 +30,7 @@ export type Product = {
 
 export const products: Product[] = [
   {
+    id: 1,
     description: "Introduction to Algorithms textbook",
     category: "Text Books",
     brand: "MIT Press",
@@ -37,9 +39,10 @@ export const products: Product[] = [
     soldNum: 2,
     currentPrice: 45,
     originalPrice: 80,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 2,
     description: "iPhone 12 64GB",
     category: "Electronics",
     brand: "Apple",
@@ -48,9 +51,10 @@ export const products: Product[] = [
     soldNum: 1,
     currentPrice: 600,
     originalPrice: 800,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 3,
     description: "Samsung Galaxy Buds Pro",
     category: "Electronics",
     brand: "Samsung",
@@ -59,9 +63,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 100,
     originalPrice: 150,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 4,
     description: "Wooden study desk",
     category: "Furnitures",
     brand: "IKEA",
@@ -70,9 +75,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 70,
     originalPrice: 120,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 5,
     description: "Mountain bike",
     category: "Vehicles",
     brand: "Giant",
@@ -81,9 +87,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 200,
     originalPrice: 500,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 6,
     description: "Denim jacket",
     category: "Clothes",
     brand: "Levi's",
@@ -92,9 +99,10 @@ export const products: Product[] = [
     soldNum: 1,
     currentPrice: 40,
     originalPrice: 80,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 7,
     description: "Wireless mouse",
     category: "Electronics",
     brand: "Logitech",
@@ -103,9 +111,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 25,
     originalPrice: 40,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 8,
     description: "Data Structures textbook",
     category: "Text Books",
     brand: "Pearson",
@@ -114,9 +123,10 @@ export const products: Product[] = [
     soldNum: 2,
     currentPrice: 35,
     originalPrice: 70,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 9,
     description: "Office chair",
     category: "Furnitures",
     brand: "IKEA",
@@ -125,9 +135,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 60,
     originalPrice: 120,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 10,
     description: "Leather backpack",
     category: "Clothes",
     brand: "Fossil",
@@ -136,9 +147,10 @@ export const products: Product[] = [
     soldNum: 1,
     currentPrice: 80,
     originalPrice: 150,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 11,
     description: "MacBook Pro 2019",
     category: "Electronics",
     brand: "Apple",
@@ -147,9 +159,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 1200,
     originalPrice: 1800,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 12,
     description: "Calculus textbook",
     category: "Text Books",
     brand: "McGraw-Hill",
@@ -158,9 +171,10 @@ export const products: Product[] = [
     soldNum: 3,
     currentPrice: 30,
     originalPrice: 60,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 13,
     description: "Gaming keyboard",
     category: "Electronics",
     brand: "Razer",
@@ -169,9 +183,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 80,
     originalPrice: 130,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 14,
     description: "Electric guitar",
     category: "Electronics",
     brand: "Yamaha",
@@ -180,9 +195,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 250,
     originalPrice: 500,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 15,
     description: "Science Fiction novel",
     category: "Text Books",
     brand: "Penguin",
@@ -191,9 +207,10 @@ export const products: Product[] = [
     soldNum: 2,
     currentPrice: 12,
     originalPrice: 25,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 16,
     description: "Study lamp",
     category: "Furnitures",
     brand: "Philips",
@@ -202,9 +219,10 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 20,
     originalPrice: 40,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 17,
     description: "Bicycle helmet",
     category: "Clothes",
     brand: "Giro",
@@ -213,9 +231,10 @@ export const products: Product[] = [
     soldNum: 1,
     currentPrice: 35,
     originalPrice: 60,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 18,
     description: "Portable hard drive 1TB",
     category: "Electronics",
     brand: "Seagate",
@@ -224,9 +243,10 @@ export const products: Product[] = [
     soldNum: 2,
     currentPrice: 45,
     originalPrice: 80,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 19,
     description: "Winter coat",
     category: "Clothes",
     brand: "North Face",
@@ -235,9 +255,10 @@ export const products: Product[] = [
     soldNum: 1,
     currentPrice: 60,
     originalPrice: 200,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
   {
+    id: 20,
     description: "Used car - Honda Civic 2010",
     category: "Vehicles",
     brand: "Honda",
@@ -246,6 +267,6 @@ export const products: Product[] = [
     soldNum: 0,
     currentPrice: 1500,
     originalPrice: 8000,
-    imgUrl: "https://picsum.photos/165",
+    imgUrl: "https://picsum.photos",
   },
 ];
