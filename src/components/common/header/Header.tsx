@@ -4,7 +4,7 @@ function Header() {
   return (
     <header>
       <img
-        src="/logo-250-250.png"
+        src="/src/assets/logo-250-250.png"
         alt="application logo"
         className="app-logo"
       ></img>
