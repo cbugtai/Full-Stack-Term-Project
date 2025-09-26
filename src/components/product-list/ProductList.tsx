@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { products } from "./sample-data/sample-data";
+import { ProductNavBar } from "./product-nav/ProductNavBar";
 import type { Product } from "./sample-data/sample-data";
 import "./ProductList.css";
 
