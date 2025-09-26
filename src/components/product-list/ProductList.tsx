@@ -22,7 +22,7 @@ function ProductList() {
 
 function ProductCard({ product }: { product: Product }) {
   // use the seed to generate random image, rather than use the original same image url in sample data
-  const randomImgUrl = `https://picsum.photos/seed/${Math.random()}/165`;
+  const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
 
   return (
     <div className="product-card">
