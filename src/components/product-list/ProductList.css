@@ -29,3 +29,8 @@
 .original-price {
   color: var(--fifth-color);
 }
+
+.product-img {
+  width: 165px;
+  height: 165px;
+}
