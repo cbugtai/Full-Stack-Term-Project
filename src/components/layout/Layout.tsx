@@ -5,7 +5,7 @@ import Nav from "./nav/Nav";
 import Footer from "./footer/Footer";
 
 
-export function Layout() {
+function Layout() {
     return(
         <>
             <Header />
@@ -15,3 +15,5 @@ export function Layout() {
         </>
     )
 }
+
+export default Layout;
