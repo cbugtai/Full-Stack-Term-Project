@@ -1,6 +1,6 @@
 import "./App.css";
-import Header from "./components/common/header/Header";
-import Footer from "./components/common/footer/Footer";
+import Header from "./components/common/layout/header/Header";
+import Footer from "./components/common/layout/footer/Footer";
 import ProductList from "./components/product-list/ProductList";
 import TopSellers from "./components/top-sellers/TopSellers";
 import Testimonials from "./components/testimonials/testimonials";
