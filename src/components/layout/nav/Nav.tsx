@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import "./Nav.css";
+//import "./Nav.css";
 
 function Nav() {
     return(<nav>
@@ -10,8 +10,8 @@ function Nav() {
             <NavLink to="/page1">
                 Page 1
             </NavLink>
-            <NavLink to="/page2">
-                Page 2
+            <NavLink to="/sellers">
+                All Sellers
             </NavLink>
             <NavLink to="/page3">
                 Page 3
