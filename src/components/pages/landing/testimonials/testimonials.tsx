@@ -3,7 +3,7 @@ import testimonials from "./testimonials.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./testimonials.css";
-import type { TestimonialCardProps } from "../../types/testimonialCardProps";
+import type { TestimonialCardProps } from "../../../../types/testimonialCardProps";
 import { sliderSettings } from "./sliderSettings";
 
 function TestimonialCard({ name, quote, rating }: TestimonialCardProps) {
