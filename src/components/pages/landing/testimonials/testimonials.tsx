@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
-import testimonials from "./testimonials.json";
+import { fetchTestimonials } from "../../../../apis/testimonials/testimonialRepo";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./testimonials.css";
 import type { TestimonialCardProps } from "../../../../types/testimonialCardProps";
-import { sliderSettings } from "./sliderSettings";
+import { sliderSettings } from "../../../../config/sliderSettings";
 
 function TestimonialCard({ name, quote, rating }: TestimonialCardProps) {
     const star = '\u2605';
@@ -19,14 +20,21 @@ function TestimonialCard({ name, quote, rating }: TestimonialCardProps) {
 }
 
 function Testimonials() {
+    const [testimonials, setTestimonials] = useState<TestimonialCardProps[]>([]);
+
+    useEffect(() => {
+        const data = fetchTestimonials();
+        setTestimonials(data);
+    }, []);
+
     return (
         <section className="testimonial-section">
             <h2 className="testimonial-heading">
                 See what students are saying about Discount Ebay!
             </h2>
             <Slider {...sliderSettings}>
-                {testimonials.map((testimonial, index) => (
-                    <TestimonialCard key={index} {...testimonial} />
+                {testimonials.map((testimonial) => (
+                    <TestimonialCard key={testimonial.id} {...testimonial} />
                 ))}
             </Slider>
         </section>
