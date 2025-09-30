@@ -1,6 +1,6 @@
 import type { TestimonialCardProps } from "../../types/testimonialCardProps";
 
-export const mockTestimonials: TestimonialCardProps[] = [
+export const testimonialData: TestimonialCardProps[] = [
     {
         id: "testimonial-1698790000000-1001",
         name: "Alex Johnson",
