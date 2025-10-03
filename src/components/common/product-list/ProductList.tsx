@@ -1,7 +1,7 @@
 import type { Product } from "./sample-data/sample-data";
 import ProductCard from "./ProductCard";
 import ReviewFillForm from "./ReviewFillForm";
-import React from "react";
+import React, { useEffect } from "react";
 
 function ProductList({
   products,
@@ -17,6 +17,16 @@ function ProductList({
   const [description, setDescription] = React.useState(
     "example product description"
   );
+
+  const [isReviewDisplay, setIsReviewDisplay] = React.useState<
+    { id: number; isReviewDisplay: boolean }[]
+  >(products.map((p) => ({ id: p.id, isReviewDisplay: false })));
+
+  const [ReviewDisplay, setReviewDisplay] = React.useState<{
+    description: string;
+    reviews: { id: string; user: string; comment: string }[];
+  }>({ description: "", reviews: [] });
+
   return (
     <>
       <section className="product-list">
@@ -31,29 +41,52 @@ function ProductList({
               setIsReview={setIsReview}
               setProductId={setProductId}
               setDescription={setDescription}
+              setIsReviewDisplay={setIsReviewDisplay}
+              setReviewDisplay={setReviewDisplay}
             />
           ))}
         </div>
-        {isReview.some((r) => r.isReview) ? (
-          <ReviewFillForm
-            id={productId}
-            description={description}
-            updateProducts={updateProducts}
-          />
-        ) : null}
+        <div>
+          {isReviewDisplay.some((r) => r.isReviewDisplay) &&
+          ReviewDisplay.reviews.length > 0 ? (
+            <ReviewsDisplay ReviewDisplay={ReviewDisplay} />
+          ) : null}
+          {isReview.some((r) => r.isReview) ? (
+            <ReviewFillForm
+              id={productId}
+              description={description}
+              updateProducts={updateProducts}
+            />
+          ) : null}
+        </div>
       </section>
     </>
   );
 }
 
-function ReviewDisplay({
-  reviews,
+function ReviewsDisplay({
+  ReviewDisplay,
 }: {
-  reviews: { user: string; comment: string }[];
+  ReviewDisplay: {
+    description: string;
+    reviews: { id: string; user: string; comment: string }[];
+  };
 }) {
+  const [reviewsState, setReviewsState] = React.useState(ReviewDisplay);
+
+  useEffect(() => {
+    setReviewsState(ReviewDisplay);
+  }, [ReviewDisplay]);
+
   return (
     <>
-      <div>{updateProducts.find((p) => p.p)}</div>
+      <p>Product Name: {reviewsState.description}</p>
+      {reviewsState.reviews.map((r) => (
+        <div key={r.id}>
+          <p>User: {r.user}</p>
+          <p>{r.comment}</p>
+        </div>
+      ))}
     </>
   );
 }
