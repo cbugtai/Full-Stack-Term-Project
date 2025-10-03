@@ -15,15 +15,17 @@ function ReviewsDisplay({
   }, [ReviewDisplay]);
 
   return (
-    <>
-      <p>Product Name: {reviewsState.description}</p>
+    <div className="review-display">
+      <h4>Reviews</h4>
+      <p className="product-name">Product Name: {reviewsState.description}</p>
       {reviewsState.reviews.map((r) => (
         <div key={r.id}>
           <p>User: {r.user}</p>
           <p>{r.comment}</p>
+          <hr />
         </div>
       ))}
-    </>
+    </div>
   );
 }
 
