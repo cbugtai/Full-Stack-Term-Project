@@ -1,5 +1,6 @@
 import type { Product } from "./sample-data/sample-data";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 function ReviewFillForm({
   id,
@@ -32,7 +33,7 @@ function ReviewFillForm({
                   ...p,
                   reviews: [
                     ...(p.reviews ?? []),
-                    { user: "Anonymous User", comment: comment },
+                    { id: uuidv4(), user: "Anonymous User", comment: comment },
                   ],
                 }
               : p

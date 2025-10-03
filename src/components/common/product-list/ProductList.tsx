@@ -46,4 +46,16 @@ function ProductList({
   );
 }
 
+function ReviewDisplay({
+  reviews,
+}: {
+  reviews: { user: string; comment: string }[];
+}) {
+  return (
+    <>
+      <div>{updateProducts.find((p) => p.p)}</div>
+    </>
+  );
+}
+
 export default ProductList;
