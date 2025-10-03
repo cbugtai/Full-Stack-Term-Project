@@ -1,6 +1,6 @@
 import type { JSX } from "react";
-import sellers from "./sellers_list.json"
-import type { Seller } from "./sellerModel"
+import sellers from "@/data/sellers_list.json";
+import type { Seller } from "@/types/sellerModel";
 import "./TopSellers.css"
 
 export default function TopSellers() {
