@@ -1,7 +1,12 @@
 import type { JSX } from "react";
-import type { Seller } from "../../../../types/sellerModel";
+import type { Seller } from "@/types/sellerModel";
+import { SellerCard } from "../sellerCard/SellerCard";
 
-function SellersListDisplay({ sellers }: { sellers: Seller[] }) {
+export function SellersListDisplay({ 
+    sellers
+}: {
+    sellers: Seller[]
+}) {
 
     const sellerListItems: JSX.Element[] = sellers.map((seller) => {
         return (
