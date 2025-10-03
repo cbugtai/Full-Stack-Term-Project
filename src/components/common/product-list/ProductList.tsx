@@ -55,12 +55,19 @@ function ReviewFillForm({
   updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }) {
   const [comment, setComment] = React.useState("");
+  const [isValid, setIsValid] = React.useState(true);
 
   return (
     <form
       className="review-fill-form"
       onSubmit={(e) => {
         e.preventDefault();
+        // validate
+        if (comment.length <= 10) {
+          setIsValid(false);
+          return;
+        }
+
         // update the reivew
         updateProducts((prev) =>
           prev.map((p) =>
@@ -83,9 +90,17 @@ function ReviewFillForm({
         rows={4}
         cols={50}
         value={comment}
-        onChange={(e) => setComment(e.target.value)}
+        onChange={(e) => {
+          setIsValid(true);
+          setComment(e.target.value);
+        }}
         required
       ></textarea>
+      {!isValid ? (
+        <p className="validation-error">
+          Review must be more than 10 characters.
+        </p>
+      ) : null}
       <button type="submit">Submit Review</button>
     </form>
   );
