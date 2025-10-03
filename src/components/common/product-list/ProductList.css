@@ -70,3 +70,11 @@ nav a {
   font-size: 0.9em;
   margin: 0;
 }
+
+.review-display {
+  width: 387.33px;
+}
+
+.review-display .product-name {
+  background-color: var(--third-color);
+}
