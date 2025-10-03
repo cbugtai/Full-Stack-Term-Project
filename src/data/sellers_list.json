@@ -1,59 +1,69 @@
 [
   {
+    "id": 1,
     "username": "TechTrader01",
     "rating": 92,
     "completed_sales": 23,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=TechTrader01"
   },
   {
+    "id": 2,
     "username": "VintageFinds",
     "rating": 87,
     "completed_sales": 19,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=VintageFinds"
   },
   {
+    "id": 3,
     "username": "GameStopper",
     "rating": 95,
     "completed_sales": 25,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=GameStopper"
   },
   {
+    "id": 4,
     "username": "EcoClothes",
     "rating": 90,
     "completed_sales": 16,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=EcoClothes"
   },
   {
+    "id": 5,
     "username": "BookBarn",
     "rating": 85,
     "completed_sales": 12,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=BookBarn"
   },
   {
+    "id": 6,
     "username": "CraftyCorner",
     "rating": 93,
     "completed_sales": 21,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=CraftyCorner"
   },
   {
+    "id": 7,
     "username": "RetroGadget",
     "rating": 89,
     "completed_sales": 18,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=RetroGadget"
   },
   {
+    "id": 8,
     "username": "ToyBoxX",
     "rating": 80,
     "completed_sales": 11,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=ToyBoxX"
   },
   {
+    "id": 9,
     "username": "SneakerHub",
     "rating": 97,
     "completed_sales": 24,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=SneakerHub"
   },
   {
+    "id": 10,
     "username": "GreenThumb",
     "rating": 88,
     "completed_sales": 14,
