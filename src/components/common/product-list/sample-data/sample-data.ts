@@ -15,7 +15,7 @@ type Category =
   | "Clothes"
   | "Others";
 
-type ReviewOnProduct = { user: string; comment: string };
+type ReviewOnProduct = { id: string; user: string; comment: string };
 
 export type Product = {
   id: number;
@@ -59,8 +59,13 @@ export const productData: Product[] = [
     imgUrl: "https://picsum.photos",
     isWishlisted: true,
     reviews: [
-      { user: "Alice", comment: "Great phone!" },
       {
+        id: "a7b8c9d0-1234-5678-9abc-def012345678",
+        user: "Alice",
+        comment: "Great phone!",
+      },
+      {
+        id: "a7b8c9d0-1234-5678-9abc-def012345690",
         user: "Bob",
         comment: "A little expensive, could it be a little cheaper?",
       },
