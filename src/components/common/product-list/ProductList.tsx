@@ -2,7 +2,7 @@ import type { Product } from "./sample-data/sample-data";
 import ProductCard from "./ProductCard";
 import ReviewFillForm from "./ReviewFillForm";
 import ReviewsDisplay from "./ReviewsDisplay";
-import React, { useEffect } from "react";
+import React from "react";
 
 function ProductList({
   products,

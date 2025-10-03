@@ -49,7 +49,7 @@ function ReviewFillForm({
       >
         <input type="text" value={`Product Name: ${description}`} />
         <textarea
-          placeholder="Your Review"
+          placeholder="Your Comment"
           rows={4}
           cols={50}
           value={comment}
@@ -64,7 +64,7 @@ function ReviewFillForm({
             Review must be more than 10 characters.
           </p>
         ) : null}
-        <button type="submit">Submit Review</button>
+        <button type="submit">Submit Comment</button>
       </form>
     </div>
   );

@@ -1,13 +1,7 @@
-import React, { useEffect } from "react";
 import type { Product } from "./sample-data/sample-data";
 
 function ReviewsDisplay({ id, products }: { id: number; products: Product[] }) {
-  const [idState, setIdState] = React.useState(id);
-  const product: Product | undefined = products.find((p) => p.id === idState);
-
-  useEffect(() => {
-    setIdState(id);
-  }, [id, products]);
+  const product: Product | undefined = products.find((p) => p.id === id);
 
   return (
     <div className="review-display">
