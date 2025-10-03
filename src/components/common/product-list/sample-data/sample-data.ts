@@ -28,7 +28,7 @@ export type Product = {
   imgUrl: string;
 };
 
-export const products: Product[] = [
+export const productData: Product[] = [
   {
     id: 1,
     description: "Introduction to Algorithms textbook",

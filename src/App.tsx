@@ -2,17 +2,25 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Landing from "./components/pages/landing/Landing";
-import Page1 from "./components/pages/casper's page/Page1";
+import Page1 from "./components/pages/product/Page1";
 import Sellers from "./components/pages/sellers/Sellers";
 import Page3 from "./components/pages/nick's page/Page3";
-
+import { useState } from "react";
+import { productData } from "./components/common/product-list/sample-data/sample-data";
+import type { Product } from "./components/common/product-list/sample-data/sample-data";
 
 function App() {
+  const [products, updateProducts] = useState<Product[]>(productData);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-
-        <Route index element={<Landing />} />
+        <Route
+          index
+          element={
+            <Landing products={products} updateProducts={updateProducts} />
+          }
+        />
 
         {/* Casper's Routes */}
         <Route path="/page1">
@@ -22,7 +30,7 @@ function App() {
         {/* Christian's Routes (work in progress) */}
         <Route path="/sellers">
           <Route index element={<Sellers />} />
-        {/*
+          {/*
           <Route path="/favorites" element={<FavoriteSellers />} />
           <Route path="/blocked" element={<BlockedSellers />} />
 
@@ -37,7 +45,6 @@ function App() {
         <Route path="/page3">
           <Route index element={<Page3 />} />
         </Route>
-
       </Route>
     </Routes>
   );
