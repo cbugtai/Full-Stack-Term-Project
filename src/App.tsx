@@ -2,7 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Landing from "./components/pages/landing/Landing";
-import Page1 from "./components/pages/product/Page1";
+import { WishProducts } from "./components/pages/product/WishProducts";
 import Sellers from "./components/pages/sellers/Sellers";
 import Page3 from "./components/pages/nick's page/Page3";
 import { useState } from "react";
@@ -23,8 +23,16 @@ function App() {
         />
 
         {/* Casper's Routes */}
-        <Route path="/page1">
-          <Route index element={<Page1 />} />
+        <Route path="/wishlist">
+          <Route
+            index
+            element={
+              <WishProducts
+                products={products}
+                updateProducts={updateProducts}
+              />
+            }
+          />
         </Route>
 
         {/* Christian's Routes (work in progress) */}

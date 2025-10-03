@@ -2,9 +2,9 @@ import type { Product } from "@/components/common/product-list/sample-data/sampl
 import ProductList from "@/components/common/product-list/ProductList";
 
 /**
- * This component will display all products provided as props, without any filter.
+ * This component will display all terms provided as props, without any filter.
  */
-export function AllProducts({
+export function WishProducts({
   products,
   updateProducts,
 }: {
@@ -13,9 +13,12 @@ export function AllProducts({
 }) {
   return (
     <>
-      <h2>Featured Products</h2>
+      <h2>Products in Wishlist</h2>
       <section>
-        <ProductList products={products} updateProducts={updateProducts} />
+        <ProductList
+          products={products.filter((p) => p.isWishlisted)}
+          updateProducts={updateProducts}
+        />
       </section>
     </>
   );

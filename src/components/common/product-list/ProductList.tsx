@@ -20,7 +20,6 @@ function ProductList({
   return (
     <>
       <section className="product-list">
-        <h2>Featured Products</h2>
         <div className="product-list-gallery">{productList}</div>
       </section>
     </>
