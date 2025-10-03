@@ -1,9 +1,14 @@
 import type { JSX } from "react";
-import { products } from "./sample-data/sample-data";
 import type { Product } from "./sample-data/sample-data";
 import "./ProductList.css";
 
-function ProductList() {
+function ProductList({
+  products,
+  updateProducts,
+}: {
+  products: Product[];
+  updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+}) {
   const productList: JSX.Element[] = [];
   // use the list of products to generate a list of product cards
   products.forEach((p) =>
