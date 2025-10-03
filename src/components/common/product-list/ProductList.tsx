@@ -23,10 +23,8 @@ function ProductList({
     { id: number; isReviewDisplay: boolean }[]
   >(products.map((p) => ({ id: p.id, isReviewDisplay: false })));
 
-  const [ReviewDisplay, setReviewDisplay] = React.useState<{
-    description: string;
-    reviews: { id: string; user: string; comment: string }[];
-  }>({ description: "", reviews: [] });
+  const [ReviewDisplayProductId, setReviewDisplayProductId] =
+    React.useState(1000000);
 
   return (
     <>
@@ -43,14 +41,13 @@ function ProductList({
               setProductId={setProductId}
               setDescription={setDescription}
               setIsReviewDisplay={setIsReviewDisplay}
-              setReviewDisplay={setReviewDisplay}
+              setReviewDisplayProductId={setReviewDisplayProductId}
             />
           ))}
         </div>
         <div>
-          {isReviewDisplay.some((r) => r.isReviewDisplay) &&
-          ReviewDisplay.reviews.length > 0 ? (
-            <ReviewsDisplay ReviewDisplay={ReviewDisplay} />
+          {isReviewDisplay.some((r) => r.isReviewDisplay) ? (
+            <ReviewsDisplay id={ReviewDisplayProductId} products={products} />
           ) : null}
           {isReview.some((r) => r.isReview) ? (
             <ReviewFillForm
