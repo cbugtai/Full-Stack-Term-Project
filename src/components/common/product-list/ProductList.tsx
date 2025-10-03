@@ -1,6 +1,7 @@
 import type { Product } from "./sample-data/sample-data";
 import ProductCard from "./ProductCard";
 import ReviewFillForm from "./ReviewFillForm";
+import ReviewsDisplay from "./ReviewsDisplay";
 import React, { useEffect } from "react";
 
 function ProductList({
@@ -60,33 +61,6 @@ function ProductList({
           ) : null}
         </div>
       </section>
-    </>
-  );
-}
-
-function ReviewsDisplay({
-  ReviewDisplay,
-}: {
-  ReviewDisplay: {
-    description: string;
-    reviews: { id: string; user: string; comment: string }[];
-  };
-}) {
-  const [reviewsState, setReviewsState] = React.useState(ReviewDisplay);
-
-  useEffect(() => {
-    setReviewsState(ReviewDisplay);
-  }, [ReviewDisplay]);
-
-  return (
-    <>
-      <p>Product Name: {reviewsState.description}</p>
-      {reviewsState.reviews.map((r) => (
-        <div key={r.id}>
-          <p>User: {r.user}</p>
-          <p>{r.comment}</p>
-        </div>
-      ))}
     </>
   );
 }
