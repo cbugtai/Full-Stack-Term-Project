@@ -37,3 +37,8 @@
   width: 165px;
   height: 165px;
 }
+
+/* set the nav style temporarily for sprint interview */
+nav a {
+  margin: 10px 20px;
+}
