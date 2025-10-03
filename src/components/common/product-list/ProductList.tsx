@@ -1,6 +1,6 @@
-import type { JSX } from "react";
 import type { Product } from "./sample-data/sample-data";
-import "./ProductList.css";
+import ProductCard from "./ProductCard";
+import React from "react";
 
 function ProductList({
   products,
@@ -9,77 +9,85 @@ function ProductList({
   products: Product[];
   updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }) {
-  const productList: JSX.Element[] = [];
-  // use the list of products to generate a list of product cards
-  products.forEach((p) =>
-    productList.push(
-      <ProductCard product={p} key={p.id} updateProducts={updateProducts} />
-    )
+  const [isReview, setIsReview] = React.useState<
+    { id: number; isReview: boolean }[]
+  >(products.map((p) => ({ id: p.id, isReview: false })));
+  const [productId, setProductId] = React.useState(1000000);
+  const [description, setDescription] = React.useState(
+    "example product description"
   );
-
   return (
     <>
       <section className="product-list">
-        <div className="product-list-gallery">{productList}</div>
+        <div className="product-list-gallery">
+          {" "}
+          {products.map((p) => (
+            <ProductCard
+              product={p}
+              key={p.id}
+              updateProducts={updateProducts}
+              isReview={isReview}
+              setIsReview={setIsReview}
+              setProductId={setProductId}
+              setDescription={setDescription}
+            />
+          ))}
+        </div>
+        {isReview.some((r) => r.isReview) ? (
+          <ReviewFillForm
+            id={productId}
+            description={description}
+            updateProducts={updateProducts}
+          />
+        ) : null}
       </section>
     </>
   );
 }
 
-function ProductCard({
-  product,
+function ReviewFillForm({
+  id,
+  description,
   updateProducts,
 }: {
-  product: Product;
+  id: number;
+  description: string;
   updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }) {
-  // use the seed to generate random image, rather than use the original same image url in sample data
-  const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
+  const [comment, setComment] = React.useState("");
 
   return (
-    <div className="product-card">
-      <img
-        src={randomImgUrl}
-        alt={product.description}
-        className="product-img"
-      />
-
-      <p className="product-desc">
-        {product.isWishlisted ? <span>❤️</span> : null}
-        {product.description}
-      </p>
-      <p className="product-brand">
-        <strong>Brand:</strong>
-        {` ${product.brand}`}
-      </p>
-      <p className="product-condition">
-        <strong>Condition: </strong>
-        {`${product.condition}`}
-      </p>
-      <p>
-        <span className="cur-price">{`$${product.currentPrice.toFixed(
-          2
-        )}`}</span>
-        {"  "}
-        <span className="original-price">
-          <del>{`Was $${product.originalPrice.toFixed(2)}`}</del>
-        </span>
-      </p>
-
-      <button
-        onClick={() => {
-          updateProducts((prev) =>
-            prev.map((p) =>
-              p.id === product.id
-                ? { ...p, isWishlisted: !product.isWishlisted }
-                : p
-            )
-          );
-        }}
-      >
-        {product.isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-      </button>
-    </div>
+    <form
+      className="review-fill-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        // update the reivew
+        updateProducts((prev) =>
+          prev.map((p) =>
+            p.id === id
+              ? {
+                  ...p,
+                  reviews: [
+                    ...(p.reviews ?? []),
+                    { user: "Anonymous User", comment: comment },
+                  ],
+                }
+              : p
+          )
+        );
+      }}
+    >
+      <input type="text" value={description} />
+      <textarea
+        placeholder="Your Review"
+        rows={4}
+        cols={50}
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        required
+      ></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
   );
 }
 

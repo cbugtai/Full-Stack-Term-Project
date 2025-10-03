@@ -1,3 +1,8 @@
+.product-list {
+  display: flex;
+  flex-direction: row;
+}
+
 .product-list-gallery {
   display: flex;
   flex-direction: row;
@@ -41,4 +46,21 @@
 /* set the nav style temporarily for sprint interview */
 nav a {
   margin: 10px 20px;
+}
+
+.review-number {
+  color: var(--second-color);
+  text-decoration: underline;
+}
+
+.review-fill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review-fill-form input {
+  background-color: var(--third-color);
+  border: none;
+  padding: 2px;
 }
