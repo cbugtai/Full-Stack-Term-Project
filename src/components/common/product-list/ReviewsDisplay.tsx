@@ -1,30 +1,28 @@
 import React, { useEffect } from "react";
+import type { Product } from "./sample-data/sample-data";
 
-function ReviewsDisplay({
-  ReviewDisplay,
-}: {
-  ReviewDisplay: {
-    description: string;
-    reviews: { id: string; user: string; comment: string }[];
-  };
-}) {
-  const [reviewsState, setReviewsState] = React.useState(ReviewDisplay);
+function ReviewsDisplay({ id, products }: { id: number; products: Product[] }) {
+  const [idState, setIdState] = React.useState(id);
+  const product: Product | undefined = products.find((p) => p.id === idState);
 
   useEffect(() => {
-    setReviewsState(ReviewDisplay);
-  }, [ReviewDisplay]);
+    setIdState(id);
+  }, [id, products]);
 
   return (
     <div className="review-display">
       <h4>Reviews</h4>
-      <p className="product-name">Product Name: {reviewsState.description}</p>
-      {reviewsState.reviews.map((r) => (
-        <div key={r.id}>
-          <p>User: {r.user}</p>
-          <p>{r.comment}</p>
-          <hr />
-        </div>
-      ))}
+      {product && (
+        <p className="product-name">Product Name: {product.description}</p>
+      )}
+      {product &&
+        product.reviews?.map((r) => (
+          <div key={r.id}>
+            <p>User: {r.user}</p>
+            <p>{r.comment}</p>
+            <hr />
+          </div>
+        ))}
     </div>
   );
 }

@@ -10,7 +10,7 @@ function ProductCard({
   setProductId,
   setDescription,
   setIsReviewDisplay,
-  setReviewDisplay,
+  setReviewDisplayProductId,
 }: {
   product: Product;
   updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
@@ -23,12 +23,7 @@ function ProductCard({
   setIsReviewDisplay: React.Dispatch<
     React.SetStateAction<{ id: number; isReviewDisplay: boolean }[]>
   >;
-  setReviewDisplay: React.Dispatch<
-    React.SetStateAction<{
-      description: string;
-      reviews: { id: string; user: string; comment: string }[];
-    }>
-  >;
+  setReviewDisplayProductId: React.Dispatch<React.SetStateAction<number>>;
 }) {
   // use the seed to generate random image, rather than use the original same image url in sample data
   const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
@@ -72,10 +67,7 @@ function ProductCard({
                   : { id: product.id, isReviewDisplay: true }
               )
             );
-            setReviewDisplay({
-              description: product.description,
-              reviews: product.reviews ?? [],
-            });
+            setReviewDisplayProductId(product.id);
           }}
         >
           <p className="review-number">
@@ -97,7 +89,7 @@ function ProductCard({
         }}
       >
         {isReview.find((item) => item.id === product.id)?.isReview
-          ? "Cancel Review"
+          ? "Cancel Writing"
           : "Write a review"}
       </button>
       <button
