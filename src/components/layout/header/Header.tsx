@@ -11,7 +11,10 @@ function Header() {
     return (
         <header className="app-header">
             <div className="left-section">
-                <img src="/src/assets/logo-header.png" className="app-logo" />
+                <img
+                    src="/src/assets/logo-header.png"
+                    className="app-logo"
+                    alt="RRC Discount Ebay logo" />
             </div>
 
             <div className="center-section">
@@ -19,20 +22,37 @@ function Header() {
             </div>
 
             <div className="right-section">
-                <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
+                <NavLink 
+                    to="/"
+                    className={({ isActive }) => isActive ? "active" : ""}
+                    aria-label="Home">
                     <FaHome className="home-icon" />
                 </NavLink>
 
                 <div className="user-info">
                     {user ? (
                     <>
-                        <NavLink to="/dashboard" className="username">{user.name}</NavLink>
-                        <img src={user.profilePic} className="profile-pic" />
+                        <NavLink
+                            to="/dashboard"
+                            className="username">
+                            {user.name}
+                        </NavLink>
+                        <img
+                            src={user.profilePic}
+                            className="profile-pic"
+                            alt={`${user.name}'s profile picture`} />
                     </>
                     ) : (
                     <>
-                        <NavLink to="/login" className="login-link">Login</NavLink>
-                        <img src="/src/assets/default-user.png" className="profile-pic" />
+                        <NavLink
+                            to="/login"
+                            className="login-link">
+                            Login
+                        </NavLink>
+                        <img
+                            src="/src/assets/default-user.png"
+                            className="profile-pic"
+                            alt="Default user profile icon" />
                     </>
                     )}
                 </div>
