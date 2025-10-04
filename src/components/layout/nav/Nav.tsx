@@ -7,10 +7,10 @@ function Nav() {
       <ul className="nav-items">
         <li>
           <NavLink
-            to="/page1"
+            to="/wishlist"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            Page 1
+            Wish List
           </NavLink>
         </li>
         <li>
