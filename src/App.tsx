@@ -4,10 +4,11 @@ import Layout from "./components/layout/Layout";
 import Landing from "./components/pages/landing/Landing";
 import { WishProducts } from "./components/pages/product/WishProducts";
 import Sellers from "./components/pages/sellers/Sellers";
-import Page3 from "./components/pages/nick's page/Page3";
+
 import { useState } from "react";
 import { productData } from "./components/common/product-list/sample-data/sample-data";
 import type { Product } from "./components/common/product-list/sample-data/sample-data";
+import Page3 from "./components/pages/nick's page/Dashboard";
 
 function App() {
   const [products, updateProducts] = useState<Product[]>(productData);
@@ -50,7 +51,7 @@ function App() {
         </Route>
 
         {/* Nick's Routes */}
-        <Route path="/page3">
+        <Route path="/dashboard">
           <Route index element={<Page3 />} />
         </Route>
       </Route>
