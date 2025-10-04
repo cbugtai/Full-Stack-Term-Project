@@ -14,7 +14,8 @@ function Header() {
                 <img
                     src="/src/assets/logo-header.png"
                     className="app-logo"
-                    alt="RRC Discount Ebay logo" />
+                    alt="RRC Discount Ebay logo"
+                />
             </div>
 
             <div className="center-section">
@@ -40,7 +41,8 @@ function Header() {
                         <img
                             src={user.profilePic}
                             className="profile-pic"
-                            alt={`${user.name}'s profile picture`} />
+                            alt={`${user.name}'s profile picture`}
+                        />
                     </>
                     ) : (
                     <>
@@ -52,7 +54,8 @@ function Header() {
                         <img
                             src="/src/assets/default-user.png"
                             className="profile-pic"
-                            alt="Default user profile icon" />
+                            alt="Default user profile icon"
+                        />
                     </>
                     )}
                 </div>
