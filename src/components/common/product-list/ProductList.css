@@ -6,7 +6,7 @@
 
 .product-card {
   box-sizing: border-box;
-  height: 300px;
+  height: 350px;
   width: 205px;
   padding: 10px 20px;
 }
@@ -37,3 +37,8 @@
   width: 165px;
   height: 165px;
 }
+
+/* set the nav style temporarily for sprint interview */
+/* nav a {
+  margin: 10px 20px;
+} */

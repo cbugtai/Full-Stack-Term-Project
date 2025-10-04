@@ -26,9 +26,10 @@ export type Product = {
   currentPrice: number;
   originalPrice: number;
   imgUrl: string;
+  isWishlisted: boolean;
 };
 
-export const products: Product[] = [
+export const productData: Product[] = [
   {
     id: 1,
     description: "Introduction to Algorithms textbook",
@@ -40,6 +41,7 @@ export const products: Product[] = [
     currentPrice: 45,
     originalPrice: 80,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 2,
@@ -52,6 +54,7 @@ export const products: Product[] = [
     currentPrice: 600,
     originalPrice: 800,
     imgUrl: "https://picsum.photos",
+    isWishlisted: true,
   },
   {
     id: 3,
@@ -64,6 +67,7 @@ export const products: Product[] = [
     currentPrice: 100,
     originalPrice: 150,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 4,
@@ -76,6 +80,7 @@ export const products: Product[] = [
     currentPrice: 70,
     originalPrice: 120,
     imgUrl: "https://picsum.photos",
+    isWishlisted: true,
   },
   {
     id: 5,
@@ -88,6 +93,7 @@ export const products: Product[] = [
     currentPrice: 200,
     originalPrice: 500,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 6,
@@ -100,6 +106,7 @@ export const products: Product[] = [
     currentPrice: 40,
     originalPrice: 80,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 7,
@@ -112,6 +119,7 @@ export const products: Product[] = [
     currentPrice: 25,
     originalPrice: 40,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 8,
@@ -124,6 +132,7 @@ export const products: Product[] = [
     currentPrice: 35,
     originalPrice: 70,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 9,
@@ -136,6 +145,7 @@ export const products: Product[] = [
     currentPrice: 60,
     originalPrice: 120,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 10,
@@ -148,6 +158,7 @@ export const products: Product[] = [
     currentPrice: 80,
     originalPrice: 150,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 11,
@@ -160,6 +171,7 @@ export const products: Product[] = [
     currentPrice: 1200,
     originalPrice: 1800,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 12,
@@ -172,6 +184,7 @@ export const products: Product[] = [
     currentPrice: 30,
     originalPrice: 60,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 13,
@@ -184,6 +197,7 @@ export const products: Product[] = [
     currentPrice: 80,
     originalPrice: 130,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 14,
@@ -196,6 +210,7 @@ export const products: Product[] = [
     currentPrice: 250,
     originalPrice: 500,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 15,
@@ -208,6 +223,7 @@ export const products: Product[] = [
     currentPrice: 12,
     originalPrice: 25,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 16,
@@ -220,6 +236,7 @@ export const products: Product[] = [
     currentPrice: 20,
     originalPrice: 40,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 17,
@@ -232,6 +249,7 @@ export const products: Product[] = [
     currentPrice: 35,
     originalPrice: 60,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 18,
@@ -244,6 +262,7 @@ export const products: Product[] = [
     currentPrice: 45,
     originalPrice: 80,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 19,
@@ -256,6 +275,7 @@ export const products: Product[] = [
     currentPrice: 60,
     originalPrice: 200,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
   {
     id: 20,
@@ -268,5 +288,6 @@ export const products: Product[] = [
     currentPrice: 1500,
     originalPrice: 8000,
     imgUrl: "https://picsum.photos",
+    isWishlisted: false,
   },
 ];
