@@ -1,14 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import "./Header.css";
-
-const mockUser = {
-    name: "Mock User",
-    profilePic: "/src/assets/default-user.png",
-};
+import type { User } from "../../../types/userSchema";
+import { mockUser } from "../../../apis/testimonials/mockUserData";
 
 const isLoggedIn = true;
-const user = isLoggedIn ? mockUser : null;
+const user: User | null = isLoggedIn ? mockUser : null;
 
 function Header() {
     return (
