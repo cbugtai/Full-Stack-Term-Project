@@ -4,7 +4,7 @@ import Layout from "./components/layout/Layout";
 import Landing from "./components/pages/landing/Landing";
 import Page1 from "./components/pages/casper's page/Page1";
 import Sellers from "./components/pages/sellers/Sellers";
-import Page3 from "./components/pages/nick's page/Page3";
+import Page3 from "./components/pages/nick's page/Dashboard";
 
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
         </Route>
 
         {/* Nick's Routes */}
-        <Route path="/page3">
+        <Route path="/dashboard">
           <Route index element={<Page3 />} />
         </Route>
 
