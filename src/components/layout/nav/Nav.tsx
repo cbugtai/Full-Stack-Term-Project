@@ -1,17 +1,35 @@
 import { NavLink } from "react-router-dom";
-//import "./Nav.css";
+import "./Nav.css";
 
 function Nav() {
   return (
-    <nav>
-      <div className="page-links">
-        <NavLink to="/" end>
-          Home
-        </NavLink>
-        <NavLink to="/wishlist">Wish List</NavLink>
-        <NavLink to="/sellers">All Sellers</NavLink>
-        <NavLink to="/page3">Page 3</NavLink>
-      </div>
+    <nav className="nav-bar">
+      <ul className="nav-items">
+        <li>
+          <NavLink
+            to="/wishlist"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Wish List
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/sellers"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            All Sellers
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Dashboard
+          </NavLink>
+        </li>
+      </ul>
     </nav>
   );
 }

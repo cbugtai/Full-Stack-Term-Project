@@ -43,13 +43,8 @@
   height: 165px;
 }
 
-/* set the nav style temporarily for sprint interview */
-nav a {
-  margin: 10px 20px;
-}
-
 .review-number {
-  color: var(--second-color);
+  color: var(--color-deep-blue);
   text-decoration: underline;
 }
 
@@ -60,7 +55,7 @@ nav a {
 }
 
 .review-fill-form input {
-  background-color: var(--third-color);
+  background-color: var(--color-mid-blue);
   border: none;
   padding: 2px;
 }
@@ -76,5 +71,5 @@ nav a {
 }
 
 .review-display .product-name {
-  background-color: var(--third-color);
+  background-color: var(--color-mid-blue);
 }
