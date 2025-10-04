@@ -5,15 +5,27 @@ function Nav() {
     return (
         <nav className="nav-bar">
             <ul className="nav-items">
-                <li><NavLink to="/page1" className={({ isActive }) => isActive ? "active" : ""}>
-                    Page 1
-                </NavLink></li>
-                <li><NavLink to="/sellers" className={({ isActive }) => isActive ? "active" : ""}>
-                    All Sellers
-                </NavLink></li>
-                <li><NavLink to="/dashboard" className={({ isActive }) => isActive ? "active" : ""}>
-                    Dashboard
-                </NavLink></li>
+                <li>
+                    <NavLink
+                        to="/page1"
+                        className={({ isActive }) => isActive ? "active" : ""}>
+                        Page 1
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to="/sellers"
+                        className={({ isActive }) => isActive ? "active" : ""}>
+                        All Sellers
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to="/dashboard"
+                        className={({ isActive }) => isActive ? "active" : ""}>
+                        Dashboard
+                    </NavLink>
+                </li>
             </ul>
         </nav>
     );
