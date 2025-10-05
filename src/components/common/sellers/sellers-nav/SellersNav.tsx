@@ -1,32 +1,31 @@
 import { NavLink } from "react-router-dom";
-import "./Nav.css";
 
-function Nav() {
+export function SellersNav() {
   return (
-    <nav className="nav-bar">
+    <nav className="sellers-nav-bar">
       <ul className="nav-items">
-        <li>
-          <NavLink
-            to="/wishlist"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Wish List
-          </NavLink>
-        </li>
         <li>
           <NavLink
             to="/sellers"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            Sellers
+            All Sellers
           </NavLink>
         </li>
         <li>
           <NavLink
-            to="/dashboard"
+            to="/favorite-sellers"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            Dashboard
+            Favorite Sellers
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/blocked-sellers"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Blocked Sellers
           </NavLink>
         </li>
       </ul>
@@ -34,4 +33,3 @@ function Nav() {
   );
 }
 
-export default Nav;
