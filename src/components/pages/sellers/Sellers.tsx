@@ -19,9 +19,11 @@ function Sellers() {
       
       <SellersListDisplay sellers={
         sellers.filter((seller) =>
-          seller.username.toLowerCase().includes(searchValue.toLowerCase())
-        )
-      } />
+          seller.username.toLowerCase().includes(
+            searchValue.toLowerCase().trim())
+          )
+        }
+      />
     </div>
   );
 }
