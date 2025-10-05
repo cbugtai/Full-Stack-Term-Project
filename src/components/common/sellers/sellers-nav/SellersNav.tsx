@@ -14,7 +14,7 @@ export function SellersNav() {
         </li>
         <li>
           <NavLink
-            to="/favorite-sellers"
+            to="favorite-sellers"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Favorite Sellers
@@ -22,7 +22,7 @@ export function SellersNav() {
         </li>
         <li>
           <NavLink
-            to="/blocked-sellers"
+            to="blocked-sellers"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Blocked Sellers
