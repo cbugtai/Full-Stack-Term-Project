@@ -68,5 +68,110 @@
     "rating": 88,
     "completed_sales": 14,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=GreenThumb"
+  },
+  {
+    "id": 11,
+    "username": "PixelPicks",
+    "rating": 91,
+    "completed_sales": 20,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=PixelPicks"
+  },
+  {
+    "id": 12,
+    "username": "MusicMania",
+    "rating": 86,
+    "completed_sales": 17,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=MusicMania"
+  },
+  {
+    "id": 13,
+    "username": "GizmoGalaxy",
+    "rating": 94,
+    "completed_sales": 22,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=GizmoGalaxy"
+  },
+  {
+    "id": 14,
+    "username": "ThriftTreasures",
+    "rating": 82,
+    "completed_sales": 10,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=ThriftTreasures"
+  },
+  {
+    "id": 15,
+    "username": "KitchenKing",
+    "rating": 89,
+    "completed_sales": 15,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=KitchenKing"
+  },
+  {
+    "id": 16,
+    "username": "GadgetGeek",
+    "rating": 96,
+    "completed_sales": 25,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=GadgetGeek"
+  },
+  {
+    "id": 17,
+    "username": "ArtisticSoul",
+    "rating": 84,
+    "completed_sales": 13,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=ArtisticSoul"
+  },
+  {
+    "id": 18,
+    "username": "CycleCity",
+    "rating": 90,
+    "completed_sales": 18,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=CycleCity"
+  },
+  {
+    "id": 19,
+    "username": "PetPalace",
+    "rating": 87,
+    "completed_sales": 16,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=PetPalace"
+  },
+  {
+    "id": 20,
+    "username": "HomeHaven",
+    "rating": 92,
+    "completed_sales": 21,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=HomeHaven"
+  },
+  {
+    "id": 21,
+    "username": "SneakPeak",
+    "rating": 85,
+    "completed_sales": 12,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=SneakPeak"
+  },
+  {
+    "id": 22,
+    "username": "BargainBazaar",
+    "rating": 83,
+    "completed_sales": 11,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=BargainBazaar"
+  },
+  {
+    "id": 23,
+    "username": "DigitalDen",
+    "rating": 95,
+    "completed_sales": 23,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=DigitalDen"
+  },
+  {
+    "id": 24,
+    "username": "StyleStation",
+    "rating": 88,
+    "completed_sales": 14,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=StyleStation"
+  },
+  {
+    "id": 25,
+    "username": "OutdoorOutlet",
+    "rating": 90,
+    "completed_sales": 19,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=OutdoorOutlet"
   }
 ]
