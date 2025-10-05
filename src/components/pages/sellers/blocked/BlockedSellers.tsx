@@ -1,8 +1,11 @@
 import { SellersNav } from "@/components/common/sellers/sellers-nav/SellersNav";
 import { SellersListDisplay } from "@/components/common//sellers/sellersListDisplay/SellersListDisplay";
-import sellerData from "@/data/sellers_list.json";
+import type { Seller } from "@/types/sellerModel";
 
-export function SellersBlocked() {
+export function SellersBlocked({ sellers, setSellers }: {
+  sellers: Seller[],
+  setSellers: React.Dispatch<React.SetStateAction<Seller[]>>
+}) {
 
   return (
     <div>
@@ -10,10 +13,11 @@ export function SellersBlocked() {
       <h1>Blocked Sellers</h1>
       
       <SellersListDisplay sellers={
-        sellerData.filter((seller) =>
+        sellers.filter((seller) =>
           seller.isBlocked === true
           )
         }
+        setSellers={setSellers}
       />
     </div>
   );
