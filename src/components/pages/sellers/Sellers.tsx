@@ -12,7 +12,7 @@ function Sellers() {
   return (
     <div>
       <SellersNav />
-      <h1>Sellers</h1>
+      <h1>All Sellers</h1>
 
       <Search
         searchValue={searchValue}
