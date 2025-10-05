@@ -50,7 +50,7 @@ function App() {
             <Route index element={<h1>404 Not Found</h1>} />
 
             <Route path=":sellerId" element={<SellerProfile />} />
-        */}
+          */}
         </Route>
 
         {/* Nick's Routes */}

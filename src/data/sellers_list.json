@@ -5,7 +5,7 @@
     "rating": 92,
     "completed_sales": 23,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=TechTrader01",
-    "isFavorite": false,
+    "isFavorite": true,
     "isBlocked": false
   },
   {
@@ -15,7 +15,7 @@
     "completed_sales": 19,
     "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=VintageFinds",
     "isFavorite": false,
-    "isBlocked": false
+    "isBlocked": true
   },
   {
     "id": 3,
