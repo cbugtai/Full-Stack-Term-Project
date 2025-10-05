@@ -15,6 +15,8 @@ type Category =
   | "Clothes"
   | "Others";
 
+type ReviewOnProduct = { id: string; user: string; comment: string };
+
 export type Product = {
   id: number;
   description: string;
@@ -27,6 +29,7 @@ export type Product = {
   originalPrice: number;
   imgUrl: string;
   isWishlisted: boolean;
+  reviews?: ReviewOnProduct[];
 };
 
 export const productData: Product[] = [
@@ -55,6 +58,18 @@ export const productData: Product[] = [
     originalPrice: 800,
     imgUrl: "https://picsum.photos",
     isWishlisted: true,
+    reviews: [
+      {
+        id: "a7b8c9d0-1234-5678-9abc-def012345678",
+        user: "Alice",
+        comment: "Great phone!",
+      },
+      {
+        id: "a7b8c9d0-1234-5678-9abc-def012345690",
+        user: "Bob",
+        comment: "A little expensive, could it be a little cheaper?",
+      },
+    ],
   },
   {
     id: 3,
