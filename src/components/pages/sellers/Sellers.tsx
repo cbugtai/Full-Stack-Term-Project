@@ -1,16 +1,23 @@
 import { useState } from "react";
 import type { Seller } from "@/types/sellerModel";
-import sellerData from "@/data/sellers_list.json";
-import { SellersListDisplay } from "./sellersListDisplay/SellersListDisplay";
-import { Search } from "./search/Search";
+import { SellersListDisplay } from "@/components/common//sellers/sellersListDisplay/SellersListDisplay";
+import { Search } from "@/components/common/search/Search";
+import { SellersNav } from "@/components/common/sellers/sellers-nav/SellersNav";
 
-function Sellers() {
-  const [sellers, setSellers] = useState<Seller[]>(sellerData);
+function Sellers({
+  sellers,
+  setSellers
+}: {
+  sellers: Seller[],
+  setSellers: React.Dispatch<React.SetStateAction<Seller[]>>
+}) {
+  
   const [searchValue, setSearchValue] = useState<string>("");
 
   return (
     <div>
-      <h1>Sellers</h1>
+      <SellersNav />
+      <h1>All Sellers</h1>
 
       <Search
         searchValue={searchValue}
@@ -19,10 +26,12 @@ function Sellers() {
       
       <SellersListDisplay sellers={
         sellers.filter((seller) =>
+          !seller.isBlocked &&
           seller.username.toLowerCase().includes(
             searchValue.toLowerCase().trim())
           )
         }
+        setSellers={setSellers}
       />
     </div>
   );

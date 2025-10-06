@@ -4,14 +4,19 @@ import Layout from "./components/layout/Layout";
 import Landing from "./components/pages/landing/Landing";
 import { WishProducts } from "./components/pages/product/WishProducts";
 import Sellers from "./components/pages/sellers/Sellers";
+import sellerData from "@/data/sellers_list.json";
+import type { Seller } from "@/types/sellerModel";
 
 import { useState } from "react";
 import { productData } from "./components/common/product-list/sample-data/sample-data";
 import type { Product } from "./components/common/product-list/sample-data/sample-data";
 import Page3 from "./components/pages/nick's page/Dashboard";
+import { SellersFavorites } from "./components/pages/sellers/favorites/FavoriteSellers";
+import { SellersBlocked } from "./components/pages/sellers/blocked/BlockedSellers";
 
 function App() {
   const [products, updateProducts] = useState<Product[]>(productData);
+  const [sellers, setSellers] = useState<Seller[]>(sellerData);
 
   return (
     <Routes>
@@ -38,16 +43,29 @@ function App() {
 
         {/* Christian's Routes (work in progress) */}
         <Route path="/sellers">
-          <Route index element={<Sellers />} />
-          {/*
-          <Route path="/favorites" element={<FavoriteSellers />} />
-          <Route path="/blocked" element={<BlockedSellers />} />
+          <Route index element={
+            <Sellers 
+              sellers={sellers} 
+              setSellers={setSellers} 
+            />} />
 
+          <Route path="favorite-sellers" element={
+            <SellersFavorites
+              sellers={sellers}
+              setSellers={setSellers}
+            />} />
+          <Route path="blocked-sellers" element={
+            <SellersBlocked
+              sellers={sellers}
+              setSellers={setSellers}
+            />} />
+
+          {/*
           <Route path="/profiles">
             <Route index element={<h1>404 Not Found</h1>} />
 
             <Route path=":sellerId" element={<SellerProfile />} />
-        */}
+          */}
         </Route>
 
         {/* Nick's Routes */}

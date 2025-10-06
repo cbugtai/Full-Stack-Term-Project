@@ -3,8 +3,12 @@ import type { Seller } from "@/types/sellerModel";
 export function SellerCard(
     { 
         seller,
+        onFavClick,
+        onBlockClick
     }: {
         seller: Seller
+        onFavClick: () => void
+        onBlockClick: () => void
     }
 ) {
     return (
@@ -19,6 +23,12 @@ export function SellerCard(
             <div className="seller-sold">
                 {seller.completed_sales} Completed Sales
             </div>
+            <button onClick={onFavClick}>
+                {seller.isFavorite ? "Unfavorite" : "Favorite"}
+            </button>
+            <button onClick={onBlockClick}>
+                {seller.isBlocked ? "Unblock" : "Block"}
+            </button>
         </div>
     );
 }
