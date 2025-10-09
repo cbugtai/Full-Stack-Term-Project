@@ -8,8 +8,9 @@ import LockIcon from "@/assets/icons/LockIcon.svg?react";
 import OptionsIcon from "@/assets/icons/OptionsIcon.svg?react";
 import PencilIcon from "@/assets/icons/PencilIcon.svg?react";
 import PhoneIcon from "@/assets/icons/PhoneIcon.svg?react";
-import UserIcon from "@/assets/icons/UserIcon.svg?react";
 import TrashIcon from "@/assets/icons/TrashIcon.svg?react";
+import UserIcon from "@/assets/icons/UserIcon.svg?react";
+import WarnIcon from "@/assets/icons/WarnIcon.svg?react";
 import "./DashboardOptions.css";
 
 export function DashboardOptions() {
@@ -31,6 +32,7 @@ export function DashboardOptions() {
                     <li className="options-row"><ImageIcon className="icon" /><p>Change Profile Picture</p></li>
                     <li className="options-row"><PencilIcon className="icon" /><p>Edit Bio</p></li>
                     <li className="options-row"><PhoneIcon className="icon" /><p>Manage Contact Information</p></li>
+                    <li className="options-row"><WarnIcon className="icon" /><p>Delete Account</p></li>
                 </ul>
             </div>
 
