@@ -11,15 +11,19 @@ function Header() {
     return (
         <header className="app-header">
             <div className="left-section">
-                <img
-                    src="/src/assets/logo-header.png"
-                    className="app-logo"
-                    alt="RRC Discount Ebay logo"
-                />
+                <NavLink to="/" aria-label="Home">
+                    <img
+                        src="/src/assets/logo-header.png"
+                        className="app-logo"
+                        alt="RRC Discount Ebay logo"
+                    />
+                </NavLink>
             </div>
 
             <div className="center-section">
-                <h1 className="app-title">RRC Discount Ebay</h1>
+                <NavLink to="/" className="app-title" aria-label="Home">
+                    <h1 className="app-title">RRC Marketplace</h1>
+                </NavLink>
             </div>
 
             <div className="right-section">
