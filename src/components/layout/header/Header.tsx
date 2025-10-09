@@ -33,29 +33,29 @@ function Header() {
                 <div className="user-info">
                     {user ? (
                     <>
-                        <NavLink
-                            to="/dashboard"
-                            className="username">
-                            {user.name}
+                        <NavLink to="/dashboard" className="profile-link">
+                            <div className="profile-content">
+                                {user.name}
+                                <img
+                                    src={user.profilePic}
+                                    className="profile-pic"
+                                    alt={`${user.name}'s profile picture`}
+                                />
+                            </div>
                         </NavLink>
-                        <img
-                            src={user.profilePic}
-                            className="profile-pic"
-                            alt={`${user.name}'s profile picture`}
-                        />
                     </>
                     ) : (
                     <>
-                        <NavLink
-                            to="/login"
-                            className="login-link">
-                            Login
+                        <NavLink to="/login" className="profile-link">
+                            <div className="profile-content">
+                                Login             
+                                <img
+                                    src="/src/assets/default-user.png"
+                                    className="profile-pic"
+                                    alt="Default user profile icon"
+                                />
+                            </div>
                         </NavLink>
-                        <img
-                            src="/src/assets/default-user.png"
-                            className="profile-pic"
-                            alt="Default user profile icon"
-                        />
                     </>
                     )}
                 </div>
