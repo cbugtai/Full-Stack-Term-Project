@@ -1,0 +1,33 @@
+.dashboard-display h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-heading);
+}
+
+.dashboard-intro {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+}
+
+.widget h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-widgets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.widget {
+    flex: 1 1 300px;
+    background-color: #4c79c1;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+}
