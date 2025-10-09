@@ -43,6 +43,7 @@ export function DashboardOptions() {
                     <li className="options-row"><ClipIcon className="icon" /><p>View Current Listings</p></li>
                     <li className="options-row"><ClockIcon className="icon" /><p>View Past Listings</p></li>
                     <li className="options-row"><AddIcon className="icon" /><p>Create Listing</p></li>
+                    <li className="options-row"><PencilIcon className="icon" /><p>Edit Listing</p></li>
                     <li className="options-row"><TrashIcon className="icon" /><p>Remove Listing</p></li>
                 </ul>
             </div>
