@@ -11,32 +11,11 @@
 
 .dashboard-container {
     animation: fadeIn 0.6s ease-out;
-}
-
-.dashboard-header {
-    background: linear-gradient(to bottom, #648ed4, #4c79c1);
-    padding: 1rem;
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.dashboard-name {
-    font-size: 2rem;
-    font-weight: 700;
-    color: white;
+    display: block;
+    padding: 2rem;
 }
 
 .dashboard-main {
     display: flex;
     gap: 2rem;
-}
-
-.dashboard-header {
-    margin-bottom: 2rem;
-}
-
-.dashboard-container {
-    display: block;
-    padding: 2rem;
 }
