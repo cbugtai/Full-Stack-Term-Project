@@ -71,3 +71,17 @@
     margin: 0;
     line-height: 1;
 }
+
+@media (max-width: 767px) {
+    .dashboard-display {
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .dashboard-main {
+        flex-direction: column;
+    }
+}
