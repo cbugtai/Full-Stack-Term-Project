@@ -17,6 +17,10 @@
     vertical-align: middle;
 }
 
+.app-title .app-logo:hover {
+    cursor: pointer;
+}
+
 .center-section {
     position: absolute;
     left: 50%;
