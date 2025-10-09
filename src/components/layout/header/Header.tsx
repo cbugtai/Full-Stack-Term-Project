@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import "./Header.css";
 import type { User } from "../../../types/userSchema";
-import { mockUser } from "../../../apis/testimonials/mockUserData";
+import { mockUser } from "../../../apis/user/mockUserData";
 
 const isLoggedIn = true;
 const user: User | null = isLoggedIn ? mockUser : null;
