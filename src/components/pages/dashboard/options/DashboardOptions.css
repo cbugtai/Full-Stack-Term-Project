@@ -1,6 +1,6 @@
 .dashboard-options {
     flex: 0 0 250px;
-    background-color: var(--color-deep-blue);
+    background-color: #1a3257;
     padding: 1rem;
     border-radius: 8px;
     color: white;
@@ -17,7 +17,7 @@
 
 .dashboard-display {
     flex: 1;
-    background-color: var(--color-light-blue);
+    background-color: #648ed4;
     padding: 1rem;
     border-radius: 8px;
     color: white;
