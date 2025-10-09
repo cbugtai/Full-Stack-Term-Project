@@ -10,7 +10,7 @@ import type { Seller } from "@/types/sellerModel";
 import { useState } from "react";
 import { productData } from "./components/common/product-list/sample-data/sample-data";
 import type { Product } from "./components/common/product-list/sample-data/sample-data";
-import Page3 from "./components/pages/nick's page/Dashboard";
+import { Dashboard } from "./components/pages/dashboard/Dashboard";
 import { SellersFavorites } from "./components/pages/sellers/favorites/FavoriteSellers";
 import { SellersBlocked } from "./components/pages/sellers/blocked/BlockedSellers";
 
@@ -70,7 +70,7 @@ function App() {
 
         {/* Nick's Routes */}
         <Route path="/dashboard">
-          <Route index element={<Page3 />} />
+          <Route index element={<Dashboard/>} />
         </Route>
       </Route>
     </Routes>
