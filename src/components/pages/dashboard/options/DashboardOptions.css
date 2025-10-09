@@ -1,0 +1,46 @@
+.dashboard-options {
+    flex: 0 0 250px;
+    background-color: #1a3257;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+}
+
+.dashboard-section {
+    margin-bottom: 2rem;
+}
+
+.dashboard-section > ul {
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.dashboard-display {
+    flex: 1;
+    background-color: #648ed4;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.options-row {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.dashboard-section li {
+    transition: background-color 0.3s ease;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+}
+
+.dashboard-section li:hover {
+    background-color: #648ed4;
+    cursor: pointer;
+}
