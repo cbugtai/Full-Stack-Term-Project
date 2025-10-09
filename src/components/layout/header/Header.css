@@ -72,15 +72,27 @@
     margin-left: auto;
 }
 
-.username {
+.profile-link {
+    text-decoration: none;
     font-weight: bold;
+    color: inherit;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-link:hover {
+    background-color: #648ed4;
     color: #1a3257;
 }
 
-.login-link {
-    color: #c8102e;
-    font-weight: bold;
-    text-decoration: none;
+.profile-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .profile-pic {
