@@ -1,8 +1,8 @@
-# RRC Flea Market
+# RRC Marketplace
 
 ## Project Team
 
-**Team Name:** Discount Ebay
+**Team Name:** Team 4
 
 **Team Members:**
 - Christian Bugtai
@@ -11,7 +11,7 @@
 
 ## Project General Description
 
-RRC Flea Market is a web platform designed to connect buyers and sellers of
+RRC Marketplace is a web platform designed to connect buyers and sellers of
 used college materials within a school community. The goal is to make it easier
 for students to access affordable resources and for graduates to recoup some of
 their expenses. By fostering a circular economy on campus, the platform promotes
