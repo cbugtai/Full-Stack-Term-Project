@@ -11,15 +11,19 @@ function Header() {
     return (
         <header className="app-header">
             <div className="left-section">
-                <img
-                    src="/src/assets/logo-header.png"
-                    className="app-logo"
-                    alt="RRC Discount Ebay logo"
-                />
+                <NavLink to="/" aria-label="Home">
+                    <img
+                        src="/src/assets/logo-header.png"
+                        className="app-logo"
+                        alt="RRC Discount Ebay logo"
+                    />
+                </NavLink>
             </div>
 
             <div className="center-section">
-                <h1 className="app-title">RRC Discount Ebay</h1>
+                <NavLink to="/" className="app-title" aria-label="Home">
+                    <h1 className="app-title">RRC Marketplace</h1>
+                </NavLink>
             </div>
 
             <div className="right-section">
@@ -33,29 +37,29 @@ function Header() {
                 <div className="user-info">
                     {user ? (
                     <>
-                        <NavLink
-                            to="/dashboard"
-                            className="username">
-                            {user.name}
+                        <NavLink to="/dashboard" className="profile-link">
+                            <div className="profile-content">
+                                {user.name}
+                                <img
+                                    src={user.profilePic}
+                                    className="profile-pic"
+                                    alt={`${user.name}'s profile picture`}
+                                />
+                            </div>
                         </NavLink>
-                        <img
-                            src={user.profilePic}
-                            className="profile-pic"
-                            alt={`${user.name}'s profile picture`}
-                        />
                     </>
                     ) : (
                     <>
-                        <NavLink
-                            to="/login"
-                            className="login-link">
-                            Login
+                        <NavLink to="/login" className="profile-link">
+                            <div className="profile-content">
+                                Login             
+                                <img
+                                    src="/src/assets/default-user.png"
+                                    className="profile-pic"
+                                    alt="Default user profile icon"
+                                />
+                            </div>
                         </NavLink>
-                        <img
-                            src="/src/assets/default-user.png"
-                            className="profile-pic"
-                            alt="Default user profile icon"
-                        />
                     </>
                     )}
                 </div>
