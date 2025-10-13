@@ -30,7 +30,7 @@ function Testimonials() {
     return (
         <section className="testimonial-section">
             <h2 className="testimonial-heading">
-                See what students are saying about Discount Ebay!
+                See what students are saying about RRC Marketplace!
             </h2>
             <Slider {...sliderSettings}>
                 {testimonials.map((testimonial) => (
