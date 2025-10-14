@@ -1,39 +1,37 @@
-import BulbIcon from "@/assets/icons/BulbIcon.svg?react";
-import DocumentCheckIcon from "@/assets/icons/DocumentCheckIcon.svg?react";
-import { mockUser } from "../../../../apis/user/mockUserData";
 import "./DashboardDisplay.css";
+import { DefaultDisplay } from "./defaultDisplay/DefaultDisplay";
+import { ChangeUsername } from "./settings/changeUsername/ChangeUsername";
+import { ChangePassword } from "./settings/changePassword/ChangePassword";
+import { ChangeProfilePicture } from "./settings/changeProfilePicture/ChangeProfilePic";
+import { EditBio } from "./settings/editBio/EditBio";
+import { ManageContact } from "./settings/manageContact/ManageContact";
+import { DeleteAccount } from "./settings/deleteAccount/DeleteAccount";
 
-export function DashboardDisplay() {
-    return (
-        <section className="dashboard-display">
-            <h2>Welcome, {mockUser.name}</h2>
-            <p className="dashboard-intro">
-                This is your personalized dashboard.
-                Use the options on the left to manage your profile,
-                view listing history, and customize your experience.
-            </p>
+export const DASHBOARD_OPTIONS = {
+    DEFAULT: 'DEFAULT',
+    CHANGE_USERNAME: 'CHANGE_USERNAME',
+    CHANGE_PASSWORD: 'CHANGE_PASSWORD',
+    CHANGE_PROFILE_PICTURE: 'CHANGE_PROFILE_PICTURE',
+    EDIT_BIO: 'EDIT_BIO',
+    MANAGE_CONTACT: 'MANAGE_CONTACT',
+    DELETE_ACCOUNT: 'DELETE_ACCOUNT',
+} as const;
 
-            <div className="dashboard-widgets">
-                <div className="widget">
-                    <div className="display-row">
-                        <DocumentCheckIcon className="icon" />
-                        <h3>Recent Activity</h3>
-                    </div>
-                    <p>No recent changes. Start by updating your profile or viewing listings.</p>
-                </div>
-
-                <div className="widget">
-                    <div className="display-row">
-                        <BulbIcon className="icon" />
-                        <h3>Quick Tips</h3>
-                    </div>
-                    <ul>
-                        <li>Use strong passwords for better security</li>
-                        <li>Keep your contact info up to date</li>
-                        <li>Listings auto-expire after 30 days</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    );
+export function RenderDisplay({ selectedOption }: { selectedOption: keyof typeof DASHBOARD_OPTIONS | null }) {
+    switch (selectedOption) {
+        default:
+            return <DefaultDisplay />;
+        case DASHBOARD_OPTIONS.CHANGE_USERNAME:
+            return <ChangeUsername />;
+        case DASHBOARD_OPTIONS.CHANGE_PASSWORD:
+            return <ChangePassword />;
+        case DASHBOARD_OPTIONS.CHANGE_PROFILE_PICTURE:
+            return <ChangeProfilePicture />;
+        case DASHBOARD_OPTIONS.EDIT_BIO:
+            return <EditBio />;
+        case DASHBOARD_OPTIONS.MANAGE_CONTACT:
+            return <ManageContact />;
+        case DASHBOARD_OPTIONS.DELETE_ACCOUNT:
+            return <DeleteAccount />;
+    }
 }
