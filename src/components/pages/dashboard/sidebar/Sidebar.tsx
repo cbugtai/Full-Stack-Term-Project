@@ -2,20 +2,16 @@ import ChevronRight from "@/assets/icons/ChevronRight.svg?react";
 import ChevronLeft from "@/assets/icons/ChevronLeft.svg?react";
 import { useState } from "react";
 import { DashboardOptions } from "../options/DashboardOptions";
-import { DASHBOARD_OPTIONS } from "../display/DashboardDisplay";
 import "./Sidebar.css";
 
-
-export function Sidebar({ onSelect }: {
-    onSelect: (option: keyof typeof DASHBOARD_OPTIONS) => void;
-}) {
+export function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div className="sidebar-wrapper">
             <div className={`sidebar ${isOpen ? "visible" : "hidden"}`}>
                 <div className="sidebar-content">
-                <DashboardOptions onSelect={onSelect} />
+                    <DashboardOptions />
                 </div>
             </div>
             <button
