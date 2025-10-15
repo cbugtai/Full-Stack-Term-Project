@@ -11,10 +11,10 @@ import PhoneIcon from "@/assets/icons/PhoneIcon.svg?react";
 import TrashIcon from "@/assets/icons/TrashIcon.svg?react";
 import UserIcon from "@/assets/icons/UserIcon.svg?react";
 import WarnIcon from "@/assets/icons/WarnIcon.svg?react";
-import { DASHBOARD_OPTIONS } from '../display/DashboardDisplay';
+import { NavLink } from "react-router-dom";
 import "./DashboardOptions.css";
 
-export function DashboardOptions({ onSelect }: { onSelect: (option: keyof typeof DASHBOARD_OPTIONS) => void }) {
+export function DashboardOptions() {
     return (
         <section className="dashboard-options">
             <div className="options-row">
@@ -28,30 +28,59 @@ export function DashboardOptions({ onSelect }: { onSelect: (option: keyof typeof
                     <h3>Settings</h3>
                 </div>
                 <ul>
-                    <li className="options-row" onClick={() => onSelect(DASHBOARD_OPTIONS.CHANGE_USERNAME)}>
-                        <UserIcon className="icon" />
-                        <p>Change Username</p>
-                    </li>
-                    <li className="options-row" onClick={() => onSelect(DASHBOARD_OPTIONS.CHANGE_PASSWORD)}>
-                        <LockIcon className="icon" />
-                        <p>Change Password</p>
-                    </li>
-                    <li className="options-row" onClick={() => onSelect(DASHBOARD_OPTIONS.CHANGE_PROFILE_PICTURE)}>
-                        <ImageIcon className="icon" />
-                        <p>Change Profile Picture</p>
-                    </li>
-                    <li className="options-row" onClick={() => onSelect(DASHBOARD_OPTIONS.EDIT_BIO)}>
-                        <PencilIcon className="icon" />
-                        <p>Edit Bio</p>
-                    </li>
-                    <li className="options-row" onClick={() => onSelect(DASHBOARD_OPTIONS.MANAGE_CONTACT)}>
-                        <PhoneIcon className="icon" />
-                        <p>Manage Contact Information</p>
-                    </li>
-                    <li className="options-row" onClick={() => onSelect(DASHBOARD_OPTIONS.DELETE_ACCOUNT)}>
-                        <WarnIcon className="icon" />
-                        <p>Delete Account</p>
-                    </li>
+                    <NavLink to="/dashboard/change-username">
+                        {({ isActive }) => (
+                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                            <UserIcon className="icon" />
+                            <p>Change Username</p>
+                        </li>
+                        )}
+                    </NavLink>
+
+                    <NavLink to="/dashboard/change-password">
+                        {({ isActive }) => (
+                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                            <LockIcon className="icon" />
+                            <p>Change Password</p>
+                        </li>
+                        )}
+                    </NavLink>
+
+                    <NavLink to="/dashboard/change-profile-picture">
+                        {({ isActive }) => (
+                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                            <ImageIcon className="icon" />
+                            <p>Change Profile Picture</p>
+                        </li>
+                        )}
+                    </NavLink>
+
+                    <NavLink to="/dashboard/edit-bio">
+                        {({ isActive }) => (
+                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                            <PencilIcon className="icon" />
+                            <p>Edit Bio</p>
+                        </li>
+                        )}
+                    </NavLink>
+
+                    <NavLink to="/dashboard/manage-contact">
+                        {({ isActive }) => (
+                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                            <PhoneIcon className="icon" />
+                            <p>Manage Contact Information</p>
+                        </li>
+                        )}
+                    </NavLink>
+
+                    <NavLink to="/dashboard/delete-account">
+                        {({ isActive }) => (
+                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                            <WarnIcon className="icon" />
+                            <p>Delete Account</p>
+                        </li>
+                        )}
+                    </NavLink>
                 </ul>
             </div>
 
