@@ -89,6 +89,19 @@
     color: inherit;
 }
 
+.form-error {
+    color: #c8102e;
+    background-color: white;
+    border-left: 4px solid #c8102e;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 6px;
+    line-height: 1.4;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
 @media (max-width: 768px) {
     .form-group textarea {
         min-width: 100%;
