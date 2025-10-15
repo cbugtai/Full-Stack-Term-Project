@@ -23,62 +23,66 @@ export function DashboardOptions() {
             </div>
 
             <div className="dashboard-section">
-                <div className="options-row">
-                    <CogIcon className="icon" />
-                    <h3>Settings</h3>
-                </div>
+                <NavLink to="/dashboard/settings">
+                    {({ isActive }) => (
+                        <div className={`options-row option-item ${isActive ? "active" : ""}`}>
+                            <CogIcon className="icon" />
+                            <h3>Settings</h3>
+                        </div>
+                    )}
+                </NavLink>
                 <ul>
-                    <NavLink to="/dashboard/change-username">
+                    <NavLink to="/dashboard/settings/change-username">
                         {({ isActive }) => (
-                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
-                            <UserIcon className="icon" />
-                            <p>Change Username</p>
-                        </li>
+                            <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                                <UserIcon className="icon" />
+                                <p>Change Username</p>
+                            </li>
                         )}
                     </NavLink>
 
-                    <NavLink to="/dashboard/change-password">
+                    <NavLink to="/dashboard/settings/change-password">
                         {({ isActive }) => (
-                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
-                            <LockIcon className="icon" />
-                            <p>Change Password</p>
-                        </li>
+                            <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                                <LockIcon className="icon" />
+                                <p>Change Password</p>
+                            </li>
                         )}
                     </NavLink>
 
-                    <NavLink to="/dashboard/change-profile-picture">
+                    <NavLink to="/dashboard/settings/change-profile-picture">
                         {({ isActive }) => (
-                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
-                            <ImageIcon className="icon" />
-                            <p>Change Profile Picture</p>
-                        </li>
+                            <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                                <ImageIcon className="icon" />
+                                <p>Change Profile Picture</p>
+                            </li>
                         )}
                     </NavLink>
 
-                    <NavLink to="/dashboard/edit-bio">
+                    <NavLink to="/dashboard/settings/edit-bio">
                         {({ isActive }) => (
-                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
-                            <PencilIcon className="icon" />
-                            <p>Edit Bio</p>
-                        </li>
+                            <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                                <PencilIcon className="icon" />
+                                <p>Edit Bio</p>
+                            </li>
                         )}
                     </NavLink>
 
-                    <NavLink to="/dashboard/manage-contact">
+                    <NavLink to="/dashboard/settings/manage-contact">
                         {({ isActive }) => (
-                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
-                            <PhoneIcon className="icon" />
-                            <p>Manage Contact Information</p>
-                        </li>
+                            <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                                <PhoneIcon className="icon" />
+                                <p>Manage Contact Information</p>
+                            </li>
                         )}
                     </NavLink>
 
-                    <NavLink to="/dashboard/delete-account">
+                    <NavLink to="/dashboard/settings/delete-account">
                         {({ isActive }) => (
-                        <li className={`options-row option-item ${isActive ? "active" : ""}`}>
-                            <WarnIcon className="icon" />
-                            <p>Delete Account</p>
-                        </li>
+                            <li className={`options-row option-item ${isActive ? "active" : ""}`}>
+                                <WarnIcon className="icon" />
+                                <p>Delete Account</p>
+                            </li>
                         )}
                     </NavLink>
                 </ul>

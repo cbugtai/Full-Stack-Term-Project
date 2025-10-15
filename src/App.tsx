@@ -15,6 +15,7 @@ import { SellersBlocked } from "./components/pages/sellers/blocked/BlockedSeller
 
 import { Dashboard } from "./components/pages/dashboard/Dashboard";
 import { DefaultDisplay } from "./components/pages/dashboard/display/defaultDisplay/DefaultDisplay";
+import { Settings } from "./components/pages/dashboard/display/settings/Settings";
 import { ChangeUsername } from "./components/pages/dashboard/display/settings/changeUsername/ChangeUsername";
 import { ChangePassword } from "./components/pages/dashboard/display/settings/changePassword/ChangePassword";
 import { ChangeProfilePicture } from "./components/pages/dashboard/display/settings/changeProfilePicture/ChangeProfilePic";
@@ -80,12 +81,13 @@ function App() {
         {/* Nick's Routes */}
         <Route path="/dashboard" element={<Dashboard />}>
           <Route index element={<DefaultDisplay />} />
-          <Route path="change-username" element={<ChangeUsername />} />
-          <Route path="change-password" element={<ChangePassword />} />
-          <Route path="change-profile-picture" element={<ChangeProfilePicture />} />
-          <Route path="edit-bio" element={<EditBio />} />
-          <Route path="manage-contact" element={<ManageContact />} />
-          <Route path="delete-account" element={<DeleteAccount />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="settings/change-username" element={<ChangeUsername />} />
+          <Route path="settings/change-password" element={<ChangePassword />} />
+          <Route path="settings/change-profile-picture" element={<ChangeProfilePicture />} />
+          <Route path="settings/edit-bio" element={<EditBio />} />
+          <Route path="settings/manage-contact" element={<ManageContact />} />
+          <Route path="settings/delete-account" element={<DeleteAccount />} />
         </Route>
 
       </Route>
