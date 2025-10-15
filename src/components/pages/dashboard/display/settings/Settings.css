@@ -1,0 +1,96 @@
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 600px;
+    margin-top: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: white;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.75rem;
+    border: 1px solid #3364ad;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #648ed4;
+    outline: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.form-actions button {
+    padding: 0.75rem 1.5rem;
+    background-color: #3364ad;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.form-actions button:hover {
+    background-color: #274b82;
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+.custom-file-label {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #648ed4;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-align: center;
+}
+
+.custom-file-label:hover {
+    background-color: #4c79c1;
+}
+
+.form-group textarea {
+    min-height: 160px;
+    width: 100%;
+    min-width: 600px;
+    line-height: 1.5;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.widget-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+@media (max-width: 768px) {
+    .form-group textarea {
+        min-width: 100%;
+    }
+}
