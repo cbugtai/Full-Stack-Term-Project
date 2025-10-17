@@ -22,6 +22,7 @@ function Sellers({
       <Search
         searchValue={searchValue}
         handleSearchChange={setSearchValue}
+        toggleSearch={false}
       />
       
       <SellersListDisplay sellers={
