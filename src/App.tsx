@@ -4,7 +4,7 @@ import Layout from "./components/layout/Layout";
 import Landing from "./components/pages/landing/Landing";
 import { WishProducts } from "./components/pages/product/WishProducts";
 import Sellers from "./components/pages/sellers/Sellers";
-import sellerData from "@/data/sellers_list.json";
+import { sellerData } from "@/apis/sellers/mockSellerData";
 import type { Seller } from "@/types/sellerModel";
 
 import { useState } from "react";

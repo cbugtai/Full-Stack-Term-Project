@@ -1,12 +1,12 @@
 import type { JSX } from "react";
-import sellers from "@/data/sellers_list.json";
+import { sellerData } from "@/apis/sellers/mockSellerData";
 import type { Seller } from "@/types/sellerModel";
 import "./TopSellers.css"
 
 export default function TopSellers() {
     return (
         <>
-            <ListDisplay sellers={sellers}/>
+            <ListDisplay sellers={sellerData}/>
         </>
     )
 }
