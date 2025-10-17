@@ -1,35 +1,56 @@
+import { useState } from "react";
 import { DashboardDisplay } from "../../DashboardDisplay";
-import { useDeleteAccountValidation } from "../../../../../../hooks/profileValidation/useDeleteAccountValidation";
+import { useDeleteAccountValidation } from "@/hooks/profileValidation/useDeleteAccountValidation";
+import { useMockUser } from "@/hooks/useMockUser";
 import "../Settings.css";
 
 export function DeleteAccount() {
     const { error, validate } = useDeleteAccountValidation();
+    const { deleteUser } = useMockUser();
+    const [success, setSuccess] = useState(false);
+    const [saving, setSaving] = useState(false);
 
-    const handleDelete = (e: React.FormEvent) => {
+    const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
         const confirmation = (e.target as HTMLFormElement).confirmation.value;
 
         if (validate(confirmation)) {
-            // Delete logic here
+        setSaving(true);
+        await deleteUser();
+        setSaving(false);
+        setSuccess(true);
         }
     };
 
     return (
-        <DashboardDisplay heading="Delete Account" intro="Permanently remove your account and all associated data.">
-            <form className="form-wrapper" onSubmit={handleDelete}>
-                <div className="delete-account-warning">
-                    <p>This action is irreversible. Please confirm below.</p>
-                </div>
+        <DashboardDisplay
+        heading="Delete Account"
+        intro="Permanently remove your account and all associated data."
+        >
+        <form className="form-wrapper" onSubmit={handleDelete}>
+            <div className="delete-account-warning">
+            <p>This action is irreversible. Please confirm below.</p>
+            </div>
 
-                <div className="form-group">
-                    <input type="text" name="confirmation" placeholder="Type DELETE to confirm" required />
-                    {error && <p className="form-error">{error}</p>}
-                </div>
+            <div className="form-group">
+            <input
+                type="text"
+                name="confirmation"
+                placeholder="Type DELETE to confirm"
+            />
+            {error && <p className="form-error">{error}</p>}
+            </div>
 
-                <div className="form-actions">
-                    <button className="danger" type="submit">Delete My Account</button>
-                </div>
-            </form>
+            {success && (
+            <p className="form-success">Your account has been deleted successfully.</p>
+            )}
+
+            <div className="form-actions">
+            <button className="danger" type="submit" disabled={saving}>
+                {saving ? "Deleting..." : "Delete My Account"}
+            </button>
+            </div>
+        </form>
         </DashboardDisplay>
     );
 }

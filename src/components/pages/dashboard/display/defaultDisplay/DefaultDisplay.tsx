@@ -1,13 +1,12 @@
 import BulbIcon from "@/assets/icons/BulbIcon.svg?react";
 import DocumentCheckIcon from "@/assets/icons/DocumentCheckIcon.svg?react";
-import { mockUser } from "../../../../../apis/user/mockUserData";
+import { mockUser } from "../../../../../apis/user/userData";
 import { DashboardDisplay } from "../DashboardDisplay";
-import "./DefaultDisplay.css";
 
 export function DefaultDisplay() {
     return (
         <DashboardDisplay
-            heading={`Welcome, ${mockUser.name}`}
+            heading={`Welcome, ${mockUser.firstName} ${mockUser.lastName}`}
             intro="This is your personalized dashboard. Use the options on the left to manage your profile, view listing history, and customize your experience."
         >
             <div className="widget">

@@ -6,7 +6,7 @@ export function useUsernameValidation() {
 
     const validate = async (username: string) => {
         if (!isValidUsername(username)) {
-            setError("Username must be 3–20 chars, letters/numbers/underscores only.");
+            setError("Username must be 3-20 chars, letters/numbers/underscores only.");
             return false;
         }
         if (containsProfanity(username)) {
