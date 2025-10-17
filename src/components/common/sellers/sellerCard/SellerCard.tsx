@@ -1,4 +1,7 @@
 import type { Seller } from "@/types/sellerModel";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useState } from "react";
+import "./FavoriteButton.css";
 
 export function SellerCard(
     { 
@@ -13,7 +16,7 @@ export function SellerCard(
 ) {
     return (
         <div className="seller-card">
-            <img src={seller.photo} alt="Seller Avatar" width="50" height="50" />
+            <img src={seller.photo} alt={seller.username} width="50" height="50" />
             <div className="seller-name">
                 {seller.username}
             </div>
@@ -23,12 +26,34 @@ export function SellerCard(
             <div className="seller-sold">
                 {seller.completed_sales} Completed Sales
             </div>
-            <button onClick={onFavClick}>
+            <FavoriteButton isFavorite={seller.isFavorite} onClick={onFavClick} />
+             {/* <button onClick={onFavClick}>
                 {seller.isFavorite ? "Unfavorite" : "Favorite"}
-            </button>
+            </button>  */}
             <button onClick={onBlockClick}>
                 {seller.isBlocked ? "Unblock" : "Block"}
             </button>
         </div>
     );
+}
+
+function FavoriteButton({ isFavorite, onClick }: { isFavorite: boolean; onClick: () => void }) {
+    const [hovered, setHovered] = useState(false);
+    
+    return (
+    <button
+      className="favorite-btn"
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+      title={isFavorite ? "Unfavorite" : "Favorite"}
+    >
+      {isFavorite || hovered ? (
+        <FaHeart className="heart filled" />
+      ) : (
+        <FaRegHeart className="heart outline" />
+      )}
+    </button>
+  );
 }

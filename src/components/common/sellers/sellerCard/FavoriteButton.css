@@ -1,0 +1,35 @@
+.favorite-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.favorite-btn:hover {
+  background-color: #f5f5f5; /* light gray hover */
+}
+
+.favorite-btn:active {
+  transform: scale(0.95); /* subtle click effect */
+}
+
+.heart {
+  width: 22px;
+  height: 22px;
+  transition: color 0.2s ease;
+}
+
+/* filled = red heart */
+.filled {
+  color: #e63946;
+}
+
+/* outline = gray heart */
+.outline {
+  color: #9ca3af;
+}
