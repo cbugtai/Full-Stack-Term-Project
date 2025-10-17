@@ -62,7 +62,7 @@
 .custom-file-label {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background-color: #648ed4;
+    background-color: #4c79c1;
     color: white;
     border-radius: 6px;
     font-weight: 600;
@@ -72,7 +72,7 @@
 }
 
 .custom-file-label:hover {
-    background-color: #4c79c1;
+    background-color: #3364ad;
 }
 
 .form-group textarea {
