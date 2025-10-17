@@ -1,60 +1,28 @@
-import type { JSX } from "react";
-import sellers from "@/data/sellers_list.json";
 import type { Seller } from "@/types/sellerModel";
+import { SellersListDisplay } from "@/components/common/sellers/sellersListDisplay/SellersListDisplay";
 import "./TopSellers.css"
 
-export default function TopSellers() {
-    return (
-        <>
-            <ListDisplay sellers={sellers}/>
-        </>
-    )
-}
-
-function ListDisplay({sellers}: {sellers:Seller[]}) {
-    const topSellersList: JSX.Element[] = [];
-
-    //sorts the sellers list by descending rating
-    const sortedSellers = [...sellers].sort((b,a) => (a.rating - b.rating));
-
-    sortedSellers.forEach((seller, index) => {
-        topSellersList.push(
-            <SellerCard 
-            seller={seller}
-            index={index}
-            key={index} 
-            />
-        )
-    });
-
+export default function TopSellers({ 
+    sellers, 
+    setSellers 
+}: { 
+    sellers: Seller[]; 
+    setSellers: React.Dispatch<React.SetStateAction<Seller[]>> 
+}) {
     return (
         <section className="top-sellers">
             <h2>Top Sellers By Rating</h2>
-            <div className="top-sellers__list" role="region" tabIndex={0}>
-                {topSellersList}
-            </div>
-        </section>
-    );
-}
 
-function SellerCard({ seller, index }: { seller: Seller, index: number }) {
-    return (
-        <div className="seller-card">
-            <img src={seller.photo} alt="Seller Avatar" width="50" height="50" />
-            <div className="seller-name">
-                {seller.username}
+            <div className="top-sellers__list" role="region" tabIndex={0}>
+                <SellersListDisplay 
+                sellers={
+                    sellers.sort((a, b) => b.rating - a.rating)
+                    .slice(0, 9).filter(seller => !seller.isBlocked)} 
+                setSellers={setSellers} />
             </div>
-            <div className="seller-rating">
-                < StarRating rating={seller.rating}/>
-            </div>
-            <div className="seller-sold">
-                {seller.completed_sales} Completed Sales
-            </div>
-            <div className="seller-rank">
-                <RankingCss index={index} />
-            </div>
-        </div>
-    );
+
+        </section>
+    )
 }
 
 function RankingCss({index}: {index:number}){
@@ -72,28 +40,6 @@ function RankingCss({index}: {index:number}){
     return(
         <div className={ranking}>
             #{index +1}
-        </div>
-    )
-}
-
-function StarRating({rating}: {rating:number}){
-
-    return(
-        <div className="star-ratings">
-            <div className="star-ratings-top" id="star-ratings-top1" style={{width: `${rating}%`}}>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-            </div>
-            <div className="star-ratings-bottom">
-                <span>☆</span>
-                <span>☆</span>
-                <span>☆</span>
-                <span>☆</span>
-                <span>☆</span>
-            </div>
         </div>
     )
 }

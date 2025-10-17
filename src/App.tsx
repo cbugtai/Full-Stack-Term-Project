@@ -24,7 +24,12 @@ function App() {
         <Route
           index
           element={
-            <Landing products={products} updateProducts={updateProducts} />
+            <Landing 
+              products={products} 
+              updateProducts={updateProducts}
+              sellers={sellers}
+              setSellers={setSellers}
+              />
           }
         />
 
