@@ -103,23 +103,23 @@
 }
 
 .form-success {
-  color: white;
-  margin-top: 0.5rem;
-  font-weight: 500;
+    color: white;
+    margin-top: 0.5rem;
+    font-weight: 500;
 }
 
 .spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid #ccc;
-  border-top: 3px solid #333;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-left: 1rem;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ccc;
+    border-top: 3px solid #333;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 1rem;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
 @media (max-width: 768px) {
