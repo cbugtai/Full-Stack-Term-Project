@@ -77,15 +77,16 @@
 }
 
 .profile-link {
-    text-decoration: none;
+    all: unset;
+    cursor: pointer;
     font-weight: bold;
     color: inherit;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border-radius: 6px;
-    padding: 0.25rem 0.5rem;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
 }
 
 .profile-link:hover {
