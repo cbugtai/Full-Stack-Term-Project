@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
-import { useMockUser } from "@/hooks/useMockUser";
+import { useUser } from "@/context/userContext";
 import { UserCard } from "@/components/common/userCard/UserCard";
 import "./Header.css";
 
 function Header() {
-    const { user, loading } = useMockUser();
+    const { user } = useUser();
     const [showCard, setShowCard] = useState(false);
 
     return (
@@ -38,36 +38,34 @@ function Header() {
                     </NavLink>
 
                     <div className="user-info">
-                        {loading ? null : user ? (
-                        <button className="profile-link" onClick={() => setShowCard(true)}>
-                            <div className="profile-content">
-                                {user.username}
-                                <img
-                                    src={user.profilePic}
-                                    className="profile-pic"
-                                    alt={`${user.username}'s profile picture`}
-                                />
+                        {user ? (
+                            <button className="profile-link" onClick={() => setShowCard(true)}>
+                                <div className="profile-content">
+                                    {user.username}
+                                    <img
+                                        src={user.profilePic}
+                                        className="profile-pic"
+                                        alt={`${user.username}'s profile picture`}
+                                    />
                                 </div>
                             </button>
-                            ) : (
+                        ) : (
                             <NavLink to="/login" className="profile-link">
                                 <div className="profile-content">
-                                Login
-                                <img
-                                    src="/src/assets/default-user.png"
-                                    className="profile-pic"
-                                    alt="Default user profile icon"
-                                />
-                            </div>
-                        </NavLink>
+                                    Login
+                                    <img
+                                        src="/src/assets/default-user.png"
+                                        className="profile-pic"
+                                        alt="Default user profile icon"
+                                    />
+                                </div>
+                            </NavLink>
                         )}
                     </div>
                 </div>
             </header>
 
-            {showCard && user && (
-                <UserCard user={user} onClose={() => setShowCard(false)} />
-            )}
+            {showCard && <UserCard onClose={() => setShowCard(false)} />}
         </>
     );
 }

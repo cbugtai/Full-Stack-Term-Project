@@ -1,32 +1,43 @@
 import { useState } from "react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useUsernameValidation } from "@/hooks/profileValidation/useUsernameValidation";
-import { useMockUser } from "@/hooks/useMockUser";
+import { useUser } from "@/context/userContext";
+import { saveUser } from "@/apis/user/userRepo";
 import "../Settings.css";
 
 export function ChangeUsername() {
     const { error, validate } = useUsernameValidation();
-    const { user, updateUser } = useMockUser();
+    const { user, setUser } = useUser();
+    const [username, setUsername] = useState(user?.username ?? "");
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [username, setUsername] = useState(user?.username || "");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const username = (e.target as HTMLFormElement).newUsername.value;
+        if (!user?.id) return;
 
-        if (username === user?.username) return;
+        const trimmedUsername = username.trim();
+        if (trimmedUsername === user.username || !(await validate(trimmedUsername))) return;
 
-        if (await validate(username)) {
-            setSaving(true);
-            await updateUser({ username });
-            setSaving(false);
+        setSaving(true);
+        const updatedUser = { ...user, username: trimmedUsername };
+
+        try {
+            await saveUser(updatedUser);
+            setUser(updatedUser);
             setSuccess(true);
+        } catch (err) {
+            console.error("Failed to update username:", err);
+        } finally {
+            setSaving(false);
         }
     };
 
     return (
-        <DashboardDisplay heading="Change Username" intro="Update your display name as it appears across the platform.">
+        <DashboardDisplay
+            heading="Change Username"
+            intro="Update your display name as it appears across the platform."
+        >
             <form className="form-wrapper" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="newUsername">New Username</label>
@@ -36,7 +47,7 @@ export function ChangeUsername() {
                         id="newUsername"
                         name="newUsername"
                         value={username}
-                        onChange={e => setUsername(e.target.value)}
+                        onChange={(e) => setUsername(e.target.value)}
                         maxLength={20}
                     />
                     <p className="char-count">{username.length}/20 characters</p>
@@ -45,7 +56,9 @@ export function ChangeUsername() {
                 </div>
 
                 <div className="form-actions">
-                    <button type="submit">Save Changes</button>
+                    <button type="submit" disabled={saving}>
+                        {saving ? "Saving..." : "Save Changes"}
+                    </button>
                 </div>
             </form>
         </DashboardDisplay>

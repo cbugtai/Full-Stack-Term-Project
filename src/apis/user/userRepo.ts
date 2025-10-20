@@ -1,5 +1,6 @@
 import { openDB } from "@/utils/openDB";
 import type { User } from "../../types/userSchema";
+import { getProfilePicture } from "@/apis/user/profilePicRepo";
 
 const USER_STORE = "user";
 
@@ -34,4 +35,16 @@ export async function deleteUser(): Promise<void> {
         tx.oncomplete = () => resolve();
         tx.onerror = () => reject(tx.error);
     });
+}
+
+export async function getHydratedUser(): Promise<User | null> {
+    const user = await getUser();
+    const file = await getProfilePicture();
+    const blobUrl = file ? URL.createObjectURL(file) : null;
+
+    if (user && blobUrl) {
+        return { ...user, profilePic: blobUrl };
+    }
+
+    return user;
 }

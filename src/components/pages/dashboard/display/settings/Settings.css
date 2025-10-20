@@ -31,7 +31,7 @@
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    border-color: #648ed4;
+    border-color: #3364ad;
     outline: none;
 }
 
@@ -62,7 +62,7 @@
 .custom-file-label {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background-color: #4c79c1;
+    background-color: #3364ad;
     color: white;
     border-radius: 6px;
     font-weight: 600;

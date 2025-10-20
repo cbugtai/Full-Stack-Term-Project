@@ -1,32 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useProfilePictureValidation } from "@/hooks/profileValidation/useProfilePictureValidation";
 import { useMockUser } from "@/hooks/useMockUser";
+import { useUser } from "@/context/userContext";
+import { getUser, saveUser } from "@/apis/user/userRepo";
 import "../Settings.css";
 
 export function ChangeProfilePicture() {
     const { error, validate } = useProfilePictureValidation();
     const { updateProfilePicture } = useMockUser();
+    const { setUser } = useUser();
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
     const [file, setFile] = useState<File | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!file || !validate(file)) return;
+    useEffect(() => {
+        const upload = async () => {
+            if (!file || !validate(file)) return;
 
-        setSaving(true);
-        await updateProfilePicture(file);
-        setSaving(false);
-        setSuccess(true);
-    };
+            setSaving(true);
+            const newProfilePic = await updateProfilePicture(file);
+
+            const currentUser = await getUser();
+            if (currentUser) {
+                const updatedUser = { ...currentUser, profilePic: newProfilePic };
+                await saveUser(updatedUser);
+                setUser(updatedUser);
+                setSuccess(true);
+            }
+
+            setSaving(false);
+        };
+
+        upload();
+    }, [file]);
 
     return (
         <DashboardDisplay
-        heading="Change Profile Picture"
-        intro="Upload a new profile image to personalize your account."
+            heading="Change Profile Picture"
+            intro="Upload a new profile image to personalize your account."
         >
-            <form className="form-wrapper" onSubmit={handleSubmit}>
+            <form className="form-wrapper" onSubmit={(e) => e.preventDefault()}>
                 <div className="form-group">
                     <label htmlFor="profilePicture" className="custom-file-label">
                         Upload Image
@@ -41,12 +55,6 @@ export function ChangeProfilePicture() {
                     />
                     {error && <p className="form-error">{error}</p>}
                     {success && <p className="form-success">Profile picture updated!</p>}
-                    </div>
-
-                    <div className="form-actions">
-                    <button type="submit" disabled={saving || !file}>
-                        {saving ? "Uploading..." : "Upload"}
-                    </button>
                 </div>
             </form>
         </DashboardDisplay>

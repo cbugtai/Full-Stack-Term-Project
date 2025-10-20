@@ -43,7 +43,7 @@ export function useMockUser() {
         setUser(updated);
     };
 
-    const updateProfilePicture = async (file: File) => {
+    const updateProfilePicture = async (file: File): Promise<string> => {
         await saveProfilePicture(file);
         const url = URL.createObjectURL(file);
 
@@ -55,6 +55,8 @@ export function useMockUser() {
             if (updated) saveUser(updated);
             return updated;
         });
+
+        return url;
     };
 
     const deleteUser = async () => {
