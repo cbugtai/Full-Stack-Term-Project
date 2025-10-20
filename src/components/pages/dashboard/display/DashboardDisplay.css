@@ -9,7 +9,7 @@
 
 .dashboard-display {
     flex: 1;
-    background-color: #274b82;
+    background-color: #3364ad;
     padding: 1rem;
     border-radius: 8px;
     color: white;
@@ -56,7 +56,7 @@
 
 .widget {
     flex: 1 1 300px;
-    background-color: #1a3257;
+    background-color: #274b82;
     padding: 1rem;
     border-radius: 8px;
     color: white;
