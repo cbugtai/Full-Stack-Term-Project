@@ -47,7 +47,7 @@ function ReviewFillForm({
           );
         }}
       >
-        <input type="text" value={`Product Name: ${description}`} />
+        <label>{`Product Name: ${description}`}</label>
         <textarea
           placeholder="Your Comment"
           rows={4}
