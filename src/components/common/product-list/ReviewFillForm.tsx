@@ -6,13 +6,16 @@ function ReviewFillForm({
   id,
   description,
   updateProducts,
+  closeDrawer,
 }: {
   id: number;
   description: string;
   updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  closeDrawer: () => void;
 }) {
   const [comment, setComment] = React.useState("");
   const [isValid, setIsValid] = React.useState(true);
+  const [willClose, setWillClose] = React.useState(false);
 
   return (
     <div>
@@ -45,6 +48,13 @@ function ReviewFillForm({
                 : p
             )
           );
+          // show success message
+          setWillClose(true);
+
+          setTimeout(() => {
+            // close the drawer after 800 ms
+            closeDrawer();
+          }, 800);
         }}
       >
         <label>{`Product Name: ${description}`}</label>
@@ -64,6 +74,7 @@ function ReviewFillForm({
             Review must be more than 10 characters.
           </p>
         ) : null}
+        {willClose && <p>Review submitted successfully.</p>}
         <button type="submit">Submit Comment</button>
       </form>
     </div>

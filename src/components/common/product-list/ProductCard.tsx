@@ -97,6 +97,7 @@ function ProductCard({
             id={product.id}
             description={product.description}
             updateProducts={updateProducts}
+            closeDrawer={() => setDrawerOpen(false)}
           />
         )}
         {drawerMode === "view" && (
