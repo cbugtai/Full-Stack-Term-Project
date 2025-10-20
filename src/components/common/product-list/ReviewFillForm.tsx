@@ -75,7 +75,9 @@ function ReviewFillForm({
           </p>
         ) : null}
         {willClose && <p>Review submitted successfully.</p>}
-        <button type="submit">Submit Comment</button>
+        <button disabled={willClose} type="submit">
+          Submit Comment
+        </button>
       </form>
     </div>
   );
