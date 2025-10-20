@@ -21,7 +21,7 @@
 .form-group textarea,
 .form-group select {
     padding: 0.75rem;
-    border: 1px solid #3364ad;
+    border: 1px solid #274b82;
     border-radius: 6px;
     font-size: 1rem;
     background-color: white;
@@ -31,7 +31,7 @@
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-    border-color: #3364ad;
+    border-color: #274b82;
     outline: none;
 }
 
@@ -42,7 +42,7 @@
 
 .form-actions button {
     padding: 0.75rem 1.5rem;
-    background-color: #3364ad;
+    background-color: #274b82;
     color: white;
     border: none;
     border-radius: 6px;
@@ -52,7 +52,7 @@
 }
 
 .form-actions button:hover {
-    background-color: #274b82;
+    background-color: #1a3257;
 }
 
 .hidden-file-input {
@@ -62,7 +62,7 @@
 .custom-file-label {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background-color: #3364ad;
+    background-color: #274b82;
     color: white;
     border-radius: 6px;
     font-weight: 600;
@@ -72,7 +72,7 @@
 }
 
 .custom-file-label:hover {
-    background-color: #3364ad;
+    background-color: #1a3257;
 }
 
 .form-group textarea {

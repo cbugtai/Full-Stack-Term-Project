@@ -46,17 +46,16 @@
     word-break: break-word;
 }
 
-/* Hover styles for both li-based and div-based option rows */
 .option-item .options-row:hover,
 .options-row.option-item:hover {
-    background-color: #274b82;
+    background-color: #3364ad;
     cursor: pointer;
 }
 
 .option-item .active .options-row,
 .options-row.option-item.active,
 .option-item.active {
-    background-color: #274b82;
+    background-color: #3364ad;
     font-weight: bold;
     border-radius: 8px;
 }
