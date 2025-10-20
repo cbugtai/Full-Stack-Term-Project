@@ -23,8 +23,10 @@ export function useMockUser() {
             const file = await getProfilePicture();
             objectUrl = file ? URL.createObjectURL(file) : null;
 
+            const activeUser = storedUser || mockUser;
+
             setUser({
-                ...(storedUser || mockUser),
+                ...activeUser,
                 profilePic: objectUrl || mockUser.profilePic,
             });
 
@@ -62,6 +64,10 @@ export function useMockUser() {
     const deleteUser = async () => {
         await removeUser();
         setUser(null);
+
+        setTimeout(() => {
+            setUser(mockUser);
+        }, 1000);
     };
 
     return {
