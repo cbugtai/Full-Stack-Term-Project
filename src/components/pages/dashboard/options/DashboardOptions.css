@@ -1,12 +1,12 @@
 .dashboard-options {
     flex: 0 0 250px;
-    background-color: #1a3257;
-    padding: 1rem;
-    border-radius: 8px;
-    color: white;
+    width: 250px;
     flex-shrink: 0;
     overflow: hidden;
-    width: 250px;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #1a3257;
+    color: white;
 }
 
 .dashboard-section {
@@ -16,14 +16,7 @@
 .dashboard-section ul {
     padding-left: 1.5rem;
     margin-top: 0.5rem;
-}
-
-.dashboard-display {
-    flex: 1;
-    background-color: #648ed4;
-    padding: 1rem;
-    border-radius: 8px;
-    color: white;
+    list-style: none;
 }
 
 .icon {
@@ -46,21 +39,26 @@
 }
 
 .dashboard-options .options-row p {
-    white-space: normal;
-    word-break: break-word;
     flex: 1;
     min-width: 0;
     margin: 0;
+    white-space: normal;
+    word-break: break-word;
 }
 
-.option-item:hover {
-    background-color: #648ed4;
+/* Hover styles for both li-based and div-based option rows */
+.option-item .options-row:hover,
+.options-row.option-item:hover {
+    background-color: #274b82;
     cursor: pointer;
 }
 
+.option-item .active .options-row,
+.options-row.option-item.active,
 .option-item.active {
-    background-color: #4c79c1;
+    background-color: #274b82;
     font-weight: bold;
+    border-radius: 8px;
 }
 
 .dashboard-options a {

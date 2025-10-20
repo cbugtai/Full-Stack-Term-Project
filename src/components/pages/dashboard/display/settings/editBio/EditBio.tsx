@@ -1,33 +1,42 @@
 import { useState } from "react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useBioValidation } from "@/hooks/profileValidation/useBioValidation";
-import { useMockUser } from "@/hooks/useMockUser";
+import { useUser } from "@/context/userContext";
+import { saveUser } from "@/apis/user/userRepo";
 import "../Settings.css";
 
 export function EditBio() {
     const { error, validate } = useBioValidation();
-    const { user, updateUser } = useMockUser();
-    const [bio, setBio] = useState(user?.bio || "");
+    const { user, setUser } = useUser();
+    const [bio, setBio] = useState(user?.bio ?? "");
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!user?.id) return;
 
-        if (bio === user?.bio) return;
+        const trimmedBio = bio.trim();
+        if (trimmedBio === user.bio || !validate(trimmedBio)) return;
 
-        if (validate(bio)) {
         setSaving(true);
-        await updateUser({ bio });
-        setSaving(false);
-        setSuccess(true);
+        const updatedUser = { ...user, bio: trimmedBio };
+
+        try {
+            await saveUser(updatedUser);
+            setUser(updatedUser);
+            setSuccess(true);
+        } catch (err) {
+            console.error("Failed to update bio:", err);
+        } finally {
+            setSaving(false);
         }
     };
 
     return (
         <DashboardDisplay
-        heading="Edit Bio"
-        intro="Write a short bio to personalize your profile and share a bit about yourself."
+            heading="Edit Bio"
+            intro="Write a short bio to personalize your profile and share a bit about yourself."
         >
             <form className="form-wrapper" onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -45,9 +54,9 @@ export function EditBio() {
                     <p className="char-count">{bio.length}/500 characters</p>
                     {error && <p className="form-error">{error}</p>}
                     {success && <p className="form-success">Bio updated successfully!</p>}
-                    </div>
+                </div>
 
-                    <div className="form-actions">
+                <div className="form-actions">
                     <button type="submit" disabled={saving}>
                         {saving ? "Saving..." : "Save Bio"}
                     </button>

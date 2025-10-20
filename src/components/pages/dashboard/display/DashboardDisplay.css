@@ -7,6 +7,14 @@
     }
 }
 
+.dashboard-display {
+    flex: 1;
+    background-color: #274b82;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+}
+
 .dashboard-display h2 {
     font-size: 2rem;
     font-weight: 600;
@@ -48,7 +56,7 @@
 
 .widget {
     flex: 1 1 300px;
-    background-color: #4c79c1;
+    background-color: #1a3257;
     padding: 1rem;
     border-radius: 8px;
     color: white;

@@ -1,7 +1,11 @@
-import type { User } from "@/types/userSchema";
+import { useUser } from "@/context/userContext";
 import "./UserCard.css";
 
-export function UserCard({ user, onClose }: { user: User; onClose: () => void }) {
+export function UserCard({ onClose }: { onClose: () => void }) {
+    const { user } = useUser();
+
+    if (!user) return null;
+
     return (
         <div className="user-card-overlay">
             <div className="user-card">
