@@ -18,6 +18,14 @@ export async function fetchAllProducts() {
   return products;
 }
 
+export async function fetchWishlistedProducts() {
+  const products: Product[] = await productRepo.fetchAllProducts();
+  const wishlishedProducts: Product[] = products.filter(
+    (product) => product.isWishlisted
+  );
+  return wishlishedProducts;
+}
+
 export async function toggleWishedProduct({
   productId,
 }: {

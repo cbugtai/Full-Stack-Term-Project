@@ -15,7 +15,8 @@ import { useProducts } from "@/hooks/useProducts";
  * - to improves maintainability and readability.
  */
 export function WishProducts() {
-  const { allProducts, error, toggleWishedProduct, addReview } = useProducts();
+  const { wishlistedProducts, error, toggleWishedProduct, addReview } =
+    useProducts();
 
   return (
     <>
@@ -25,7 +26,7 @@ export function WishProducts() {
           <p className="error-message">{error}</p>
         ) : (
           <ProductList
-            allProducts={allProducts.filter((p) => p.isWishlisted)}
+            allProducts={wishlistedProducts}
             toggleWishedProduct={toggleWishedProduct}
             addReview={addReview}
           />
