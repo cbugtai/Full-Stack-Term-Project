@@ -1,6 +1,18 @@
 import type { Product } from "../types/productModel";
 import * as productRepo from "../apis/product/productRepo";
 
+/**
+ * productService Service
+ * ---------------------
+ * HOW:
+ * - this service is for bussiness logic handling for product.
+ *
+ * WHY:
+ * - if the businees logic changes, just maintain this layer service, make sure the
+ *   repo layer and hook layer independently.
+ *
+ */
+
 export async function fetchAllProducts() {
   const products: Product[] = await productRepo.fetchAllProducts();
   return products;

@@ -2,6 +2,17 @@ import { useEffect, useState } from "react";
 import * as productService from "../services/productService";
 import type { Product } from "../types/productModel";
 
+/**
+ * userProducts Hook
+ * ---------------------
+ * HOW:
+ * - this hook uses the productService to fetch and manage product data.
+ *
+ * WHY:
+ * - to encapsulate product-related logic and state management, making it reusable across components.
+ *
+ */
+
 export function useProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>();
