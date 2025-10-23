@@ -15,7 +15,8 @@ import type { Product } from "../types/productModel";
 
 export function useProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [error, setError] = useState<string | null>();
+  const [wishlistedProducts, setWishlistedProducts] = useState<Product[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchAllProducts = async () => {
     try {
@@ -27,11 +28,21 @@ export function useProducts() {
     }
   };
 
+  const fetchWishlistedProducts = async () => {
+    try {
+      const result: Product[] = await productService.fetchWishlistedProducts();
+      setWishlistedProducts(result);
+    } catch (errorObject) {
+      // set the error state to the error object if an error is caught
+      setError(`${errorObject}`);
+    }
+  };
+
   const toggleWishedProduct = async (productId: number) => {
     try {
       await productService.toggleWishedProduct({ productId });
-
       await fetchAllProducts();
+      await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
     }
@@ -46,8 +57,8 @@ export function useProducts() {
   }) => {
     try {
       await productService.addReview({ productId, comment });
-
       await fetchAllProducts();
+      await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
     }
@@ -55,10 +66,12 @@ export function useProducts() {
 
   useEffect(() => {
     fetchAllProducts();
+    fetchWishlistedProducts();
   }, []);
 
   return {
     allProducts,
+    wishlistedProducts,
     error,
     toggleWishedProduct,
     addReview,
