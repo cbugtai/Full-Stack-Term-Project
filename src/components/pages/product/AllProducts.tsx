@@ -15,7 +15,12 @@ import { useProducts } from "@/hooks/useProducts";
  * - to improves maintainability and readability.
  */
 export function AllProducts() {
-  const { allProducts, error, toggleWishedProduct, addReview } = useProducts();
+  const { allProducts, error, toggleWishedProduct, addReview, loading } =
+    useProducts();
+
+  if (loading) {
+    return <div className="loading-placeholder">Loading Products...</div>;
+  }
 
   return (
     <>
