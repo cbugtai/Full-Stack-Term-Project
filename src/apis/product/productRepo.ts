@@ -2,6 +2,18 @@ import type { Product } from "../../types/productModel";
 import { mockProductData } from "./mockProductData";
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * productRepo Repo
+ * ---------------------
+ * HOW:
+ * - this repo is responsible the CRUD opetations for product.
+ *
+ * WHY:
+ * - make the CRUD operations independently from business logic. for example,
+ * - if the data source changes from mock data to real database, just maintain this
+ *
+ */
+
 export async function fetchAllProducts(): Promise<Product[]> {
   return [...mockProductData];
 }
