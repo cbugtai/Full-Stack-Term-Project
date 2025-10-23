@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as productService from "../services/productService";
 import type { Product } from "../types/productModel";
+import { useLoading } from "./useLoading";
 
 /**
  * userProducts Hook
@@ -17,34 +18,44 @@ export function useProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [wishlistedProducts, setWishlistedProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { loading, start, stop } = useLoading();
 
   const fetchAllProducts = async () => {
     try {
+      start();
       const result: Product[] = await productService.fetchAllProducts();
       setAllProducts(result);
     } catch (errorObject) {
       // set the error state to the error object if an error is caught
       setError(`${errorObject}`);
+    } finally {
+      stop();
     }
   };
 
   const fetchWishlistedProducts = async () => {
     try {
+      start();
       const result: Product[] = await productService.fetchWishlistedProducts();
       setWishlistedProducts(result);
     } catch (errorObject) {
       // set the error state to the error object if an error is caught
       setError(`${errorObject}`);
+    } finally {
+      stop();
     }
   };
 
   const toggleWishedProduct = async (productId: number) => {
     try {
+      start();
       await productService.toggleWishedProduct({ productId });
       await fetchAllProducts();
       await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
+    } finally {
+      stop();
     }
   };
 
@@ -56,17 +67,31 @@ export function useProducts() {
     comment: string;
   }) => {
     try {
+      start();
       await productService.addReview({ productId, comment });
       await fetchAllProducts();
       await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
+    } finally {
+      stop();
     }
   };
 
   useEffect(() => {
-    fetchAllProducts();
-    fetchWishlistedProducts();
+    const loadData = async () => {
+      try {
+        start();
+        await Promise.all([fetchAllProducts(), fetchWishlistedProducts()]);
+      } catch (errorObject) {
+        setError(String(errorObject));
+      } finally {
+        stop();
+      }
+    };
+
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
@@ -75,5 +100,6 @@ export function useProducts() {
     error,
     toggleWishedProduct,
     addReview,
+    loading,
   };
 }
