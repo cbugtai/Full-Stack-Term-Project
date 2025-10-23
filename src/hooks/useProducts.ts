@@ -9,7 +9,6 @@ export function useProducts() {
   const fetchAllProducts = async () => {
     try {
       const result: Product[] = await productService.fetchAllProducts();
-
       setAllProducts(result);
     } catch (errorObject) {
       // set the error state to the error object if an error is caught

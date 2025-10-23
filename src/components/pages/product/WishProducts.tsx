@@ -1,24 +1,25 @@
-import type { Product } from "@/components/common/product-list/sample-data/sample-data";
 import ProductList from "@/components/common/product-list/ProductList";
+import { useProducts } from "@/hooks/useProducts";
 
 /**
  * This component will display all terms provided as props, without any filter.
  */
-export function WishProducts({
-  products,
-  updateProducts,
-}: {
-  products: Product[];
-  updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-}) {
+export function WishProducts() {
+  const { allProducts, error, toggleWishedProduct, addReview } = useProducts();
+
   return (
     <>
       <h2>Products in Wishlist</h2>
       <section>
-        <ProductList
-          products={products.filter((p) => p.isWishlisted)}
-          updateProducts={updateProducts}
-        />
+        {error ? (
+          <p className="error-message">{error}</p>
+        ) : (
+          <ProductList
+            allProducts={allProducts.filter((p) => p.isWishlisted)}
+            toggleWishedProduct={toggleWishedProduct}
+            addReview={addReview}
+          />
+        )}
       </section>
     </>
   );

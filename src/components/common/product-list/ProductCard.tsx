@@ -1,4 +1,4 @@
-import type { Product } from "./sample-data/sample-data";
+import type { Product } from "@/types/productModel";
 import "./ProductList.css";
 import React from "react";
 import Drawer from "@/components/common/drawer/Drawer";
@@ -9,6 +9,7 @@ function ProductCard({
   product,
   allProducts,
   addReview,
+  toggleWishedProduct,
 }: {
   product: Product;
   allProducts: Product[];
@@ -19,6 +20,7 @@ function ProductCard({
     productId: number;
     comment: string;
   }) => void;
+  toggleWishedProduct: (productId: number) => void;
 }) {
   // use the seed to generate random image, rather than use the original same image url in sample data
   const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
@@ -85,13 +87,7 @@ function ProductCard({
       </button>
       <button
         onClick={() => {
-          updateProducts((prev) =>
-            prev.map((p) =>
-              p.id === product.id
-                ? { ...p, isWishlisted: !product.isWishlisted }
-                : p
-            )
-          );
+          toggleWishedProduct(product.id);
         }}
       >
         {product.isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
@@ -102,7 +98,7 @@ function ProductCard({
           <ReviewFillForm
             id={product.id}
             description={product.description}
-            updateProducts={updateProducts}
+            addReview={addReview}
             closeDrawer={() => setDrawerOpen(false)}
           />
         )}

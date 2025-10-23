@@ -8,8 +8,6 @@ import sellerData from "@/data/sellers_list.json";
 import type { Seller } from "@/types/sellerModel";
 
 import { useState } from "react";
-import { productData } from "./components/common/product-list/sample-data/sample-data";
-import type { Product } from "./components/common/product-list/sample-data/sample-data";
 import { SellersFavorites } from "./components/pages/sellers/favorites/FavoriteSellers";
 import { SellersBlocked } from "./components/pages/sellers/blocked/BlockedSellers";
 
@@ -23,52 +21,38 @@ import { EditBio } from "./components/pages/dashboard/display/settings/editBio/E
 import { ManageContact } from "./components/pages/dashboard/display/settings/manageContact/ManageContact";
 import { DeleteAccount } from "./components/pages/dashboard/display/settings/deleteAccount/DeleteAccount";
 
-
 function App() {
-  const [products, updateProducts] = useState<Product[]>(productData);
   const [sellers, setSellers] = useState<Seller[]>(sellerData);
 
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route
-          index
-          element={
-            <Landing products={products} updateProducts={updateProducts} />
-          }
-        />
+        <Route index element={<Landing />} />
 
         {/* Casper's Routes */}
         <Route path="/wishlist">
-          <Route
-            index
-            element={
-              <WishProducts
-                products={products}
-                updateProducts={updateProducts}
-              />
-            }
-          />
+          <Route index element={<WishProducts />} />
         </Route>
 
         {/* Christian's Routes (work in progress) */}
         <Route path="/sellers">
-          <Route index element={
-            <Sellers 
-              sellers={sellers} 
-              setSellers={setSellers} 
-            />} />
+          <Route
+            index
+            element={<Sellers sellers={sellers} setSellers={setSellers} />}
+          />
 
-          <Route path="favorite-sellers" element={
-            <SellersFavorites
-              sellers={sellers}
-              setSellers={setSellers}
-            />} />
-          <Route path="blocked-sellers" element={
-            <SellersBlocked
-              sellers={sellers}
-              setSellers={setSellers}
-            />} />
+          <Route
+            path="favorite-sellers"
+            element={
+              <SellersFavorites sellers={sellers} setSellers={setSellers} />
+            }
+          />
+          <Route
+            path="blocked-sellers"
+            element={
+              <SellersBlocked sellers={sellers} setSellers={setSellers} />
+            }
+          />
 
           {/*
           <Route path="/profiles">
@@ -84,12 +68,14 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="settings/change-username" element={<ChangeUsername />} />
           <Route path="settings/change-password" element={<ChangePassword />} />
-          <Route path="settings/change-profile-picture" element={<ChangeProfilePicture />} />
+          <Route
+            path="settings/change-profile-picture"
+            element={<ChangeProfilePicture />}
+          />
           <Route path="settings/edit-bio" element={<EditBio />} />
           <Route path="settings/manage-contact" element={<ManageContact />} />
           <Route path="settings/delete-account" element={<DeleteAccount />} />
         </Route>
-
       </Route>
     </Routes>
   );

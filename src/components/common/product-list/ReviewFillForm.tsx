@@ -1,16 +1,20 @@
-import type { Product } from "./sample-data/sample-data";
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 
 function ReviewFillForm({
   id,
   description,
-  updateProducts,
   closeDrawer,
+  addReview,
 }: {
   id: number;
   description: string;
-  updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  addReview: ({
+    productId,
+    comment,
+  }: {
+    productId: number;
+    comment: string;
+  }) => void;
   closeDrawer: () => void;
 }) {
   const [comment, setComment] = React.useState("");
@@ -31,23 +35,7 @@ function ReviewFillForm({
           }
 
           // update the reivew
-          updateProducts((prev) =>
-            prev.map((p) =>
-              p.id === id
-                ? {
-                    ...p,
-                    reviews: [
-                      ...(p.reviews ?? []),
-                      {
-                        id: uuidv4(),
-                        user: "Anonymous User",
-                        comment: comment,
-                      },
-                    ],
-                  }
-                : p
-            )
-          );
+          addReview({ productId: id, comment: comment });
           // show success message
           setWillClose(true);
 
