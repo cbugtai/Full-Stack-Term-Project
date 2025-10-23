@@ -14,12 +14,12 @@ export async function toggleWishedProduct({
   await productRepo.toggleWishedProduct(productId);
 }
 
-export function addReview({
+export async function addReview({
   productId,
   comment,
 }: {
   productId: number;
   comment: string;
 }) {
-  productRepo.addReview({ productId, comment });
+  await productRepo.addReview({ productId, comment });
 }

@@ -1,6 +1,5 @@
-import type { Product } from "./sample-data/sample-data";
+import type { Product } from "@/types/productModel";
 import ProductCard from "./ProductCard";
-import React from "react";
 
 function ProductList({
   allProducts,
@@ -25,9 +24,10 @@ function ProductList({
           {allProducts.map((p) => (
             <ProductCard
               product={p}
-              products={allProducts}
+              allProducts={allProducts}
               key={p.id}
               addReview={addReview}
+              toggleWishedProduct={toggleWishedProduct}
             />
           ))}
         </div>

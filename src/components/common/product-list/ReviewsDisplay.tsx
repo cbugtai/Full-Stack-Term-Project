@@ -1,7 +1,13 @@
-import type { Product } from "./sample-data/sample-data";
+import type { Product } from "@/types/productModel";
 
-function ReviewsDisplay({ id, products }: { id: number; products: Product[] }) {
-  const product: Product | undefined = products.find((p) => p.id === id);
+function ReviewsDisplay({
+  id,
+  allProducts,
+}: {
+  id: number;
+  allProducts: Product[];
+}) {
+  const product: Product | undefined = allProducts.find((p) => p.id === id);
 
   return (
     <div className="review-display">
