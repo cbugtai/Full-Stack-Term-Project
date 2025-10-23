@@ -7,12 +7,18 @@ import ReviewsDisplay from "./ReviewsDisplay";
 
 function ProductCard({
   product,
-  products,
-  updateProducts,
+  allProducts,
+  addReview,
 }: {
   product: Product;
-  products: Product[];
-  updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  allProducts: Product[];
+  addReview: ({
+    productId,
+    comment,
+  }: {
+    productId: number;
+    comment: string;
+  }) => void;
 }) {
   // use the seed to generate random image, rather than use the original same image url in sample data
   const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
@@ -101,7 +107,7 @@ function ProductCard({
           />
         )}
         {drawerMode === "view" && (
-          <ReviewsDisplay id={product.id} products={products} />
+          <ReviewsDisplay id={product.id} allProducts={allProducts} />
         )}
       </Drawer>
     </div>

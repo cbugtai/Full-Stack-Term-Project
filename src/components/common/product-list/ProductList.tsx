@@ -3,23 +3,31 @@ import ProductCard from "./ProductCard";
 import React from "react";
 
 function ProductList({
-  products,
-  updateProducts,
+  allProducts,
+  addReview,
+  toggleWishedProduct,
 }: {
-  products: Product[];
-  updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  allProducts: Product[];
+  addReview: ({
+    productId,
+    comment,
+  }: {
+    productId: number;
+    comment: string;
+  }) => void;
+  toggleWishedProduct: (productId: number) => void;
 }) {
   return (
     <>
       <section className="product-list">
         <div className="product-list-gallery">
           {" "}
-          {products.map((p) => (
+          {allProducts.map((p) => (
             <ProductCard
               product={p}
-              products={products}
+              products={allProducts}
               key={p.id}
-              updateProducts={updateProducts}
+              addReview={addReview}
             />
           ))}
         </div>
