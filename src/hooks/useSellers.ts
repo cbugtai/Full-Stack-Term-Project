@@ -3,7 +3,7 @@ import * as sellerService from "../services/sellerService";
 import type { Seller } from "../types/sellerModel";
 
 export function useSellers(
-    dependencies: unknown[],
+    dependencies: unknown[] = [],
     filterFn?: (seller: Seller) => boolean
 ) {
     const [sellers, setSellers] = useState<Seller[]>([]);
