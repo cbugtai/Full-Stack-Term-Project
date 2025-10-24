@@ -1,10 +1,14 @@
 export type User = {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
+    username: string;
     email: string;
+    phone?: string;
     passwordHash: string;
     bio: string;
-    role: "buyer" | "seller" | "admin";
     listings: string[];
     profilePic: string;
+    createdAt?: string;
+    updatedAt?: string;
 };

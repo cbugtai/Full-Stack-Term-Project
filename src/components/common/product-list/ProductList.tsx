@@ -1,61 +1,35 @@
-import type { Product } from "./sample-data/sample-data";
+import type { Product } from "@/types/productModel";
 import ProductCard from "./ProductCard";
-import ReviewFillForm from "./ReviewFillForm";
-import ReviewsDisplay from "./ReviewsDisplay";
-import React from "react";
 
 function ProductList({
-  products,
-  updateProducts,
+  allProducts,
+  addReview,
+  toggleWishedProduct,
 }: {
-  products: Product[];
-  updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  allProducts: Product[];
+  addReview: ({
+    productId,
+    comment,
+  }: {
+    productId: number;
+    comment: string;
+  }) => void;
+  toggleWishedProduct: (productId: number) => void;
 }) {
-  const [isReview, setIsReview] = React.useState<
-    { id: number; isReview: boolean }[]
-  >(products.map((p) => ({ id: p.id, isReview: false })));
-  const [productId, setProductId] = React.useState(1000000);
-  const [description, setDescription] = React.useState(
-    "example product description"
-  );
-
-  const [isReviewDisplay, setIsReviewDisplay] = React.useState<
-    { id: number; isReviewDisplay: boolean }[]
-  >(products.map((p) => ({ id: p.id, isReviewDisplay: false })));
-
-  const [ReviewDisplayProductId, setReviewDisplayProductId] =
-    React.useState(1000000);
-
   return (
     <>
       <section className="product-list">
         <div className="product-list-gallery">
           {" "}
-          {products.map((p) => (
+          {allProducts.map((p) => (
             <ProductCard
               product={p}
+              allProducts={allProducts}
               key={p.id}
-              updateProducts={updateProducts}
-              isReview={isReview}
-              setIsReview={setIsReview}
-              setProductId={setProductId}
-              setDescription={setDescription}
-              setIsReviewDisplay={setIsReviewDisplay}
-              setReviewDisplayProductId={setReviewDisplayProductId}
+              addReview={addReview}
+              toggleWishedProduct={toggleWishedProduct}
             />
           ))}
-        </div>
-        <div>
-          {isReviewDisplay.some((r) => r.isReviewDisplay) ? (
-            <ReviewsDisplay id={ReviewDisplayProductId} products={products} />
-          ) : null}
-          {isReview.some((r) => r.isReview) ? (
-            <ReviewFillForm
-              id={productId}
-              description={description}
-              updateProducts={updateProducts}
-            />
-          ) : null}
         </div>
       </section>
     </>

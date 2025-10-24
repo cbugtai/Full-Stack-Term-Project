@@ -1,0 +1,68 @@
+.dashboard-options {
+    flex: 0 0 250px;
+    width: 250px;
+    flex-shrink: 0;
+    overflow: hidden;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #1a3257;
+    color: white;
+}
+
+.dashboard-section {
+    margin-bottom: 2rem;
+}
+
+.dashboard-section ul {
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    list-style: none;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.options-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 48px;
+}
+
+.dashboard-options .options-row p {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.option-item .options-row:hover,
+.options-row.option-item:hover {
+    background-color: #3364ad;
+    cursor: pointer;
+}
+
+.option-item .active .options-row,
+.options-row.option-item.active,
+.option-item.active {
+    background-color: #3364ad;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.dashboard-options a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+}
