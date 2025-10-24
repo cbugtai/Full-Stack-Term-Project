@@ -7,60 +7,55 @@ import { WishProducts } from "./components/pages/product/WishProducts";
 import Sellers from "./components/pages/sellers/Sellers";
 
 import { useState } from "react";
-import { productData } from "./components/common/product-list/sample-data/sample-data";
-import type { Product } from "./components/common/product-list/sample-data/sample-data";
-import Page3 from "./components/pages/nick's page/Dashboard";
 import { SellersFavorites } from "./components/pages/sellers/favorites/FavoriteSellers";
 import { SellersBlocked } from "./components/pages/sellers/blocked/BlockedSellers";
 
-function App() {
-  const [products, updateProducts] = useState<Product[]>(productData);
+import { Dashboard } from "./components/pages/dashboard/Dashboard";
+import { DefaultDisplay } from "./components/pages/dashboard/display/defaultDisplay/DefaultDisplay";
+import { Settings } from "./components/pages/dashboard/display/settings/Settings";
+import { ChangeUsername } from "./components/pages/dashboard/display/settings/changeUsername/ChangeUsername";
+import { ChangePassword } from "./components/pages/dashboard/display/settings/changePassword/ChangePassword";
+import { ChangeProfilePicture } from "./components/pages/dashboard/display/settings/changeProfilePicture/ChangeProfilePic";
+import { EditBio } from "./components/pages/dashboard/display/settings/editBio/EditBio";
+import { ManageContact } from "./components/pages/dashboard/display/settings/manageContact/ManageContact";
+import { DeleteAccount } from "./components/pages/dashboard/display/settings/deleteAccount/DeleteAccount";
 
+function App() {
+  
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route
-          index
-          element={
-            <Landing products={products} updateProducts={updateProducts} />
-          }
-        />
+        <Route index element={<Landing />} />
 
         {/* Casper's Routes */}
         <Route path="/wishlist">
-          <Route
-            index
-            element={
-              <WishProducts
-                products={products}
-                updateProducts={updateProducts}
-              />
-            }
-          />
+          <Route index element={<WishProducts />} />
         </Route>
 
-        {/* Christian's Routes (work in progress) */}
+        {/* Christian's Routes */}
         <Route path="/sellers">
-          <Route index element={
-            <Sellers />} />
+          <Route index element={<Sellers />} />
 
-          <Route path="favorite-sellers" element={
-            <SellersFavorites />} />
+          <Route path="favorite-sellers" 
+            element={<SellersFavorites />} />
 
-          <Route path="blocked-sellers" element={
-            <SellersBlocked />} />
-
-          {/*
-          <Route path="/profiles">
-            <Route index element={<h1>404 Not Found</h1>} />
-
-            <Route path=":sellerId" element={<SellerProfile />} />
-          */}
+          <Route path="blocked-sellers" 
+            element={<SellersBlocked />} />
         </Route>
 
         {/* Nick's Routes */}
-        <Route path="/dashboard">
-          <Route index element={<Page3 />} />
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<DefaultDisplay />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="settings/change-username" element={<ChangeUsername />} />
+          <Route path="settings/change-password" element={<ChangePassword />} />
+          <Route
+            path="settings/change-profile-picture"
+            element={<ChangeProfilePicture />}
+          />
+          <Route path="settings/edit-bio" element={<EditBio />} />
+          <Route path="settings/manage-contact" element={<ManageContact />} />
+          <Route path="settings/delete-account" element={<DeleteAccount />} />
         </Route>
       </Route>
     </Routes>

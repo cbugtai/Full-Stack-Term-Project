@@ -73,3 +73,14 @@
 .review-display .product-name {
   background-color: var(--color-mid-blue);
 }
+
+.loading-placeholder {
+  height: 200px;
+  background-color: var(--color-secondary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}
