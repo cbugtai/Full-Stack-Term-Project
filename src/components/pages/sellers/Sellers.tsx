@@ -16,10 +16,10 @@ function Sellers() {
         searchValue={searchValue}
         handleSearchChange={setSearchValue}
       />
-
+  
       <SellersListDisplay
         dependencies={[searchValue]}
-        filterFn={(s) => s.username.includes(searchValue) && !s.isBlocked}
+        filterFn={(s) => s.username.toLowerCase().includes(searchValue) && !s.isBlocked}
       />
     </div>
   );
