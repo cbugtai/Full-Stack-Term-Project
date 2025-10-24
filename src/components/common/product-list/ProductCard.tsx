@@ -1,32 +1,42 @@
-import type { Product } from "./sample-data/sample-data";
+import type { Product } from "@/types/productModel";
 import "./ProductList.css";
 import React from "react";
+import Drawer from "@/components/common/drawer/Drawer";
+import ReviewFillForm from "./ReviewFillForm";
+import ReviewsDisplay from "./ReviewsDisplay";
 
 function ProductCard({
   product,
-  updateProducts,
-  isReview,
-  setIsReview,
-  setProductId,
-  setDescription,
-  setIsReviewDisplay,
-  setReviewDisplayProductId,
+  allProducts,
+  addReview,
+  toggleWishedProduct,
 }: {
   product: Product;
-  updateProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  isReview: { id: number; isReview: boolean }[];
-  setIsReview: React.Dispatch<
-    React.SetStateAction<{ id: number; isReview: boolean }[]>
-  >;
-  setProductId: React.Dispatch<React.SetStateAction<number>>;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  setIsReviewDisplay: React.Dispatch<
-    React.SetStateAction<{ id: number; isReviewDisplay: boolean }[]>
-  >;
-  setReviewDisplayProductId: React.Dispatch<React.SetStateAction<number>>;
+  allProducts: Product[];
+  addReview: ({
+    productId,
+    comment,
+  }: {
+    productId: number;
+    comment: string;
+  }) => void;
+  toggleWishedProduct: (productId: number) => void;
 }) {
   // use the seed to generate random image, rather than use the original same image url in sample data
   const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
+
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [drawerMode, setDrawerMode] = React.useState<"write" | "view">("view");
+
+  const openWrite = () => {
+    setDrawerMode("write");
+    setDrawerOpen(true);
+  };
+
+  const openView = () => {
+    setDrawerMode("view");
+    setDrawerOpen(true);
+  };
 
   return (
     <div className="product-card">
@@ -60,14 +70,7 @@ function ProductCard({
       {product.reviews ? (
         <a
           onClick={() => {
-            setIsReviewDisplay((pre) =>
-              pre.map((p) =>
-                p.id === product.id
-                  ? { id: product.id, isReviewDisplay: !p.isReviewDisplay }
-                  : { id: product.id, isReviewDisplay: true }
-              )
-            );
-            setReviewDisplayProductId(product.id);
+            openView();
           }}
         >
           <p className="review-number">
@@ -77,34 +80,32 @@ function ProductCard({
       ) : null}
       <button
         onClick={() => {
-          setIsReview((pre) =>
-            pre.map((p) =>
-              p.id === product.id
-                ? { id: product.id, isReview: !p.isReview }
-                : { id: product.id, isReview: true }
-            )
-          );
-          setProductId(product.id);
-          setDescription(product.description);
+          openWrite();
         }}
       >
-        {isReview.find((item) => item.id === product.id)?.isReview
-          ? "Cancel Writing"
-          : "Write a review"}
+        Write a review
       </button>
       <button
         onClick={() => {
-          updateProducts((prev) =>
-            prev.map((p) =>
-              p.id === product.id
-                ? { ...p, isWishlisted: !product.isWishlisted }
-                : p
-            )
-          );
+          toggleWishedProduct(product.id);
         }}
       >
         {product.isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
       </button>
+
+      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        {drawerMode === "write" && (
+          <ReviewFillForm
+            id={product.id}
+            description={product.description}
+            addReview={addReview}
+            closeDrawer={() => setDrawerOpen(false)}
+          />
+        )}
+        {drawerMode === "view" && (
+          <ReviewsDisplay id={product.id} allProducts={allProducts} />
+        )}
+      </Drawer>
     </div>
   );
 }
