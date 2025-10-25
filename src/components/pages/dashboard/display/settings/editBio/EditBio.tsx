@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PencilIcon from "@/assets/icons/PencilIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useBioValidation } from "@/hooks/profileValidation/useBioValidation";
 import { useUser } from "@/context/userContext";
@@ -37,6 +38,7 @@ export function EditBio() {
         <DashboardDisplay
             heading="Edit Bio"
             intro="Write a short bio to personalize your profile and share a bit about yourself."
+            icon={<PencilIcon className="icon" />}
         >
             <form className="form-wrapper" onSubmit={handleSubmit}>
                 <div className="form-group">
