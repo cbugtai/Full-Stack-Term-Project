@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ImageIcon from "@/assets/icons/ImageIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useProfilePictureValidation } from "@/hooks/profileValidation/useProfilePictureValidation";
 import { useMockUser } from "@/hooks/useMockUser";
@@ -39,6 +40,7 @@ export function ChangeProfilePicture() {
         <DashboardDisplay
             heading="Change Profile Picture"
             intro="Upload a new profile image to personalize your account."
+            icon={<ImageIcon className="icon" />}
         >
             <form className="form-wrapper" onSubmit={(e) => e.preventDefault()}>
                 <div className="form-group">

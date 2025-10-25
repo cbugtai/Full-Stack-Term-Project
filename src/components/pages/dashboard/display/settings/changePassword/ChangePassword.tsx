@@ -1,4 +1,5 @@
 import { useState } from "react";
+import LockIcon from "@/assets/icons/LockIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useChangePasswordValidation } from "@/hooks/profileValidation/useChangePasswordValidation";
 import { useMockUser } from "@/hooks/useMockUser";
@@ -45,8 +46,9 @@ export function ChangePassword() {
 
     return (
         <DashboardDisplay
-        heading="Change Password"
-        intro="Update your account password to keep your profile secure."
+            heading="Change Password"
+            intro="Update your account password to keep your profile secure."
+            icon={<LockIcon className="icon" />}
         >
             <form className="form-wrapper" onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -60,9 +62,9 @@ export function ChangePassword() {
                         onChange={(e) => setCurrent(e.target.value)}
                     />
                     {authError && <p className="form-error">{authError}</p>}
-                    </div>
+                </div>
 
-                    <div className="form-group">
+                <div className="form-group">
                     <label htmlFor="newPassword">New Password</label>
                     <input
                         type="password"
@@ -72,9 +74,9 @@ export function ChangePassword() {
                         onChange={(e) => setNewPass(e.target.value)}
                     />
                     {errors.newPass && <p className="form-error">{errors.newPass}</p>}
-                    </div>
+                </div>
 
-                    <div className="form-group">
+                <div className="form-group">
                     <label htmlFor="confirmPassword">Confirm New Password</label>
                     <input
                         type="password"
@@ -84,11 +86,11 @@ export function ChangePassword() {
                         onChange={(e) => setConfirm(e.target.value)}
                     />
                     {errors.confirm && <p className="form-error">{errors.confirm}</p>}
-                    </div>
+                </div>
 
-                    {success && <p className="form-success">Password updated successfully!</p>}
+                {success && <p className="form-success">Password updated successfully!</p>}
 
-                    <div className="form-actions">
+                <div className="form-actions">
                     <button type="submit" disabled={saving}>
                         {saving ? "Updating..." : "Update Password"}
                     </button>

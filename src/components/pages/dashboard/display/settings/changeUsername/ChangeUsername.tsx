@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UserIcon from "@/assets/icons/UserIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useUsernameValidation } from "@/hooks/profileValidation/useUsernameValidation";
 import { useUser } from "@/context/userContext";
@@ -37,6 +38,7 @@ export function ChangeUsername() {
         <DashboardDisplay
             heading="Change Username"
             intro="Update your display name as it appears across the platform."
+            icon={<UserIcon className="icon" />}
         >
             <form className="form-wrapper" onSubmit={handleSubmit}>
                 <div className="form-group">

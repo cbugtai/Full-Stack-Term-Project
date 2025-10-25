@@ -15,10 +15,26 @@
     color: white;
 }
 
-.dashboard-display h2 {
+.dashboard-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dashboard-heading h2 {
     font-size: 2rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin: 0;
     color: white;
 }
 

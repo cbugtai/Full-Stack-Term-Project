@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PhoneIcon from "@/assets/icons/PhoneIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useContactValidation } from "@/hooks/profileValidation/useContactValidation";
 import { useUser } from "@/context/userContext";
@@ -45,6 +46,7 @@ export function ManageContact() {
         <DashboardDisplay
             heading="Manage Contact Information"
             intro="Keep your email and phone number up to date for account recovery and notifications."
+            icon={<PhoneIcon className="icon" />}
         >
             <form className="form-wrapper" onSubmit={handleSubmit}>
                 <div className="form-group">
