@@ -20,7 +20,7 @@ export function DefaultDisplay() {
                 </div>
             </NavLink>
 
-            <NavLink to="/dashboard/listings/current" className="widget-link">
+            <NavLink to="/dashboard/listings" className="widget-link">
                 <div className="widget">
                     <div className="display-row">
                         <BoxIcon className="icon" />

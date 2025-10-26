@@ -46,6 +46,7 @@ export function ChangeProfilePicture() {
                 heading="Change Profile Picture"
                 intro="Upload a new profile image to personalize your account."
                 icon={<ImageIcon className="icon" />}
+                disableGrid
             >       
                 <form className="form-wrapper" onSubmit={(e) => e.preventDefault()}>
                     <div className="form-group">

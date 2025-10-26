@@ -44,6 +44,7 @@ export function EditBio() {
                 heading="Edit Bio"
                 intro="Write a short bio to personalize your profile and share a bit about yourself."
                 icon={<PencilIcon className="icon" />}
+                disableGrid
             >
                 <form className="form-wrapper" onSubmit={handleSubmit}>
                     <div className="form-group">
