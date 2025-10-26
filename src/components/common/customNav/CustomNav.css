@@ -1,0 +1,52 @@
+.custom-nav {
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 6px;
+    background-color: #3364ad;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+.nav-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border-right: 1px solid #274b82;
+}
+
+.nav-item:last-child {
+    border-right: none;
+}
+
+.nav-item:hover {
+    background-color: #274b82;
+}
+
+.nav-item.active {
+    background-color: #1a3257;
+    font-weight: bold;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+}
+
+.nav-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

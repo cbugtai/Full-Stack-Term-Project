@@ -4,6 +4,7 @@ import { DashboardDisplay } from "../../DashboardDisplay";
 import { useUsernameValidation } from "@/hooks/profileValidation/useUsernameValidation";
 import { useUser } from "@/context/userContext";
 import { saveUser } from "@/apis/user/userRepo";
+import { SettingsNav } from "../SettingsNav";
 import "../Settings.css";
 
 export function ChangeUsername() {
@@ -35,34 +36,37 @@ export function ChangeUsername() {
     };
 
     return (
-        <DashboardDisplay
-            heading="Change Username"
-            intro="Update your display name as it appears across the platform."
-            icon={<UserIcon className="icon" />}
-        >
-            <form className="form-wrapper" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="newUsername">New Username</label>
-                    {saving && <div className="spinner" />}
-                    <input
-                        type="text"
-                        id="newUsername"
-                        name="newUsername"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        maxLength={20}
-                    />
-                    <p className="char-count">{username.length}/20 characters</p>
-                    {error && <p className="form-error">{error}</p>}
-                    {success && <p className="form-success">Username updated successfully!</p>}
-                </div>
+        <div className="settings-page">
+            <SettingsNav />
+            <DashboardDisplay
+                heading="Change Username"
+                intro="Update your display name as it appears across the platform."
+                icon={<UserIcon className="icon" />}
+            >
+                <form className="form-wrapper" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="newUsername">New Username</label>
+                        {saving && <div className="spinner" />}
+                        <input
+                            type="text"
+                            id="newUsername"
+                            name="newUsername"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            maxLength={20}
+                        />
+                        <p className="char-count">{username.length}/20 characters</p>
+                        {error && <p className="form-error">{error}</p>}
+                        {success && <p className="form-success">Username updated successfully!</p>}
+                    </div>
 
-                <div className="form-actions">
-                    <button type="submit" disabled={saving}>
-                        {saving ? "Saving..." : "Save Changes"}
-                    </button>
-                </div>
-            </form>
-        </DashboardDisplay>
+                    <div className="form-actions">
+                        <button type="submit" disabled={saving}>
+                            {saving ? "Saving..." : "Save Changes"}
+                        </button>
+                    </div>
+                </form>
+            </DashboardDisplay>
+        </div>
     );
 }

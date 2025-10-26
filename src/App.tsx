@@ -20,6 +20,9 @@ import { ChangeProfilePicture } from "./components/pages/dashboard/display/setti
 import { EditBio } from "./components/pages/dashboard/display/settings/editBio/EditBio";
 import { ManageContact } from "./components/pages/dashboard/display/settings/manageContact/ManageContact";
 import { DeleteAccount } from "./components/pages/dashboard/display/settings/deleteAccount/DeleteAccount";
+import { Listings } from "./components/pages/dashboard/display/listings/Listings";
+import { CurrentListings } from "./components/pages/dashboard/display/listings/currentListings/CurrentListings";
+import { ListingHistory } from "./components/pages/dashboard/display/listings/listingHistory/ListingHistory";
 
 function App() {
   const [sellers, setSellers] = useState<Seller[]>(sellerData);
@@ -68,13 +71,13 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="settings/change-username" element={<ChangeUsername />} />
           <Route path="settings/change-password" element={<ChangePassword />} />
-          <Route
-            path="settings/change-profile-picture"
-            element={<ChangeProfilePicture />}
-          />
+          <Route path="settings/change-profile-picture" element={<ChangeProfilePicture />} />
           <Route path="settings/edit-bio" element={<EditBio />} />
           <Route path="settings/manage-contact" element={<ManageContact />} />
           <Route path="settings/delete-account" element={<DeleteAccount />} />
+          <Route path="listings" element={<Listings />} />
+          <Route path="listings/current" element={<CurrentListings />} />
+          <Route path="listings/history" element={<ListingHistory />} />
         </Route>
       </Route>
     </Routes>
