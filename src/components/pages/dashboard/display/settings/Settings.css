@@ -125,6 +125,10 @@
     margin-left: 1rem;
 }
 
+.settings-nav-wrapper {
+    display: block;
+}
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
@@ -132,5 +136,9 @@
 @media (max-width: 768px) {
     .form-group textarea {
         min-width: 100%;
+    }
+
+    .settings-nav-wrapper {
+        display: none;
     }
 }

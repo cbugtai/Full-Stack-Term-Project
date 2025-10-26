@@ -45,11 +45,21 @@
 
 .timestamp {
     font-size: 0.8rem;
-    color: #ccc;
+    color: white;
 }
 
 .empty-state {
     text-align: center;
-    color: #aaa;
+    color: white;
     margin-top: 2rem;
+}
+
+.listings-nav-wrapper {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .listings-nav-wrapper {
+        display: none;
+    }
 }

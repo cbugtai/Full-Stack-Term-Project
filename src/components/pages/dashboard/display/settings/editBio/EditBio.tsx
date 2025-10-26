@@ -37,7 +37,9 @@ export function EditBio() {
 
     return (
         <div className="settings-page">
-            <SettingsNav />
+            <div className="settings-nav-wrapper">
+                <SettingsNav />
+            </div>
             <DashboardDisplay
                 heading="Edit Bio"
                 intro="Write a short bio to personalize your profile and share a bit about yourself."

@@ -26,7 +26,9 @@ export function DeleteAccount() {
 
     return (
         <div className="settings-page">
-            <SettingsNav />
+            <div className="settings-nav-wrapper">
+                <SettingsNav />
+            </div>
             <DashboardDisplay
                 heading="Delete Account"
                 intro="Permanently remove your account and all associated data."

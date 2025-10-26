@@ -8,7 +8,9 @@ import { NavLink } from "react-router-dom";
 export function Listings() {
     return (
         <div className="listings-page">
-            <DashboardNav />
+            <div className="listings-nav-wrapper">
+                <DashboardNav />
+            </div>   
             <DashboardDisplay
                 heading="Listings"
                 intro="View and manage your current and past listings."

@@ -39,7 +39,9 @@ export function ChangeProfilePicture() {
 
     return (
         <div className="settings-page">
-            <SettingsNav />
+            <div className="settings-nav-wrapper">
+                <SettingsNav />
+            </div>
             <DashboardDisplay
                 heading="Change Profile Picture"
                 intro="Upload a new profile image to personalize your account."

@@ -12,7 +12,9 @@ import { NavLink } from "react-router-dom";
 export function Settings() {
     return (
         <div className="settings-page">
-            <DashboardNav />
+            <div className="settings-nav-wrapper">
+                <DashboardNav />
+            </div>
             <DashboardDisplay
                 heading="Settings"
                 intro="Manage your account preferences and profile information below."

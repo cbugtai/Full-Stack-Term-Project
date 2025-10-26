@@ -9,7 +9,9 @@ export function CurrentListings() {
 
     return (
         <div className="listings-page">
-            <ListingsNav />
+            <div className="listings-nav-wrapper">
+                <ListingsNav />
+            </div>
             <DashboardDisplay
                 heading="Current Listings"
                 intro="Manage your active listings below. You can edit or remove them directly from this view."
