@@ -3,9 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Landing from "./components/pages/landing/Landing";
 import { WishProducts } from "./components/pages/product/WishProducts";
+
 import Sellers from "./components/pages/sellers/Sellers";
-import sellerData from "@/data/sellers_list.json";
-import type { Seller } from "@/types/sellerModel";
 
 import { useState } from "react";
 import { SellersFavorites } from "./components/pages/sellers/favorites/FavoriteSellers";
@@ -22,8 +21,7 @@ import { ManageContact } from "./components/pages/dashboard/display/settings/man
 import { DeleteAccount } from "./components/pages/dashboard/display/settings/deleteAccount/DeleteAccount";
 
 function App() {
-  const [sellers, setSellers] = useState<Seller[]>(sellerData);
-
+  
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -34,32 +32,15 @@ function App() {
           <Route index element={<WishProducts />} />
         </Route>
 
-        {/* Christian's Routes (work in progress) */}
+        {/* Christian's Routes */}
         <Route path="/sellers">
-          <Route
-            index
-            element={<Sellers sellers={sellers} setSellers={setSellers} />}
-          />
+          <Route index element={<Sellers />} />
 
-          <Route
-            path="favorite-sellers"
-            element={
-              <SellersFavorites sellers={sellers} setSellers={setSellers} />
-            }
-          />
-          <Route
-            path="blocked-sellers"
-            element={
-              <SellersBlocked sellers={sellers} setSellers={setSellers} />
-            }
-          />
+          <Route path="favorite-sellers" 
+            element={<SellersFavorites />} />
 
-          {/*
-          <Route path="/profiles">
-            <Route index element={<h1>404 Not Found</h1>} />
-
-            <Route path=":sellerId" element={<SellerProfile />} />
-          */}
+          <Route path="blocked-sellers" 
+            element={<SellersBlocked />} />
         </Route>
 
         {/* Nick's Routes */}

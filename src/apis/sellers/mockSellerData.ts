@@ -1,4 +1,6 @@
-[
+import type { Seller } from "@/types/sellerModel";
+
+export const sellerData: Seller[] = [
   {
     "id": 1,
     "username": "TechTrader01",
