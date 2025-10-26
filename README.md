@@ -30,14 +30,52 @@ materials, so they're better prepared without financial.
 
 ## Sprint 1 Contributions
 
+### Christian Bugtai
 - **Set up Project Git Repository** - Christian Bugtai
-- **Project Initialization** - Pinyi Rao
-- **Project Readme** - Nick Gowler
+- **Top Sellers List Component** - Christian Bugtai
+- **Styling Top Sellers List** - Christian Bugtai
+  
+### Pinyi Rao
 - **App Integration** - Pinyi Rao
 - **App Stylesheet** - Pinyi Rao
 - **List of Featured Products Component** - Pinyi Rao
 - **Styling List of Featured Products** - Pinyi Rao
-- **Top Sellers List Component** - Christian Bugtai
-- **Styling Top Sellers List** - Christian Bugtai
+- **Project Initialization** - Pinyi Rao
+  
+### Nick Gowler
+- **Project Readme** - Nick Gowler
 - **Testimonials Component** - Nick Gowler
 - **Styling Testimonials** - Nick Gowler
+
+## Sprint 2 and 3 Contributions
+
+### Christian Bugtai
+-  App Outlet Navigation
+-  Feature Page (All Sellers)
+  - Form Component (Search Bar)
+  - Element Addition/Removal (Favorites and Blocked Pages)
+- Repository Definition and Integration (sellerRepo)
+  - Test Data (MockSellerData)
+  - New/Refactored Components (SellerListDisplay)
+- Architectural Layout Document (sellerRepo, sellerService, useSellers)
+
+### Pinyi Rao
+- Hook Definitions
+- Featured Page (Wishlist)
+  - Form Component (Product Review)
+  - Element Addition/Removal (Add/Remove Product Wishlist)
+- Repository Definition and Integration (productRepo)
+  - Test Data (MockProductData)
+  - New/Refactored Components
+- Architectural Layout Document (productRepo, productService, useProduct)
+
+### Nick Gowler
+- Navigation Interface
+- Service Definitions
+- Featured Page (Dashboard)
+  - Form Component (Create Listing)
+  - Element Addition/Removal (Edit Listing, Change Password, Change Username)
+- Repository Definition and Integration (testimonialRepo, userRepo, listingRepo)
+  - Test Data (testimonialData, userData)
+  - New/Refactored Components
+- Architectural Layout Document
