@@ -33,12 +33,12 @@ export function ListingHistory() {
                                     <h4>{listing.title}</h4>
                                     <p>{listing.description}</p>
 
-                                    <p className="listing-meta">
-                                        <strong>Category:</strong> {listing.category || "Uncategorized"}<br />
-                                        <strong>Condition:</strong> {listing.condition || "Unknown"}<br />
-                                        <strong>Views:</strong> {listing.views ?? 0}<br />
-                                        <strong>Status:</strong> Sold
-                                    </p>
+                                    <div className="listing-meta">
+                                        <div><strong>Category:</strong> {listing.category || "Uncategorized"}</div>
+                                        <div><strong>Condition:</strong> {listing.condition || "Unknown"}</div>
+                                        <div><strong>Views:</strong> {listing.views ?? 0}</div>
+                                        <div><strong>Status:</strong> Sold</div>
+                                    </div>
 
                                     {listing.updatedAt && (
                                         <span className="timestamp">
