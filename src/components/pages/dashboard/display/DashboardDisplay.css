@@ -13,12 +13,30 @@
     padding: 1rem;
     border-radius: 8px;
     color: white;
+    overflow-y: auto;
+    scroll-behavior: smooth;
 }
 
-.dashboard-display h2 {
+.dashboard-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dashboard-heading h2 {
     font-size: 2rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin: 0;
     color: white;
 }
 
@@ -42,16 +60,21 @@
     animation: underlineReveal 0.6s ease-out 0.4s forwards;
 }
 
+.dashboard-content {
+    margin-top: 1rem;
+}
+
+.dashboard-widgets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
 .widget h3 {
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-}
-
-.dashboard-widgets {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
 }
 
 .widget {
@@ -60,6 +83,11 @@
     padding: 1rem;
     border-radius: 8px;
     color: white;
+}
+
+.widget:hover {
+    background-color: #1a3257;
+    cursor: pointer;
 }
 
 .display-row {

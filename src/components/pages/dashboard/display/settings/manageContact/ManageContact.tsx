@@ -1,8 +1,10 @@
 import { useState } from "react";
+import PhoneIcon from "@/assets/icons/PhoneIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useContactValidation } from "@/hooks/profileValidation/useContactValidation";
 import { useUser } from "@/context/userContext";
 import { saveUser } from "@/apis/user/userRepo";
+import { SettingsNav } from "../SettingsNav";
 import "../Settings.css";
 
 export function ManageContact() {
@@ -42,44 +44,51 @@ export function ManageContact() {
     };
 
     return (
-        <DashboardDisplay
-            heading="Manage Contact Information"
-            intro="Keep your email and phone number up to date for account recovery and notifications."
-        >
-            <form className="form-wrapper" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    {saving && <div className="spinner" />}
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    {errors.email && <p className="form-error">{errors.email}</p>}
-                </div>
+        <div className="settings-page">
+            <div className="settings-nav-wrapper">
+                <SettingsNav />
+            </div>
+            <DashboardDisplay
+                heading="Manage Contact Information"
+                intro="Keep your email and phone number up to date for account recovery and notifications."
+                icon={<PhoneIcon className="icon" />}
+                disableGrid
+            >
+                <form className="form-wrapper" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        {saving && <div className="spinner" />}
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        {errors.email && <p className="form-error">{errors.email}</p>}
+                    </div>
 
-                <div className="form-group">
-                    <label htmlFor="phone">Phone Number</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                    />
-                    {errors.phone && <p className="form-error">{errors.phone}</p>}
-                </div>
+                    <div className="form-group">
+                        <label htmlFor="phone">Phone Number</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                        />
+                        {errors.phone && <p className="form-error">{errors.phone}</p>}
+                    </div>
 
-                {success && <p className="form-success">Contact info updated successfully!</p>}
+                    {success && <p className="form-success">Contact info updated successfully!</p>}
 
-                <div className="form-actions">
-                    <button type="submit" disabled={saving}>
-                        {saving ? "Updating..." : "Update Contact Info"}
-                    </button>
-                </div>
-            </form>
-        </DashboardDisplay>
+                    <div className="form-actions">
+                        <button type="submit" disabled={saving}>
+                            {saving ? "Updating..." : "Update Contact Info"}
+                        </button>
+                    </div>
+                </form>
+            </DashboardDisplay>
+        </div>
     );
 }
