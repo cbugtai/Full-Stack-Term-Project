@@ -52,6 +52,7 @@ export function ManageContact() {
                 heading="Manage Contact Information"
                 intro="Keep your email and phone number up to date for account recovery and notifications."
                 icon={<PhoneIcon className="icon" />}
+                disableGrid
             >
                 <form className="form-wrapper" onSubmit={handleSubmit}>
                     <div className="form-group">

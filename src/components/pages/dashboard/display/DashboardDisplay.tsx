@@ -5,11 +5,13 @@ export function DashboardDisplay({
     intro,
     children,
     icon,
+    disableGrid = false,
 }: {
     heading: string;
     intro: string;
     children?: React.ReactNode;
     icon?: React.ReactNode;
+    disableGrid?: boolean;
 }) {
     return (
         <section className="dashboard-display">
@@ -19,7 +21,11 @@ export function DashboardDisplay({
             </div>
             <p className="dashboard-intro">{intro}</p>
 
-            {children && <div className="dashboard-widgets">{children}</div>}
+            {children && (disableGrid ? (
+                <div className="dashboard-content">{children}</div>
+            ) : (
+                <div className="dashboard-widgets">{children}</div>
+            ))}
         </section>
     );
 }

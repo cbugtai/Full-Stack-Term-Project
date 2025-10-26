@@ -44,6 +44,7 @@ export function ChangeUsername() {
                 heading="Change Username"
                 intro="Update your display name as it appears across the platform."
                 icon={<UserIcon className="icon" />}
+                disableGrid
             >
                 <form className="form-wrapper" onSubmit={handleSubmit}>
                     <div className="form-group">

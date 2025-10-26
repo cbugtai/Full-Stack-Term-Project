@@ -33,6 +33,7 @@ export function DeleteAccount() {
                 heading="Delete Account"
                 intro="Permanently remove your account and all associated data."
                 icon={<WarnIcon className="icon" />}
+                disableGrid
             >
                 <form className="form-wrapper" onSubmit={handleDelete}>
                     <div className="delete-account-warning">

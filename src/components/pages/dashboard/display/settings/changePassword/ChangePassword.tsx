@@ -54,6 +54,7 @@ export function ChangePassword() {
                 heading="Change Password"
                 intro="Update your account password to keep your profile secure."
                 icon={<LockIcon className="icon" />}
+                disableGrid
             >
                 <form className="form-wrapper" onSubmit={handleSubmit}>
                     <div className="form-group">
