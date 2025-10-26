@@ -4,7 +4,7 @@ import { DashboardDisplay } from "../../DashboardDisplay";
 import { ListingsNav } from "../ListingsNav";
 import { EditListing } from "../editListing/EditListing";
 import { useUser } from "@/context/userContext";
-import { updateListing } from "@/apis/listing/listingRepo";
+import { useListing } from "@/hooks/useListing";
 import type { Listing } from "@/types/listing/listingModel";
 import ClipIcon from "@/assets/icons/ClipIcon.svg?react";
 import AddIcon from "@/assets/icons/AddIcon.svg?react";
@@ -14,6 +14,7 @@ import "../Listings.css";
 
 export function CurrentListings() {
     const { user, listings, refreshListings } = useUser();
+    const { markListingAsSold } = useListing();
     const [showModal, setShowModal] = useState(false);
     const [editingListing, setEditingListing] = useState<Listing | null>(null);
     const [loading, setLoading] = useState(true);
@@ -26,8 +27,7 @@ export function CurrentListings() {
 
     const handleMarkAsSold = async (listingId: string) => {
         try {
-            await updateListing(listingId, { status: "sold" });
-            await refreshListings();
+            await markListingAsSold(listingId);
         } catch (err) {
             console.error("Failed to mark listing as sold:", err);
         }
@@ -67,16 +67,19 @@ export function CurrentListings() {
                                         <h4>{listing.title}</h4>
                                         <p>{listing.description}</p>
 
-                                        <p className="listing-meta">
-                                            <strong>Category:</strong> {listing.category || "Uncategorized"}<br />
-                                            <strong>Condition:</strong> {listing.condition || "Unknown"}<br />
-                                            <strong>Views:</strong> {listing.views ?? 0}<br />
-                                            <strong>Price:</strong>{" "}
-                                            {listing.price === 0
-                                                ? "Free"
-                                                : `$${listing.price.toFixed(2)}${listing.isNegotiable ? " - Negotiable" : ""}`}
-                                            {listing.city && ` - ${listing.city}`}
-                                        </p>
+                                        <div className="listing-meta">
+                                            <div><strong>Category:</strong> {listing.category || "Uncategorized"}</div>
+                                            <div><strong>Condition:</strong> {listing.condition || "Unknown"}</div>
+                                            <div><strong>Views:</strong> {listing.views ?? 0}</div>
+                                            <div>
+                                                <strong>Price:</strong>{" "}
+                                                {listing.price === 0
+                                                    ? "Free"
+                                                    : `$${listing.price.toFixed(2)}${listing.isNegotiable ? " - Negotiable" : ""}`}
+                                            </div>
+                                            <div><strong>City:</strong> {listing.city || "Not specified"}</div>
+                                        </div>
+
                                     </div>
                                     <div className="listing-actions">
                                         <button onClick={() => setEditingListing(listing)}>
