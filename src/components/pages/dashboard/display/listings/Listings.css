@@ -1,0 +1,55 @@
+.listings-page {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.listing-card {
+    background-color: #1a3257;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+}
+
+.listing-card:hover {
+    box-shadow: 0 0 10px black;
+}
+
+.create-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #274b82;
+    font-weight: bold;
+}
+
+.listing-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.timestamp {
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+.empty-state {
+    text-align: center;
+    color: #aaa;
+    margin-top: 2rem;
+}

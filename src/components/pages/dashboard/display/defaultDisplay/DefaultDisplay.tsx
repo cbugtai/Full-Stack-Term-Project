@@ -1,5 +1,6 @@
-import BulbIcon from "@/assets/icons/BulbIcon.svg?react";
-import DocumentCheckIcon from "@/assets/icons/DocumentCheckIcon.svg?react";
+import { NavLink } from "react-router-dom";
+import BoxIcon from "@/assets/icons/BoxIcon.svg?react";
+import CogIcon from "@/assets/icons/CogIcon.svg?react";
 import { mockUser } from "../../../../../apis/user/userData";
 import { DashboardDisplay } from "../DashboardDisplay";
 
@@ -7,27 +8,27 @@ export function DefaultDisplay() {
     return (
         <DashboardDisplay
             heading={`Welcome, ${mockUser.firstName} ${mockUser.lastName}`}
-            intro="This is your personalized dashboard. Use the options on the left to manage your profile, view listing history, and customize your experience."
+            intro="This is your personalized dashboard. Use the options on the left to manage your profile, view listings, and customize your experience."
         >
-            <div className="widget">
-                <div className="display-row">
-                    <DocumentCheckIcon className="icon" />
-                    <h3>Recent Activity</h3>
+            <NavLink to="/dashboard/settings" className="widget-link">
+                <div className="widget">
+                    <div className="display-row">
+                        <CogIcon className="icon" />
+                        <h3>Settings</h3>
+                    </div>
+                    <p>Update your account details, preferences, and profile information.</p>
                 </div>
-                <p>No recent changes. Start by updating your profile or viewing listings.</p>
-            </div>
+            </NavLink>
 
-            <div className="widget">
-                <div className="display-row">
-                    <BulbIcon className="icon" />
-                    <h3>Quick Tips</h3>
+            <NavLink to="/dashboard/listings/current" className="widget-link">
+                <div className="widget">
+                    <div className="display-row">
+                        <BoxIcon className="icon" />
+                        <h3>Listings</h3>
+                    </div>
+                    <p>View and manage your current listings in one place.</p>
                 </div>
-                <ul>
-                    <li>Use strong passwords for better security</li>
-                    <li>Keep your contact info up to date</li>
-                    <li>Listings auto-expire after 30 days</li>
-                </ul>
-            </div>
+            </NavLink>
         </DashboardDisplay>
     );
 }
