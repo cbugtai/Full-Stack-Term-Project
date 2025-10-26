@@ -1,53 +1,45 @@
 import type { JSX } from "react";
 import type { Seller } from "@/types/sellerModel";
+import { useSellers } from "@/hooks/useSellers";
 import { SellerCard } from "../sellerCard/SellerCard";
 
-export function SellersListDisplay({ 
-    sellers,
-    setSellers
-}: {
-    sellers: Seller[],
-    setSellers: React.Dispatch<React.SetStateAction<Seller[]>>
-}) {
+export function SellersListDisplay({
+    dependencies = [],
+    filterFn,
+}: { 
+    dependencies?: any[]; 
+    filterFn: (seller: Seller) => boolean 
+}): JSX.Element {
+    const { sellers, toggleFavoriteSeller, toggleBlockedSeller } = useSellers(dependencies, filterFn);
 
-    function handleSellerFavClick(target: Seller) {
-        setSellers(prev =>
-            prev.map(seller =>
-                seller.id === target.id
-                    ? { ...seller, isFavorite: !seller.isFavorite }
-                    : seller
-            )
-        );
+
+    async function handleSellerFavClick(target: Seller) {
+        try {
+            await toggleFavoriteSeller(target.id);
+        } catch (error) {
+            console.error("Error favoriting seller:", error);
+        }
     }
 
-    function handleSellerBlockClick(target: Seller) {
-        setSellers(prev =>
-            prev.map(seller =>
-                seller.id === target.id
-                    ? { ...seller, isBlocked: !seller.isBlocked }
-                    : seller
-            )
-        );
+    async function handleSellerBlockClick(target: Seller) {
+        try {
+            await toggleBlockedSeller(target.id);
+        } catch (error) {
+            console.error("Error blocking seller:", error);
+        }
     }
-
-    const sellerListItems: JSX.Element[] = sellers.map((seller) => {
-        return (
-            <SellerCard 
-                seller={seller}
-                key={seller.id}
-                onFavClick={() => {
-                    handleSellerFavClick(seller);
-                }}
-                onBlockClick={() => {
-                    handleSellerBlockClick(seller);
-                }}
-            />
-        );
-    });
 
     return (
         <div className="sellers-list">
-            {sellerListItems}
+            {sellers.map((seller) => (
+                <SellerCard 
+                    key={seller.id}
+                    seller={seller}
+                    onFavClick={() => handleSellerFavClick(seller)}
+                    onBlockClick={() => handleSellerBlockClick(seller)}
+                />
+            ))}
         </div>
     );
 }
+
