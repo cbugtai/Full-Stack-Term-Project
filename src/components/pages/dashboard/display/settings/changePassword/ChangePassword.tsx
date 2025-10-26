@@ -47,7 +47,9 @@ export function ChangePassword() {
 
     return (
         <div className="settings-page">
-            <SettingsNav />
+            <div className="settings-nav-wrapper">
+                <SettingsNav />
+            </div>
             <DashboardDisplay
                 heading="Change Password"
                 intro="Update your account password to keep your profile secure."

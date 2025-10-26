@@ -27,11 +27,11 @@
 }
 
 .nav-item:hover {
-    background-color: #274b82;
+    background-color: #1a3257;
 }
 
 .nav-item.active {
-    background-color: #1a3257;
+    background-color: #274b82;
     font-weight: bold;
 }
 

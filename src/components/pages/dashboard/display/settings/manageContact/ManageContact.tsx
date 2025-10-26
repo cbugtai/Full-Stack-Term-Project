@@ -45,7 +45,9 @@ export function ManageContact() {
 
     return (
         <div className="settings-page">
-            <SettingsNav />
+            <div className="settings-nav-wrapper">
+                <SettingsNav />
+            </div>
             <DashboardDisplay
                 heading="Manage Contact Information"
                 intro="Keep your email and phone number up to date for account recovery and notifications."

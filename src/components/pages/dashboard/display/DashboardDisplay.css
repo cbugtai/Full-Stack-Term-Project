@@ -58,17 +58,17 @@
     animation: underlineReveal 0.6s ease-out 0.4s forwards;
 }
 
-.widget h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
 .dashboard-widgets {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     margin-top: 1rem;
+}
+
+.widget h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
 }
 
 .widget {
@@ -77,6 +77,11 @@
     padding: 1rem;
     border-radius: 8px;
     color: white;
+}
+
+.widget:hover {
+    background-color: #1a3257;
+    cursor: pointer;
 }
 
 .display-row {

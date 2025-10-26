@@ -37,7 +37,9 @@ export function ChangeUsername() {
 
     return (
         <div className="settings-page">
-            <SettingsNav />
+            <div className="settings-nav-wrapper">
+                <SettingsNav />
+            </div>
             <DashboardDisplay
                 heading="Change Username"
                 intro="Update your display name as it appears across the platform."

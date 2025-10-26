@@ -8,7 +8,9 @@ export function ListingHistory() {
 
     return (
         <div className="listings-page">
-            <ListingsNav />
+            <div className="listings-nav-wrapper">
+                <ListingsNav />
+            </div>
             <DashboardDisplay
                 heading="Listing History"
                 intro="Review your past listings and activity. These are no longer active but kept for reference."
