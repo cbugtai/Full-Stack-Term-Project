@@ -52,8 +52,8 @@ materials, so they're better prepared without financial.
 ### Christian Bugtai
 -  App Outlet Navigation
 -  Feature Page (All Sellers)
-  - Form Component (Search Bar)
-  - Element Addition/Removal (Favorites and Blocked Pages)
+   - Form Component (Search Bar)
+   - Element Addition/Removal (Favorites and Blocked Pages)
 - Repository Definition and Integration (sellerRepo)
   - Test Data (MockSellerData)
   - New/Refactored Components (SellerListDisplay)
