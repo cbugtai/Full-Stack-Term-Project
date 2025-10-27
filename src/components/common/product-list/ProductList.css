@@ -1,0 +1,86 @@
+.product-list {
+  display: flex;
+  flex-direction: row;
+}
+
+.product-list-gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  box-sizing: border-box;
+  height: 370px;
+  width: 205px;
+  padding: 10px 20px;
+}
+.product-card p {
+  margin: 2px 0;
+}
+
+.product-card div {
+  text-align: left;
+}
+
+.product-desc,
+.cur-price {
+  font-weight: bold;
+}
+
+.original-price,
+.product-brand,
+.product-condition {
+  font-size: smaller;
+}
+
+.original-price {
+  color: var(--fifth-color);
+}
+
+.product-img {
+  width: 165px;
+  height: 165px;
+}
+
+.review-number {
+  color: var(--color-deep-blue);
+  text-decoration: underline;
+}
+
+.review-fill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review-fill-form input {
+  background-color: var(--color-mid-blue);
+  border: none;
+  padding: 2px;
+}
+
+.validation-error {
+  color: red;
+  font-size: 0.9em;
+  margin: 0;
+}
+
+.review-display {
+  width: 387.33px;
+}
+
+.review-display .product-name {
+  background-color: var(--color-mid-blue);
+}
+
+.loading-placeholder {
+  height: 200px;
+  background-color: var(--color-secondary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}

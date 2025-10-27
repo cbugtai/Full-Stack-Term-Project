@@ -1,0 +1,229 @@
+import type { Seller } from "@/types/sellerModel";
+
+export const sellerData: Seller[] = [
+  {
+    "id": 1,
+    "username": "TechTrader01",
+    "rating": 92,
+    "completed_sales": 23,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=TechTrader01",
+    "isFavorite": true,
+    "isBlocked": false
+  },
+  {
+    "id": 2,
+    "username": "VintageFinds",
+    "rating": 87,
+    "completed_sales": 19,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=VintageFinds",
+    "isFavorite": false,
+    "isBlocked": true
+  },
+  {
+    "id": 3,
+    "username": "GameStopper",
+    "rating": 95,
+    "completed_sales": 25,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=GameStopper",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 4,
+    "username": "EcoClothes",
+    "rating": 90,
+    "completed_sales": 16,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=EcoClothes",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 5,
+    "username": "BookBarn",
+    "rating": 85,
+    "completed_sales": 12,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=BookBarn",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 6,
+    "username": "CraftyCorner",
+    "rating": 93,
+    "completed_sales": 21,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=CraftyCorner",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 7,
+    "username": "RetroGadget",
+    "rating": 89,
+    "completed_sales": 18,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=RetroGadget",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 8,
+    "username": "ToyBoxX",
+    "rating": 80,
+    "completed_sales": 11,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=ToyBoxX",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 9,
+    "username": "SneakerHub",
+    "rating": 97,
+    "completed_sales": 24,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=SneakerHub",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 10,
+    "username": "GreenThumb",
+    "rating": 88,
+    "completed_sales": 14,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=GreenThumb",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 11,
+    "username": "PixelParts",
+    "rating": 91,
+    "completed_sales": 22,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=PixelParts",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 12,
+    "username": "ModernMaker",
+    "rating": 83,
+    "completed_sales": 15,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=ModernMaker",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 13,
+    "username": "HomeHaven",
+    "rating": 94,
+    "completed_sales": 28,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=HomeHaven",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 14,
+    "username": "GadgetGuru",
+    "rating": 96,
+    "completed_sales": 30,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=GadgetGuru",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 15,
+    "username": "RetroRack",
+    "rating": 84,
+    "completed_sales": 17,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=RetroRack",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 16,
+    "username": "CozyCrafts",
+    "rating": 90,
+    "completed_sales": 20,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=CozyCrafts",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 17,
+    "username": "UrbanStyle",
+    "rating": 88,
+    "completed_sales": 26,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=UrbanStyle",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 18,
+    "username": "PetParadise",
+    "rating": 82,
+    "completed_sales": 13,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=PetParadise",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 19,
+    "username": "BrewBuddy",
+    "rating": 89,
+    "completed_sales": 19,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=BrewBuddy",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 20,
+    "username": "SmartHomeShop",
+    "rating": 95,
+    "completed_sales": 32,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=SmartHomeShop",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 21,
+    "username": "OutdoorOasis",
+    "rating": 86,
+    "completed_sales": 15,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=OutdoorOasis",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 22,
+    "username": "ArtisanAlley",
+    "rating": 91,
+    "completed_sales": 27,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=ArtisanAlley",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 23,
+    "username": "SoundWave",
+    "rating": 93,
+    "completed_sales": 29,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=SoundWave",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 24,
+    "username": "SmartThreads",
+    "rating": 88,
+    "completed_sales": 18,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=SmartThreads",
+    "isFavorite": false,
+    "isBlocked": false
+  },
+  {
+    "id": 25,
+    "username": "PixelPets",
+    "rating": 90,
+    "completed_sales": 22,
+    "photo": "https://api.dicebear.com/7.x/avataaars/svg?seed=PixelPets",
+    "isFavorite": false,
+    "isBlocked": false
+  }
+]

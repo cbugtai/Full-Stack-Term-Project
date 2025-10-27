@@ -1,0 +1,11 @@
+footer {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: var(--color-primary);
+  text-align: center;
+  color: white;
+}
+
+.gp-member {
+  font-size: smaller;
+}
