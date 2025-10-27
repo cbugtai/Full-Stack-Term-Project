@@ -1,0 +1,163 @@
+.modal-overlay {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 640px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal-content h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #274b82;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    padding: 0.75rem;
+    border: 1px solid #274b82;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    transition: border-color 0.2s ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+    border-color: #1a3257;
+    outline: none;
+}
+
+.modal-content textarea {
+    min-height: 140px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.modal-content label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.modal-content .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.modal-content button {
+    padding: 0.75rem 1.5rem;
+    background-color: #274b82;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.modal-content button:hover {
+    background-color: #1a3257;
+}
+
+.modal-content button[type="button"] {
+    background-color: transparent;
+    color: #274b82;
+    border: 1px solid #274b82;
+}
+
+.modal-content button[type="button"]:hover {
+    background-color: white;
+}
+
+.radio-group {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.radio-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+}
+
+.radio-wrapper input[type="radio"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #274b82;
+    border-radius: 50%;
+    background-color: white;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    position: relative;
+}
+
+.radio-wrapper input[type="radio"]:checked {
+    background-color: #274b82;
+    border-color: #1a3257;
+}
+
+.radio-wrapper input[type="radio"]:checked::after {
+    opacity: 1;
+}
+
+.image-preview {
+    margin-top: 0.5rem;
+    max-width: 100%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: block;
+}
+
+.modal-content .custom-file-label {
+    color: white;
+}
+
+.form-error {
+    color: #d32f2f;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}

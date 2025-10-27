@@ -1,0 +1,156 @@
+.listings-page {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.listings-nav-wrapper {
+    display: block;
+}
+
+.listings-grid {
+    overflow-y: auto;
+    max-height: 500px;
+    padding: 0 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+    gap: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.listing-card {
+    background-color: #1a3257;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.listing-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.listing-card,
+.create-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background-color: #1a3257;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.create-card {
+    background-color: #274b82;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+    min-height: 0;  
+}
+
+.create-card:hover,
+.listing-card:hover {
+    background-color: #1a3257;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.create-card .icon {
+    width: 100px;
+    height: 100px;
+}
+
+.create-card p {
+    font-size: 1.5rem;
+}
+
+.listing-image {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.listing-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.listing-card:hover .listing-actions {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.listing-actions button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #274b82;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.listing-actions button:hover {
+    background-color: #3a5fa0;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.action-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.timestamp {
+    font-size: 0.8rem;
+    color: white;
+}
+
+.empty-state {
+    text-align: center;
+    color: white;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .listings-nav-wrapper {
+        display: none;
+    }
+
+    .listings-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+}

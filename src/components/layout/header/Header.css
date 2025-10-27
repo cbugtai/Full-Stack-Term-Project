@@ -1,0 +1,169 @@
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    background-color: white;
+    border-bottom: 2px solid #4c79c1;
+    color: #1a3257;
+    position: relative;
+    height: 128px;
+}
+
+.app-logo {
+    height: 128px;
+    width: auto;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+.app-title .app-logo:hover {
+    cursor: pointer;
+}
+
+.center-section {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.active {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.app-title {
+    font-size: clamp(1.8rem, 2.5vw, 3rem);
+    color: #1a3257;
+    text-decoration: none;
+}
+
+.home-icon {
+    font-size: clamp(1.6rem, 2vw, 2.4rem);
+    color: #274b82;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: auto;
+}
+
+.home-icon:hover {
+    background-color: #a00c24;
+    color: white;
+}
+
+.active .home-icon {
+    background-color: #c8102e;
+    color: white;
+}
+
+.active:hover .home-icon {
+    background-color: #a00c24;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.profile-link {
+    all: unset;
+    cursor: pointer;
+    font-weight: bold;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+}
+
+.profile-link:hover {
+    background-color: #274b82;
+    color: white;
+}
+
+.profile-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.right-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: auto;
+}
+
+@media (max-width: 600px) {
+    .center-section {
+        position: static;
+        transform: none;
+        margin-bottom: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .center-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: 16px;
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .app-logo {
+        height: 96px;
+    }
+
+    .app-title {
+        font-size: 1.8rem;
+    }
+
+    .home-icon {
+        font-size: 1.6rem;
+    }
+
+        .user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+    }
+}
