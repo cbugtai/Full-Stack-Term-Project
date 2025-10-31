@@ -14,9 +14,8 @@ import { useLoading } from "./useLoading";
  *
  */
 
-export function useProducts() {
+export function useAllProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [wishlistedProducts, setWishlistedProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { loading, start, stop } = useLoading();
 
@@ -33,25 +32,11 @@ export function useProducts() {
     }
   };
 
-  const fetchWishlistedProducts = async () => {
-    try {
-      start();
-      const result: Product[] = await productService.fetchWishlistedProducts();
-      setWishlistedProducts(result);
-    } catch (errorObject) {
-      // set the error state to the error object if an error is caught
-      setError(`${errorObject}`);
-    } finally {
-      stop();
-    }
-  };
-
   const toggleWishedProduct = async (productId: number) => {
     try {
       start();
       await productService.toggleWishedProduct({ productId });
       await fetchAllProducts();
-      await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
     } finally {
@@ -70,7 +55,6 @@ export function useProducts() {
       start();
       await productService.addReview({ productId, comment });
       await fetchAllProducts();
-      await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
     } finally {
@@ -82,7 +66,7 @@ export function useProducts() {
     const loadData = async () => {
       try {
         start();
-        await Promise.all([fetchAllProducts(), fetchWishlistedProducts()]);
+        await fetchAllProducts();
       } catch (errorObject) {
         setError(String(errorObject));
       } finally {
@@ -96,7 +80,6 @@ export function useProducts() {
 
   return {
     allProducts,
-    wishlistedProducts,
     error,
     toggleWishedProduct,
     addReview,
