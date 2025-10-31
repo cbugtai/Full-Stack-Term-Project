@@ -9,10 +9,11 @@ export function useLoading() {
 
   // stop: sets loading to false
   /*for demonstrattion purpose to simulate delay for data loading */
-  const stop = () =>
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+  // const stop = () =>
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1000);
 
+  const stop = () => setLoading(false);
   return { loading, start, stop };
 }
