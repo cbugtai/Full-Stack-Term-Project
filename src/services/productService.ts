@@ -19,7 +19,8 @@ export async function fetchAllProducts() {
 }
 
 export async function fetchWishlistedProducts() {
-  const products: Product[] = await productRepo.fetchAllProducts();
+  // fetch all products first using the existing service
+  const products: Product[] = await fetchAllProducts();
   const wishlishedProducts: Product[] = products.filter(
     (product) => product.isWishlisted
   );
