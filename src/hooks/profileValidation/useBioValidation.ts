@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { isValidBio, containsProfanity } from "../../services/profileValidationService";
+import { isValidBio } from "../../services/profileValidationService";
+import { containsProfanity } from "../../services/containsProfanity";
 
 export function useBioValidation() {
     const [error, setError] = useState<string | null>(null);
