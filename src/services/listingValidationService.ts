@@ -1,5 +1,3 @@
-import { banned } from "./bannedWords";
-
 export const isValidTitle = (title: string) =>
     title.length >= 3 && title.length <= 100;
 
@@ -14,16 +12,3 @@ export const isValidPrice = (price: number) => {
 
 export const isValidCity = (city: string) =>
     /^[a-zA-Z\s\-]{2,50}$/.test(city);
-
-function escapeRegex(word: string) {
-    return word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-export const containsProfanity = (text: string) => {
-    const lowerText = text.toLowerCase();
-    return banned.some(word => {
-        const safeWord = escapeRegex(word);
-        const regex = new RegExp(`\\b${safeWord}\\b`, "i");
-        return regex.test(lowerText);
-    });
-};
