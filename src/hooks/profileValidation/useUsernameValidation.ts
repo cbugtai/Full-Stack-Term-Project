@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { isValidUsername, containsProfanity } from "../../services/profileValidationService";
+import { isValidUsername } from "../../services/profileValidationService";
+import { containsProfanity } from "../../services/containsProfanity";
 
 export function useUsernameValidation() {
     const [error, setError] = useState<string | null>(null);

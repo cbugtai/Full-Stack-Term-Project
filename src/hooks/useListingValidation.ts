@@ -4,8 +4,8 @@ import {
     isValidDescription,
     isValidPrice,
     isValidCity,
-    containsProfanity
 } from "@/services/listingValidationService";
+import { containsProfanity } from "@/services/containsProfanity";
 
 type ListingErrors = {
     title?: string;
