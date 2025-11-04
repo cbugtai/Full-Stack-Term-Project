@@ -4,35 +4,67 @@ import { useEffect, useRef, useState } from "react";
 export function useLoading() {
   const [loading, setLoading] = useState(false);
 
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const showTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const shownAtRef = useRef<number | null>(null);
+
+  const showDelay = 200; // in 200ms finish loading, don't show loading placeholder
+  const minShowTime = 200; // show  loading placeholder at least this time
 
   // start: sets loading to true
 
   const start = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+    // if has hide timer, clear it
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
     }
-    setLoading(true);
+    // if already loading or has show timer, do nothing
+    if (loading || showTimerRef.current) return;
+
+    showTimerRef.current = setTimeout(() => {
+      setLoading(true);
+      shownAtRef.current = Date.now();
+      showTimerRef.current = null;
+    }, showDelay);
   };
 
-  // stop: sets loading to false
-  /*for demonstrattion purpose to simulate delay for data loading */
   const stop = () => {
-    timerRef.current = setTimeout(() => {
+    // if has show timer, clear it and do nothing
+    if (showTimerRef.current) {
+      clearTimeout(showTimerRef.current);
+      showTimerRef.current = null;
+      return;
+    }
+
+    // if not loading, do nothing
+    if (!loading) return;
+
+    // ensure loading placeholder is shown at least minShowTime
+    const elapsed = shownAtRef.current
+      ? Date.now() - shownAtRef.current
+      : Infinity;
+    const remain = minShowTime - elapsed;
+    if (remain <= 0) {
       setLoading(false);
-      timerRef.current = null;
-    }, 200);
+      shownAtRef.current = null;
+    } else {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = setTimeout(() => {
+        setLoading(false);
+        shownAtRef.current = null;
+        hideTimerRef.current = null;
+      }, remain);
+    }
   };
 
+  // cleanup on unmount
   useEffect(() => {
     return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
+      if (showTimerRef.current) clearTimeout(showTimerRef.current);
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     };
   }, []);
 
-  // const stop = () => setLoading(false);
   return { loading, start, stop };
 }
