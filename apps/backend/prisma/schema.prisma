@@ -1,0 +1,25 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// information about the database that prisma will connect to
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// The db schema is defined by adding models in schema.prisma
+// Each model corresponds to a single table
+// Each property corresponds to a column in that table
+// Each instance of a model corresponds to a record in that table
+// This structure lets us "code" our db schema in TypeScript
+
+// If you change the prisma schema, use [npx prisma migrate dev --name <migration-name>]
+// to create and deploy a migration (a set of SQL commands that will update the
+// database to match the Prisma schema)
+// see https://www.prisma.io/docs/orm/prisma-migrate/understanding-prisma-migrate/mental-model
+
+// Create models at below
