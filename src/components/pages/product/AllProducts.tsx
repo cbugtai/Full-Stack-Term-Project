@@ -1,5 +1,5 @@
 import ProductList from "@/components/common/product-list/ProductList";
-import { useProducts } from "@/hooks/useProducts";
+import { useAllProducts } from "@/hooks/useAllProducts";
 
 /**
  * AllProducts Component
@@ -16,7 +16,7 @@ import { useProducts } from "@/hooks/useProducts";
  */
 export function AllProducts() {
   const { allProducts, error, toggleWishedProduct, addReview, loading } =
-    useProducts();
+    useAllProducts();
 
   if (loading) {
     return <div className="loading-placeholder">Loading Products...</div>;

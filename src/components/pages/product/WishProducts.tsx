@@ -1,5 +1,5 @@
 import ProductList from "@/components/common/product-list/ProductList";
-import { useProducts } from "@/hooks/useProducts";
+import { useWishlistedProducts } from "@/hooks/useWishlistedProducts";
 
 /**
  * WishProducts Component
@@ -16,7 +16,7 @@ import { useProducts } from "@/hooks/useProducts";
  */
 export function WishProducts() {
   const { wishlistedProducts, error, toggleWishedProduct, addReview, loading } =
-    useProducts();
+    useWishlistedProducts();
 
   if (loading) {
     return (
