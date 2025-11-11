@@ -23,3 +23,47 @@ datasource db {
 // see https://www.prisma.io/docs/orm/prisma-migrate/understanding-prisma-migrate/mental-model
 
 // Create models at below
+
+//Nick's Models
+
+//Christian's Models
+model Seller {
+  id Int @id @default(autoincrement())
+  username String @unique
+  rating Int //1-100
+  completedSales Int
+  photo  String? //url
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //relations
+  preferences UserSellerPreference[]
+}
+
+//table that stores 1 to 1 user preference for a seller
+model UserSellerPreference{
+  id Int @id @default(autoincrement())
+
+  userId Int
+  sellerId Int
+
+  isFavorite Boolean @default(false)
+  isBlocked Boolean @default(false)
+
+  //relations
+  user User @relation(fields: [userId], references: [id])
+  seller Seller @relation(fields: [sellerId], references: [id])
+
+  // user should only have one preference per seller
+  @@unique([userId, sellerId])
+}
+
+//mock user (nick is handling it, delete this when its available)
+model User {
+  id Int @id @default(autoincrement())
+
+  //relations
+  preferences UserSellerPreference[]
+}
+
+//Casper's Models
