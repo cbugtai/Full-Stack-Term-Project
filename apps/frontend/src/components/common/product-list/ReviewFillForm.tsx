@@ -1,4 +1,5 @@
 import React from "react";
+import type { ReviewOnProduct } from "@/types/productModel";
 
 function ReviewFillForm({
   id,
@@ -8,13 +9,7 @@ function ReviewFillForm({
 }: {
   id: number;
   description: string;
-  addReview: ({
-    productId,
-    comment,
-  }: {
-    productId: number;
-    comment: string;
-  }) => void;
+  addReview: ({ productId, comment }: ReviewOnProduct) => void;
   closeDrawer: () => void;
 }) {
   const [comment, setComment] = React.useState("");
