@@ -15,7 +15,11 @@ type Category =
   | "Clothes"
   | "Others";
 
-type ReviewOnProduct = { id: string; user: string; comment: string };
+export type ReviewOnProduct = {
+  productId: string;
+  user?: string;
+  comment: string;
+};
 
 export type Product = {
   id: number;

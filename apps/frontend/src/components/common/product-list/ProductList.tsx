@@ -1,4 +1,4 @@
-import type { Product } from "@/types/productModel";
+import type { Product, ReviewOnProduct } from "@/types/productModel";
 import ProductCard from "./ProductCard";
 
 function ProductList({
@@ -7,13 +7,7 @@ function ProductList({
   toggleWishedProduct,
 }: {
   allProducts: Product[];
-  addReview: ({
-    productId,
-    comment,
-  }: {
-    productId: number;
-    comment: string;
-  }) => void;
+  addReview: ({ productId, comment }: ReviewOnProduct) => void;
   toggleWishedProduct: (productId: number) => void;
 }) {
   return (
