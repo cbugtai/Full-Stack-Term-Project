@@ -33,7 +33,7 @@ model User {
     firstName String
     lastName String
     userName String
-    email String
+    email String @unique
     phone String
     bio String
     profilePic String
@@ -42,7 +42,6 @@ model User {
 
     seller Seller?
 
-    listtings Listings[]
     reviews Reviews[]
     wishlist Wishlist[]
 }
@@ -142,6 +141,18 @@ model Wishlist {
     
     @@id([userId, listingId])
 
+    user User @relation(fields:[userId], references:[id])
+    listing Listings @relation(fields:[listingId], references:[id])
+
+}
+
+model ListingViews {   
+  // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement()) 
+    userId Int
+    listingId Int
+    viewedAt DateTime
+    
     user User @relation(fields:[userId], references:[id])
     listing Listings @relation(fields:[listingId], references:[id])
 
