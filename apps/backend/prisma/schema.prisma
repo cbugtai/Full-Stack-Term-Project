@@ -44,6 +44,7 @@ model User {
 
     reviews Reviews[]
     wishlist Wishlist[]
+    listingViews ListingViews[]
 }
 
 model Seller {
@@ -80,6 +81,7 @@ model Listings {
 
     reviews Reviews[]
     wishlist Wishlist[]
+    listingViews ListingViews[]
 
     seller Seller @relation(fields:[sellerId], references:[id])
     category Category @relation(fields:[categoryId], references:[id])
