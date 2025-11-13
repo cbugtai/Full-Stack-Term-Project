@@ -23,3 +23,126 @@ datasource db {
 // see https://www.prisma.io/docs/orm/prisma-migrate/understanding-prisma-migrate/mental-model
 
 // Create models at below
+
+
+
+// casper's model
+model User {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    firstName String
+    lastName String
+    userName String
+    email String
+    phone String
+    bio String
+    profilePic String
+    createdAt DateTime
+    updatedAt DateTime
+
+    seller Seller?
+
+    listtings Listings[]
+    reviews Reviews[]
+    wishlist Wishlist[]
+}
+
+model Seller {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    
+    userId Int @unique
+    rating String
+
+    listtings Listings[]
+
+    user   User  @relation(fields: [userId], references: [id])
+}
+
+model Listings {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+
+    sellerId Int
+    title String
+    description String
+    categoryId Int
+    conditionId Int
+    price Decimal
+    originalPrice Decimal
+    statusId Int
+    imageUrl String
+    city String
+    isNegotiable Boolean
+    isFree Boolean
+    brandId Int
+    createdAt DateTime
+    updatedAt DateTime
+
+    reviews Reviews[]
+    wishlist Wishlist[]
+
+    seller Seller @relation(fields:[sellerId], references:[id])
+    category Category @relation(fields:[categoryId], references:[id])
+    condition Condition @relation(fields:[conditionId], references:[id])
+    brand Brand @relation(fields:[brandId], references:[id])
+    status Status @relation(fields:[statusId], references:[id])
+    
+}
+
+
+model Category {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    category String
+
+    listtings Listings[]
+}
+
+model Condition {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    condition String
+
+    listtings Listings[]
+}
+
+model Brand {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    brand String
+
+    listtings Listings[]
+}
+
+model Status {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    status String
+
+    listtings Listings[]
+}
+
+model Reviews {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    userId Int
+    listingId Int
+    comment String
+    createdAt DateTime
+
+    listing Listings @relation(fields:[listingId], references:[id])
+    user User @relation(fields:[userId], references:[id])
+}
+
+model Wishlist {    
+    userId Int
+    listingId Int
+    createdAt DateTime
+    
+    @@id([userId, listingId])
+
+    user User @relation(fields:[userId], references:[id])
+    listing Listings @relation(fields:[listingId], references:[id])
+
+}
