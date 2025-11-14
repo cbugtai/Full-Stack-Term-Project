@@ -4,6 +4,7 @@
 // initialize a prisma client if not already and use in queries here
 import prisma from "../../../../prisma/client";
 import { Review } from "../../../../../../shared/types/frontend-product";
+import { ExtendedError } from "../middleware/errorHandler";
 
 export const getReviewsByProductId = async (
   productId: number
@@ -32,6 +33,22 @@ export const createReview = async (reviewData: {
   userId: number;
   comment: string;
 }): Promise<Review> => {
+  // check if the user has already left a review for this product
+  const existing = await prisma.reviews.findFirst({
+    where: {
+      listingId: reviewData.productId,
+      userId: reviewData.userId,
+    },
+  });
+
+  if (existing) {
+    const err: ExtendedError = new Error("User already reviewed");
+    err.code = "REVIEW_EXISTS";
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // if not, create the review
   const newReview = await prisma.reviews.create({
     data: {
       listingId: reviewData.productId,
