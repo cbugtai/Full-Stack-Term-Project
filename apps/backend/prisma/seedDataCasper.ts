@@ -69,7 +69,7 @@ export const mockProductData: Product[] = [
   {
     id: 4,
     description: "Wooden study desk",
-    category: "Furnitures",
+    category: "Furniture",
     brand: "IKEA",
     condition: "Good",
     inventNum: 2,
@@ -134,7 +134,7 @@ export const mockProductData: Product[] = [
   {
     id: 9,
     description: "Office chair",
-    category: "Furnitures",
+    category: "Furniture",
     brand: "IKEA",
     condition: "Very Good",
     inventNum: 2,
@@ -225,7 +225,7 @@ export const mockProductData: Product[] = [
   {
     id: 16,
     description: "Study lamp",
-    category: "Furnitures",
+    category: "Furniture",
     brand: "Philips",
     condition: "New",
     inventNum: 5,

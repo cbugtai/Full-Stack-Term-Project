@@ -98,6 +98,7 @@ model Category {
     category String
 
     listtings Listings[]
+    brands BrandCategory[]
 }
 
 model Condition {
@@ -114,6 +115,7 @@ model Brand {
     brand String
 
     listtings Listings[]
+    categories BrandCategory[]
 }
 
 model Status {
@@ -158,4 +160,14 @@ model ListingViews {
     user User @relation(fields:[userId], references:[id])
     listing Listings @relation(fields:[listingId], references:[id])
 
+}
+
+model BrandCategory {
+  brandId    Int
+  categoryId Int
+
+  brand      Brand    @relation(fields: [brandId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([brandId, categoryId])
 }
