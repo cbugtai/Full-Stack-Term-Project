@@ -41,7 +41,8 @@ export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
     imgUrl: listing.imageUrl,
     isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
     reviews: listing.reviews.map((r) => ({
-      productId: String(listing.id),
+      id: r.id,
+      productId: listing.id,
       userName: `${r.user.userName}`,
       comment: r.comment,
       createdAt: r.createdAt,
@@ -51,7 +52,7 @@ export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
   return products;
 };
 
-export async function getUserWishlist(userId: number): Promise<Product[]> {
+export const getUserWishlist = async (userId: number): Promise<Product[]> => {
   const wishlistListings = await prisma.wishlist.findMany({
     where: { userId },
     include: {
@@ -90,7 +91,8 @@ export async function getUserWishlist(userId: number): Promise<Product[]> {
       imgUrl: l.imageUrl,
       isWishlisted: true, // since these are all wishlisted items
       reviews: l.reviews.map((r) => ({
-        productId: String(l.id),
+        id: r.id,
+        productId: l.id,
         userName: `${r.user.userName}`,
         comment: r.comment,
         createdAt: r.createdAt,
@@ -99,4 +101,4 @@ export async function getUserWishlist(userId: number): Promise<Product[]> {
   });
 
   return products;
-}
+};
