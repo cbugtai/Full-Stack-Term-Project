@@ -6,11 +6,13 @@ import ReviewFillForm from "./ReviewFillForm";
 import ReviewsDisplay from "./ReviewsDisplay";
 
 function ProductCard({
+  userId,
   product,
   allProducts,
   addReview,
   toggleWishedProduct,
 }: {
+  userId: number;
   product: Product;
   allProducts: Product[];
   addReview: ({
@@ -80,6 +82,10 @@ function ProductCard({
         onClick={() => {
           openWrite();
         }}
+        // add the validation to hidden the button if the user has already written a review for this product
+        hidden={
+          product.reviews && product.reviews.some((r) => r.userId === userId)
+        }
       >
         Write a review
       </button>
