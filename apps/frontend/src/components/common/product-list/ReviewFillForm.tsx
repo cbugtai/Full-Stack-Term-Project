@@ -1,3 +1,4 @@
+import { useComment } from "@/hooks/useComment";
 import React from "react";
 
 function ReviewFillForm({
@@ -17,9 +18,10 @@ function ReviewFillForm({
   }) => void;
   closeDrawer: () => void;
 }) {
-  const [comment, setComment] = React.useState("");
   const [isValid, setIsValid] = React.useState(true);
   const [willClose, setWillClose] = React.useState(false);
+
+  const { comment, setComment, tryValidateComment } = useComment();
 
   return (
     <div>
@@ -29,8 +31,7 @@ function ReviewFillForm({
         onSubmit={(e) => {
           e.preventDefault();
           // validate
-          if (comment.length <= 10) {
-            setIsValid(false);
+          if (!tryValidateComment().isvalid) {
             return;
           }
 

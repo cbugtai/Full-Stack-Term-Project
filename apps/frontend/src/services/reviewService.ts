@@ -19,3 +19,21 @@ export async function addReview({
   });
   return reviews;
 }
+
+export function validateComment(comment: string): {
+  isValid: boolean;
+  errors: string[];
+} {
+  let isValid = true;
+  const errors: string[] = [];
+
+  if (comment.trim().length < 10) {
+    isValid = false;
+    errors.push("Review must be more than 10 characters.");
+  } else if (comment.trim().length > 200) {
+    isValid = false;
+    errors.push("Review must be less than 20 characters.");
+  }
+
+  return { isValid, errors };
+}
