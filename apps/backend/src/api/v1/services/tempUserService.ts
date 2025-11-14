@@ -6,7 +6,7 @@ import { ExtendedError } from "../middleware/errorHandler";
 
 export const getTempUserId = async (): Promise<number> => {
   const tempUser: User | null = await prisma.user.findUnique({
-    where: { email: "alice@example.com " },
+    where: { email: "alice@example.com" },
   });
 
   if (tempUser === null) {
