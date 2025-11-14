@@ -21,6 +21,7 @@ export const getReviewsByProductId = async (
 
   return reviews.map((r) => ({
     id: r.id,
+    userId: r.userId,
     productId: r.id,
     userName: `${r.user.userName}`,
     comment: r.comment,
@@ -64,6 +65,7 @@ export const createReview = async (reviewData: {
   // format to Review data
   return {
     id: newReview.id,
+    userId: newReview.userId,
     productId: newReview.listingId,
     userName: `${newReview.user.userName}`,
     comment: newReview.comment,

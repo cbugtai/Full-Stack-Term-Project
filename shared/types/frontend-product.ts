@@ -13,6 +13,7 @@ export type Product = {
 
 export type Review = {
   id: number;
+  userId: number;
   productId: number;
   userName: string;
   comment: string;

@@ -40,9 +40,11 @@ export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
     originalPrice: listing.originalPrice.toNumber(),
     imgUrl: listing.imageUrl,
     isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
+    hasReviewed: listing.reviews.some((r) => r.userId === userId),
     reviews: listing.reviews.map((r) => ({
       id: r.id,
       productId: listing.id,
+      userId: r.userId,
       userName: `${r.user.userName}`,
       comment: r.comment,
       createdAt: r.createdAt,
@@ -90,9 +92,11 @@ export const getUserWishlist = async (userId: number): Promise<Product[]> => {
       originalPrice: l.originalPrice.toNumber(),
       imgUrl: l.imageUrl,
       isWishlisted: true, // since these are all wishlisted items
+      hasReviewed: l.reviews.some((r) => r.userId === userId),
       reviews: l.reviews.map((r) => ({
         id: r.id,
-        productId: l.id,
+        userId: r.userId,
+        productId: r.listingId,
         userName: `${r.user.userName}`,
         comment: r.comment,
         createdAt: r.createdAt,
