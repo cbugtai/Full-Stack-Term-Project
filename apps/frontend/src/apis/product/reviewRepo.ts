@@ -33,7 +33,7 @@ export async function addReview({
   const addReviewResponse: Response = await fetch(
     `${BASE_URL}${REVIEW_ENDPOINT}`,
     {
-      method: "CREATE",
+      method: "POST",
       body: JSON.stringify({ productId, comment }),
       headers: {
         "Content-Type": "application/json",

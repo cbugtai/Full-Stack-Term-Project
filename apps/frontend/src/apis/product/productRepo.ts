@@ -53,7 +53,7 @@ export async function addToWishlist(productId: number) {
   const addToWishlistResponse: Response = await fetch(
     `${BASE_URL}${WISHLIST_ENDPOINT}`,
     {
-      method: "CREATE",
+      method: "POST",
       body: JSON.stringify({ productId }),
       headers: {
         "Content-Type": "application/json",

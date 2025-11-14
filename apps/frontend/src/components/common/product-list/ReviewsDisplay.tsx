@@ -1,4 +1,4 @@
-import type { Product } from "@/types/productModel";
+import type { Product } from "../../../../../../shared/types/frontend-product";
 
 function ReviewsDisplay({
   id,
@@ -18,7 +18,7 @@ function ReviewsDisplay({
       {product &&
         product.reviews?.map((r) => (
           <div key={r.id}>
-            <p>User: {r.user}</p>
+            <p>User: {r.userName}</p>
             <p>{r.comment}</p>
             <hr />
           </div>

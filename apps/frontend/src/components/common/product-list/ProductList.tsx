@@ -1,7 +1,4 @@
-import type {
-  Product,
-  Review,
-} from "../../../../../../shared/types/frontend-product";
+import type { Product } from "../../../../../../shared/types/frontend-product";
 import ProductCard from "./ProductCard";
 
 function ProductList({
@@ -10,7 +7,13 @@ function ProductList({
   toggleWishedProduct,
 }: {
   allProducts: Product[];
-  addReview: ({ productId, comment }: Partial<Review>) => void;
+  addReview: ({
+    productId,
+    comment,
+  }: {
+    productId: number;
+    comment: string;
+  }) => void;
   toggleWishedProduct: (productId: number) => void;
 }) {
   return (
