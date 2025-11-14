@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { Review } from "../../../../../../shared/types/frontend-product";
 import * as reviewService from "../services/reviewService";
+import * as tempUserService from "../services/tempUserService";
 import { successResponse } from "../models/responseModel";
-
-// assume userId is 1 for now, will implement auth later
-const userId = 1;
 
 export const getReviewsByProductId = async (
   req: Request,
@@ -29,6 +27,9 @@ export const createReview = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    // temporary user handling,  will remove when auth is implemented
+    const userId: number = await tempUserService.getTempUserId();
+
     const newReview = await reviewService.createReview({ ...req.body, userId });
     res
       .status(201)

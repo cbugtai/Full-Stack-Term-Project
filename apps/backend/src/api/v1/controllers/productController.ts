@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { Product } from "../../../../../../shared/types/frontend-product";
 import * as productService from "../services/productService";
+import * as tempUserService from "../services/tempUserService";
 import { successResponse } from "../models/responseModel";
 import { Wishlist } from "@prisma/client";
-
-// assume userId is 1 for now, will implement auth later
-const userId = 1;
 
 export const getAllProducts = async (
   _req: Request,
@@ -13,6 +11,9 @@ export const getAllProducts = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    // temporary user handling,  will remove when auth is implemented
+    const userId: number = await tempUserService.getTempUserId();
+
     const products: Product[] = await productService.fetchAllProducts(userId);
     res
       .status(200)
@@ -28,6 +29,9 @@ export const getUserWishlist = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    // temporary user handling,  will remove when auth is implemented
+    const userId: number = await tempUserService.getTempUserId();
+
     const wishlist: Product[] = await productService.getUserWishlist(userId);
     res
       .status(200)
@@ -43,6 +47,9 @@ export const addToWishlist = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    // temporary user handling,  will remove when auth is implemented
+    const userId: number = await tempUserService.getTempUserId();
+
     const newTerm: Wishlist = await productService.addToWishlist({
       ...req.body,
       userId,
@@ -61,6 +68,9 @@ export const removeFromWishlist = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    // temporary user handling,  will remove when auth is implemented
+    const userId: number = await tempUserService.getTempUserId();
+
     const count: Number = await productService.removeFromWishlist({
       ...req.body,
       userId,
