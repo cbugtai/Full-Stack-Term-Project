@@ -32,7 +32,7 @@ export function validateComment(comment: string): {
     errors.push("Review must be more than 10 characters.");
   } else if (comment.trim().length > 200) {
     isValid = false;
-    errors.push("Review must be less than 20 characters.");
+    errors.push("Review must be less than 200 characters.");
   }
 
   return { isValid, errors };
