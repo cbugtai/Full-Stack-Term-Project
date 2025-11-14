@@ -1,38 +1,27 @@
-type Condition =
-  | "New"
-  | "Open box"
-  | "Excellent"
-  | "Very Good"
-  | "Good"
-  | "Used"
-  | "For parts not working"
-  | "Not Specified";
-type Category =
-  | "Electronics"
-  | "Text Books"
-  | "Furnitures"
-  | "Vehicles"
-  | "Clothes"
-  | "Others";
+import type { Product } from "../../../../shared/types/frontend-product";
 
-export type ReviewOnProduct = {
-  productId: string;
-  user?: string;
+export type NewReviewParams = {
+  productId: number;
   comment: string;
 };
 
-export type Product = {
+export type ProductListParams = {
+  allProducts: Product[];
+  addReview: ({ productId, comment }: NewReviewParams) => void;
+  toggleWishedProduct: (productId: number) => void;
+};
+
+export type ProductCardParams = {
+  userId: number;
+  product: Product;
+  allProducts: Product[];
+  addReview: ({ productId, comment }: NewReviewParams) => void;
+  toggleWishedProduct: (productId: number) => void;
+};
+
+export type ReviewFillFormParams = {
   id: number;
   description: string;
-  category: Category;
-  brand: string;
-  condition: Condition;
-  inventNum: number;
-  soldNum: number;
-  currentPrice: number;
-  originalPrice: number;
-  imgUrl: string;
-  isWishlisted: boolean;
-  hasReviewed: boolean;
-  reviews?: ReviewOnProduct[];
+  addReview: ({ productId, comment }: NewReviewParams) => void;
+  closeDrawer: () => void;
 };

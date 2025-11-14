@@ -1,4 +1,5 @@
-import type { Product } from "../../../../../../shared/types/frontend-product";
+import type { ProductListParams } from "@/types/productModel";
+
 import ProductCard from "./ProductCard";
 import { useTempUser } from "@/hooks/useTempUser";
 
@@ -6,17 +7,7 @@ function ProductList({
   allProducts,
   addReview,
   toggleWishedProduct,
-}: {
-  allProducts: Product[];
-  addReview: ({
-    productId,
-    comment,
-  }: {
-    productId: number;
-    comment: string;
-  }) => void;
-  toggleWishedProduct: (productId: number) => void;
-}) {
+}: ProductListParams) {
   // this userid will be replaced with real user auth in future
   const { tempUserId, error } = useTempUser();
 

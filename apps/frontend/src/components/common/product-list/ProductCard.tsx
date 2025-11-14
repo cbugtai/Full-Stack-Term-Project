@@ -1,9 +1,9 @@
-import type { Product } from "../../../../../../shared/types/frontend-product";
 import "./ProductList.css";
 import React from "react";
 import Drawer from "@/components/common/drawer/Drawer";
 import ReviewFillForm from "./ReviewFillForm";
 import ReviewsDisplay from "./ReviewsDisplay";
+import type { ProductCardParams } from "@/types/productModel";
 
 function ProductCard({
   userId,
@@ -11,19 +11,7 @@ function ProductCard({
   allProducts,
   addReview,
   toggleWishedProduct,
-}: {
-  userId: number;
-  product: Product;
-  allProducts: Product[];
-  addReview: ({
-    productId,
-    comment,
-  }: {
-    productId: number;
-    comment: string;
-  }) => void;
-  toggleWishedProduct: (productId: number) => void;
-}) {
+}: ProductCardParams) {
   // use the seed to generate random image, rather than use the original same image url in sample data
   const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
 

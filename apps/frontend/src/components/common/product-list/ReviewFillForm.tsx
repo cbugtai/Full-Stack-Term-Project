@@ -1,23 +1,13 @@
 import { useComment } from "@/hooks/useComment";
 import React from "react";
+import type { ReviewFillFormParams } from "@/types/productModel";
 
 function ReviewFillForm({
   id,
   description,
   closeDrawer,
   addReview,
-}: {
-  id: number;
-  description: string;
-  addReview: ({
-    productId,
-    comment,
-  }: {
-    productId: number;
-    comment: string;
-  }) => void;
-  closeDrawer: () => void;
-}) {
+}: ReviewFillFormParams) {
   const { comment, setComment, tryValidateComment } = useComment();
   const [willClose, setWillClose] = React.useState(false);
 
