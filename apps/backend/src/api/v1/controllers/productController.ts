@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Product } from "../../../../../../shared/types/frontend-product";
 import * as productService from "../services/productService";
 import { successResponse } from "../models/responseModel";
+import { Wishlist } from "@prisma/client";
 
 // assume userId is 1 for now, will implement auth later
 const userId = 1;
@@ -31,6 +32,49 @@ export const getUserWishlist = async (
     res
       .status(200)
       .json(successResponse(wishlist, "User's wishlist retrieved succesfully"));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addToWishlist = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const newTerm: Wishlist = await productService.addToWishlist({
+      ...req.body,
+      userId,
+    });
+    res
+      .status(201)
+      .json(successResponse(newTerm, "Add to wishlist succesfully"));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeFromWishlist = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const count: Number = await productService.removeFromWishlist({
+      ...req.body,
+      userId,
+    });
+    res
+      .status(201)
+      .json(
+        successResponse(
+          null,
+          count
+            ? "Remove from wishlist succesfully"
+            : "The product was not in the wishlist"
+        )
+      );
   } catch (error) {
     next(error);
   }

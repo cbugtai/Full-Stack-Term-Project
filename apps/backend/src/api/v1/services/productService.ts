@@ -4,6 +4,7 @@
 // initialize a prisma client if not already and use in queries here
 import prisma from "../../../../prisma/client";
 import { Product } from "../../../../../../shared/types/frontend-product";
+import { Wishlist } from "@prisma/client";
 
 export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
   // get all records in the listings table
@@ -105,4 +106,55 @@ export const getUserWishlist = async (userId: number): Promise<Product[]> => {
   });
 
   return products;
+};
+
+export const addToWishlist = async ({
+  productId,
+  userId,
+}: {
+  productId: number;
+  userId: number;
+}): Promise<Wishlist> => {
+  const existing = await prisma.wishlist.findUnique({
+    where: {
+      userId_listingId: {
+        userId,
+        listingId: productId,
+      },
+    },
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  // if not, create the wishlist entry
+  const wishlistItem: Wishlist = await prisma.wishlist.create({
+    data: {
+      userId,
+      listingId: productId,
+      createdAt: new Date(),
+    },
+  });
+
+  return wishlistItem;
+};
+
+export const removeFromWishlist = async ({
+  productId,
+  userId,
+}: {
+  productId: number;
+  userId: number;
+}): Promise<Number> => {
+  // when use delete the wishlist that matches the where key/value pairs, if not found, will throw error: An operation failed because it depends on one or more records that were required but not found. No record was found for a delete. (Code: P2025)
+  // so we use deleteMany which will just return count of deleted records
+  const result = await prisma.wishlist.deleteMany({
+    where: {
+      userId,
+      listingId: productId,
+    },
+  });
+
+  return result.count;
 };

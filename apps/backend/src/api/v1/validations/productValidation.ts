@@ -4,3 +4,11 @@ import Joi, { ObjectSchema } from "joi";
 export const getProductSchema: ObjectSchema = Joi.object({}).unknown(false);
 
 export const getWishlistSchema: ObjectSchema = Joi.object({}).unknown(false);
+
+export const addWishlistSchema: ObjectSchema = Joi.object({
+  productId: Joi.number().integer().positive().required(),
+}).unknown(false);
+
+export const removeWishlistSchema: ObjectSchema = Joi.object({
+  productId: Joi.number().integer().positive().required(),
+}).unknown(false);
