@@ -21,13 +21,10 @@ export async function seedCasper() {
     (brand) => ({ brand })
   );
 
-  const statuses = [{ status: "Available" }, { status: "Sold Out" }];
-
   // createMany with skipDuplicates to avoid conflicts
   await prisma.category.createMany({ data: categories, skipDuplicates: true });
   await prisma.condition.createMany({ data: conditions, skipDuplicates: true });
   await prisma.brand.createMany({ data: brands, skipDuplicates: true });
-  await prisma.status.createMany({ data: statuses, skipDuplicates: true });
 
   // mappings for connecting foreign keys
   const [allCats, allConds, allBrands, allStatuses] = await Promise.all([
@@ -38,16 +35,16 @@ export async function seedCasper() {
   ]);
 
   const catMap = new Map(
-    allCats.map((c: { id: Number; category: String }) => [c.category, c.id])
+    allCats.map((c: { id: number; category: string }) => [c.category, c.id])
   );
   const condMap = new Map(
-    allConds.map((c: { id: Number; condition: String }) => [c.condition, c.id])
+    allConds.map((c: { id: number; condition: string }) => [c.condition, c.id])
   );
   const brandMap = new Map(
-    allBrands.map((b: { id: Number; brand: String }) => [b.brand, b.id])
+    allBrands.map((b: { id: number; brand: string }) => [b.brand, b.id])
   );
   const statusMap = new Map(
-    allStatuses.map((s: { id: Number; status: String }) => [s.status, s.id])
+    allStatuses.map((s: { id: number; status: string }) => [s.status, s.id])
   );
 
   // insert users
@@ -96,8 +93,8 @@ export async function seedCasper() {
 
     const statusId =
       p.inventNum > p.soldNum
-        ? statusMap.get("Available")!
-        : statusMap.get("Sold Out")!;
+        ? statusMap.get("Active")!
+        : statusMap.get("Sold")!;
 
     const now = new Date();
 
@@ -145,7 +142,7 @@ export async function seedCasper() {
     }
   }
 
-  // inser wishlist for Alice
+  // insert wishlist for Alice
   const wishTargets = listingsCreated.filter((x) => x.src.isWishlisted);
   for (const w of wishTargets) {
     await prisma.wishlist.upsert({
