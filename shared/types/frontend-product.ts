@@ -8,10 +8,10 @@ export type Product = {
   originalPrice: number;
   imgUrl: string;
   isWishlisted: boolean;
-  reviews?: Reviews[];
+  reviews?: Review[];
 };
 
-export type Reviews = {
+export type Review = {
   productId: string;
   userName: string;
   comment: string;

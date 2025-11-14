@@ -1,75 +1,102 @@
 // this service is used for users to get the product listings
 // not the service for the seller
 // Use the listing type defined in prisma/schema.prisma
-import { Listings, Reviews } from "@prisma/client";
 // initialize a prisma client if not already and use in queries here
 import prisma from "../../../../prisma/client";
+import { Product } from "../../../../../../shared/types/frontend-product";
 
-export const fetchAllProducts = async (): Promise<Listings[]> => {
+export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
   // get all records in the listings table
-  return prisma.listings.findMany();
-};
-
-export const fetchAllReviewsByProductId = async (): Promise<Reviews[]> => {
-  // get all records in the reviews table by ProductId
-  return prisma.listings.findMany();
-};
-
-export const getTermById = async (id: number): Promise<Term | null> => {
-  try {
-    // get first record that match the "where" object key/value pairs
-    const term = prisma.term.findUnique({
-      where: {
-        id: id,
+  const listings = await prisma.listings.findMany({
+    include: {
+      category: true,
+      brand: true,
+      condition: true,
+      // check the wishlist for the current user
+      wishlist: {
+        where: {
+          userId,
+        },
       },
-    });
-
-    if (!term) {
-      return null;
-    } else {
-      return term;
-    }
-  } catch (error) {
-    throw new Error(`Failed to fetch term with id ${id}`);
-  }
-};
-
-export const createTerm = async (termData: {
-  title: string;
-  definition: string;
-}): Promise<Term> => {
-  // create a new term with termData as its column values, except for isFavourite as false
-  const newTerm: Term = await prisma.term.create({
-    data: {
-      isFavourite: false,
-      ...termData,
+      reviews: {
+        include: {
+          user: true, // join the user table to get userName
+        },
+        orderBy: {
+          createdAt: "desc", // oder by most recently created reviews
+        },
+      },
     },
   });
 
-  return newTerm;
+  // generate the Product[] to return
+  const products: Product[] = listings.map((listing) => ({
+    id: listing.id,
+    description: listing.description,
+    category: listing.category.category,
+    brand: listing.brand.brand,
+    condition: listing.condition.condition,
+    price: listing.price.toNumber(), // Decimal -> number
+    originalPrice: listing.originalPrice.toNumber(),
+    imgUrl: listing.imageUrl,
+    isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
+    reviews: listing.reviews.map((r) => ({
+      productId: String(listing.id),
+      userName: `${r.user.userName}`,
+      comment: r.comment,
+      createdAt: r.createdAt,
+    })),
+  }));
+
+  return products;
 };
 
-export const updateTerm = async (
-  id: number,
-  term: { title: string; definition: string; isFavourite: boolean }
-): Promise<Term> => {
-  // find a term where the id matches the id parameter, and update with the term argument for values
-  const updateTerm = await prisma.term.update({
-    where: {
-      id: id,
+export async function getUserWishlist(userId: number): Promise<Product[]> {
+  const wishlistListings = await prisma.wishlist.findMany({
+    where: { userId },
+    include: {
+      listing: {
+        include: {
+          category: true,
+          brand: true,
+          condition: true,
+          reviews: {
+            include: {
+              user: true,
+            },
+            orderBy: {
+              createdAt: "desc", // oder by most recently created reviews
+            },
+          },
+        },
+      },
     },
-    data: {
-      ...term,
+    orderBy: {
+      createdAt: "desc", // oder by most recently added to wishlist
     },
   });
-  return updateTerm;
-};
 
-export const deleteTerm = async (id: number): Promise<void> => {
-  // delete the term that matches the where key/value pairs
-  await prisma.term.delete({
-    where: {
-      id: id,
-    },
+  const products: Product[] = wishlistListings.map((wishListing) => {
+    const l = wishListing.listing;
+
+    return {
+      id: l.id,
+      description: l.description,
+      category: l.category.category,
+      brand: l.brand.brand,
+      condition: l.condition.condition,
+      price: l.price.toNumber(),
+      originalPrice: l.originalPrice.toNumber(),
+      imgUrl: l.imageUrl,
+      isWishlisted: true, // since these are all wishlisted items
+      reviews: l.reviews.map((r) => ({
+        productId: String(l.id),
+        userName: `${r.user.userName}`,
+        comment: r.comment,
+        createdAt: r.createdAt,
+      })),
+    };
   });
-};
+
+  return products;
+}
