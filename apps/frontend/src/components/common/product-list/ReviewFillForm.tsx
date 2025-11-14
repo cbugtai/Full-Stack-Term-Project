@@ -55,7 +55,7 @@ function ReviewFillForm({
           }}
           required
         ></textarea>
-        {!tryValidateComment().isValid ? (
+        {!tryValidateComment().isValid && comment.length > 0 ? (
           <p className="validation-error">
             {tryValidateComment().errors.map((err, idx) => (
               <span key={idx}>{err}</span>
@@ -63,7 +63,10 @@ function ReviewFillForm({
           </p>
         ) : null}
         {willClose && <p>Review submitted successfully.</p>}
-        <button disabled={willClose} type="submit">
+        <button
+          disabled={willClose || !tryValidateComment().isValid}
+          type="submit"
+        >
           Submit Comment
         </button>
       </form>
