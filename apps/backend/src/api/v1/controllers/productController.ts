@@ -23,6 +23,29 @@ export const getAllProducts = async (
   }
 };
 
+export const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    // temporary user handling,  will remove when auth is implemented
+    const userId: number = await tempUserService.getTempUserId();
+
+    const product: Product | null = await productService.fetchProductById(
+      userId,
+      Number.parseInt(req.params.id)
+    );
+    if (product) {
+      res
+        .status(200)
+        .json(successResponse(product, "product retrieved succesfully"));
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getUserWishlist = async (
   _req: Request,
   res: Response,

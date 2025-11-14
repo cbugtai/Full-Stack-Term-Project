@@ -1,5 +1,6 @@
 import type { Product } from "../../../../../shared/types/frontend-product";
 type ProductsResponseJSON = { message: string; data: Product[] };
+type ProductResponseJSON = { message: string; data: Product };
 
 // Base url for backend
 // Vite provides this value from the .env file rather than dotenv package
@@ -17,6 +18,21 @@ export async function fetchAllProducts(): Promise<Product[]> {
   }
 
   const json: ProductsResponseJSON = await productResponse.json();
+  return json.data;
+}
+
+export async function fetchProductById(productId: number): Promise<Product> {
+  const productResponse: Response = await fetch(
+    `${BASE_URL}${PRODUCT_ENDPOINT}/${productId}`
+  );
+
+  if (!productResponse.ok) {
+    throw new Error(
+      `Failed to fetch product from server for given id ${productId}`
+    );
+  }
+
+  const json: ProductResponseJSON = await productResponse.json();
   return json.data;
 }
 

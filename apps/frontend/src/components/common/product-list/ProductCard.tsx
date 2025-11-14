@@ -1,4 +1,4 @@
-import type { Product } from "@/types/productModel";
+import type { Product } from "../../../../../../shared/types/frontend-product";
 import "./ProductList.css";
 import React from "react";
 import Drawer from "@/components/common/drawer/Drawer";
@@ -59,9 +59,7 @@ function ProductCard({
         {`${product.condition}`}
       </p>
       <p>
-        <span className="cur-price">{`$${product.currentPrice.toFixed(
-          2
-        )}`}</span>
+        <span className="cur-price">{`$${product.price.toFixed(2)}`}</span>
         {"  "}
         <span className="original-price">
           <del>{`Was $${product.originalPrice.toFixed(2)}`}</del>

@@ -8,6 +8,7 @@ export type Product = {
   originalPrice: number;
   imgUrl: string;
   isWishlisted: boolean;
+  hasReviewed: boolean;
   reviews?: Review[];
 };
 

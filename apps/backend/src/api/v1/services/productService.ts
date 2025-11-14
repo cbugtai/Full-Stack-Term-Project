@@ -5,6 +5,7 @@
 import prisma from "../../../../prisma/client";
 import { Product } from "../../../../../../shared/types/frontend-product";
 import { Wishlist } from "@prisma/client";
+import { ExtendedError } from "../middleware/errorHandler";
 
 export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
   // get all records in the listings table
@@ -53,6 +54,70 @@ export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
   }));
 
   return products;
+};
+
+export const fetchProductById = async (
+  userId: number,
+  productId: number
+): Promise<Product | null> => {
+  try {
+    // get the product listing by id
+    const listing = await prisma.listings.findUnique({
+      where: { id: productId },
+      include: {
+        category: true,
+        brand: true,
+        condition: true,
+        // check the wishlist for the current user
+        wishlist: {
+          where: {
+            userId,
+          },
+        },
+        reviews: {
+          include: {
+            user: true, // join the user table to get userName
+          },
+          orderBy: {
+            createdAt: "desc", // oder by most recently created reviews
+          },
+        },
+      },
+    });
+
+    // return the product or null
+    if (listing === null) {
+      return null;
+    } else {
+      return {
+        id: listing.id,
+        description: listing.description,
+        category: listing.category.category,
+        brand: listing.brand.brand,
+        condition: listing.condition.condition,
+        price: listing.price.toNumber(), // Decimal -> number
+        originalPrice: listing.originalPrice.toNumber(),
+        imgUrl: listing.imageUrl,
+        isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
+        hasReviewed: listing.reviews.some((r) => r.userId === userId),
+        reviews: listing.reviews.map((r) => ({
+          id: r.id,
+          productId: listing.id,
+          userId: r.userId,
+          userName: `${r.user.userName}`,
+          comment: r.comment,
+          createdAt: r.createdAt,
+        })),
+      };
+    }
+  } catch (error) {
+    const err: ExtendedError = new Error(
+      `Failed to fetch term with id ${productId}`
+    );
+    err.code = "FETCH_PRODUCT_BY_ID_FAILED";
+    err.statusCode = 400;
+    throw err;
+  }
 };
 
 export const getUserWishlist = async (userId: number): Promise<Product[]> => {

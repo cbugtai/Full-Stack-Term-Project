@@ -3,6 +3,7 @@ import * as productController from "../controllers/productController";
 import { validateRequest } from "../middleware/validate";
 import {
   getProductSchema,
+  getProductByIdSchema,
   getWishlistSchema,
   addWishlistSchema,
   removeWishlistSchema,
@@ -16,6 +17,7 @@ router.get(
   validateRequest(getProductSchema),
   productController.getAllProducts
 );
+
 router.get(
   "/wishlist",
   validateRequest(getWishlistSchema),
@@ -32,6 +34,12 @@ router.delete(
   "/wishlist",
   validateRequest(removeWishlistSchema),
   productController.removeFromWishlist
+);
+
+router.get(
+  "/:id",
+  validateRequest(getProductByIdSchema),
+  productController.getProductById
 );
 
 export default router;
