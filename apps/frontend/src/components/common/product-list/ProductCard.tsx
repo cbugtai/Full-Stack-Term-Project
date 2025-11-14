@@ -62,7 +62,12 @@ function ProductCard({
           }}
         >
           <p className="review-number">
-            <strong>Reviews: </strong> <span>{product.reviews.length}</span>
+            {product.reviews.length === 0 || !product.reviews ? null : (
+              <>
+                {" "}
+                <strong>Reviews: </strong> <span>{product.reviews.length}</span>
+              </>
+            )}
           </p>
         </a>
       ) : null}
