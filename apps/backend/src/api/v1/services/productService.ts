@@ -46,6 +46,7 @@ export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
     reviews: listing.reviews.map((r) => ({
       id: r.id,
       productId: listing.id,
+      productDescription: listing.description,
       userId: r.userId,
       userName: `${r.user.userName}`,
       comment: r.comment,
@@ -103,6 +104,7 @@ export const fetchProductById = async (
         reviews: listing.reviews.map((r) => ({
           id: r.id,
           productId: listing.id,
+          productDescription: listing.description,
           userId: r.userId,
           userName: `${r.user.userName}`,
           comment: r.comment,
@@ -163,6 +165,7 @@ export const getUserWishlist = async (userId: number): Promise<Product[]> => {
         id: r.id,
         userId: r.userId,
         productId: r.listingId,
+        productDescription: l.description,
         userName: `${r.user.userName}`,
         comment: r.comment,
         createdAt: r.createdAt,

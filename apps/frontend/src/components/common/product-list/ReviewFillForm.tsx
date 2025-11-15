@@ -1,4 +1,4 @@
-import { useComment } from "@/hooks/useComment";
+import { useComment } from "@/hooks/useReviews";
 import React from "react";
 import type { ReviewFillFormParams } from "@/types/productModel";
 

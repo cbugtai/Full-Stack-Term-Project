@@ -13,6 +13,7 @@ export const getReviewsByProductId = async (
     where: { listingId: productId },
     include: {
       user: true, // need to get username
+      listing: true, // need to get product description
     },
     orderBy: {
       createdAt: "desc", // order by most recently created reviews
@@ -23,6 +24,7 @@ export const getReviewsByProductId = async (
     id: r.id,
     userId: r.userId,
     productId: r.id,
+    productDescription: r.listing.description,
     userName: `${r.user.userName}`,
     comment: r.comment,
     createdAt: r.createdAt,
@@ -59,6 +61,7 @@ export const createReview = async (reviewData: {
     },
     include: {
       user: true, // need to get username
+      listing: true, // need to get product description
     },
   });
 
@@ -67,6 +70,7 @@ export const createReview = async (reviewData: {
     id: newReview.id,
     userId: newReview.userId,
     productId: newReview.listingId,
+    productDescription: newReview.listing.description,
     userName: `${newReview.user.userName}`,
     comment: newReview.comment,
     createdAt: newReview.createdAt,

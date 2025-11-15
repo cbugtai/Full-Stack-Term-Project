@@ -10,7 +10,7 @@ const router: Router = express.Router();
 
 // define method that will be invoked when route gets a request
 router.get(
-  "product/:id",
+  "/product/:id",
   validateRequest(getReviewsByProductIdSchema),
   reviewController.getReviewsByProductId
 );

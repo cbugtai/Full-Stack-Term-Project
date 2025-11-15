@@ -16,6 +16,7 @@ export type Review = {
   id: number;
   userId: number;
   productId: number;
+  productDescription: string;
   userName: string;
   comment: string;
   createdAt: Date;

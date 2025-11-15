@@ -22,7 +22,6 @@ function ProductList({
             {allProducts.map((p) => (
               <ProductCard
                 product={p}
-                allProducts={allProducts}
                 userId={tempUserId}
                 key={p.id}
                 addReview={addReview}

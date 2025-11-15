@@ -8,7 +8,6 @@ import type { ProductCardParams } from "@/types/productModel";
 function ProductCard({
   userId,
   product,
-  allProducts,
   addReview,
   toggleWishedProduct,
 }: ProductCardParams) {
@@ -99,9 +98,7 @@ function ProductCard({
             closeDrawer={() => setDrawerOpen(false)}
           />
         )}
-        {drawerMode === "view" && (
-          <ReviewsDisplay id={product.id} allProducts={allProducts} />
-        )}
+        {drawerMode === "view" && <ReviewsDisplay id={product.id} />}
       </Drawer>
     </div>
   );
