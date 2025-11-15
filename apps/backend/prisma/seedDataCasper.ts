@@ -78,6 +78,13 @@ export const mockProductData: Product[] = [
     originalPrice: 120,
     imgUrl: "https://picsum.photos",
     isWishlisted: true,
+    reviews: [
+      {
+        id: "a7b8c9d0-1234-5678-9abc-def0121231313",
+        user: "Bob",
+        comment: "Another great product from IKEA.",
+      },
+    ],
   },
   {
     id: 5,
