@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as productService from "../services/productService";
-import type { Product } from "../types/productModel";
+import * as reviewService from "../services/reviewService";
+import type { Product } from "../../../../shared/types/frontend-product";
 import { useLoading } from "./useLoading";
 
 /**
@@ -35,7 +36,7 @@ export function useWishlistedProducts() {
   const toggleWishedProduct = async (productId: number) => {
     try {
       start();
-      await productService.toggleWishedProduct({ productId });
+      await productService.toggleWishedProduct(productId);
       await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
@@ -53,7 +54,7 @@ export function useWishlistedProducts() {
   }) => {
     try {
       start();
-      await productService.addReview({ productId, comment });
+      await reviewService.addReview({ productId, comment });
       await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);

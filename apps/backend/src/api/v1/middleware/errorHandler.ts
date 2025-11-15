@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { errorResponse } from "../models/responseModel";
 
-interface ExtendedError extends Error {
+export interface ExtendedError extends Error {
   code?: string;
   statusCode?: number;
 }

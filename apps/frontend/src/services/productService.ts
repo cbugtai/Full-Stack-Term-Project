@@ -1,4 +1,4 @@
-import type { Product } from "../types/productModel";
+import type { Product } from "../../../../shared/types/frontend-product";
 import * as productRepo from "../apis/product/productRepo";
 
 /**
@@ -19,28 +19,17 @@ export async function fetchAllProducts() {
 }
 
 export async function fetchWishlistedProducts() {
-  // fetch all products first using the existing service
-  const products: Product[] = await fetchAllProducts();
-  const wishlishedProducts: Product[] = products.filter(
-    (product) => product.isWishlisted
-  );
+  const wishlishedProducts: Product[] = await productRepo.fetchWishlist();
   return wishlishedProducts;
 }
 
-export async function toggleWishedProduct({
-  productId,
-}: {
-  productId: number;
-}) {
-  await productRepo.toggleWishedProduct(productId);
-}
+export async function toggleWishedProduct(productId: number) {
+  // check if the product is already wishlisted
+  const product: Product = await productRepo.fetchProductById(productId);
 
-export async function addReview({
-  productId,
-  comment,
-}: {
-  productId: number;
-  comment: string;
-}) {
-  await productRepo.addReview({ productId, comment });
+  if (product.isWishlisted) {
+    await productRepo.removeFromWishlist(productId);
+  } else {
+    await productRepo.addToWishlist(productId);
+  }
 }

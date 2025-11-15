@@ -136,6 +136,7 @@ model Reviews {
 
     listing Listings @relation(fields:[listingId], references:[id])
     user User @relation(fields:[userId], references:[id])
+    @@unique([userId, listingId]) // only allow one user add one review for a listing at most
 }
 
 model Wishlist {    

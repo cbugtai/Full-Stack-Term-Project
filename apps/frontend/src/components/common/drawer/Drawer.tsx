@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Portal from "./Portal";
 import "./Drawer.css";
 
@@ -13,6 +13,20 @@ export default function Drawer({
   children: React.ReactNode;
   width?: number;
 }) {
+  // when hit the escape key, close the drawer
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
