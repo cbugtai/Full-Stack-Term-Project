@@ -121,24 +121,31 @@ export async function seedCasper() {
   }
 
   // insert reviews from mockdata
-  const iphoneItem = listingsCreated.find((x) => x.src.id === 2)?.db;
-  if (iphoneItem && mockProductData[1].reviews?.length) {
-    for (const r of mockProductData[1].reviews!) {
-      const reviewer =
-        r.user.toLowerCase() === "alice"
-          ? user1
-          : r.user.toLowerCase() === "bob"
-          ? user2
-          : user1;
+  const iphoneItems = listingsCreated.filter(
+    (x) => x.src.id === 2 || x.src.id === 4
+  ); //get two products with reviews
 
-      await prisma.reviews.create({
-        data: {
-          userId: reviewer.id,
-          listingId: iphoneItem.id,
-          comment: r.comment,
-          createdAt: new Date(),
-        },
-      });
+  if (iphoneItems.length) {
+    for (const item of iphoneItems) {
+      // for each product
+      for (const r of item.src.reviews!) {
+        // for each review
+        const reviewer =
+          r.user.toLowerCase() === "alice"
+            ? user1
+            : r.user.toLowerCase() === "bob"
+            ? user2
+            : user1;
+
+        await prisma.reviews.create({
+          data: {
+            userId: reviewer.id,
+            listingId: item.db.id, // use the listing id from db record
+            comment: r.comment,
+            createdAt: new Date(),
+          },
+        });
+      }
     }
   }
 

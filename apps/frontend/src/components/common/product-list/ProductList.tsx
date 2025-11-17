@@ -1,31 +1,36 @@
-import type { Product, ReviewOnProduct } from "@/types/productModel";
+import type { ProductListParams } from "@/types/productModel";
+
 import ProductCard from "./ProductCard";
+import { useTempUser } from "@/hooks/useTempUser";
 
 function ProductList({
   allProducts,
   addReview,
   toggleWishedProduct,
-}: {
-  allProducts: Product[];
-  addReview: ({ productId, comment }: ReviewOnProduct) => void;
-  toggleWishedProduct: (productId: number) => void;
-}) {
+}: ProductListParams) {
+  // this userid will be replaced with real user auth in future
+  const { tempUserId, error } = useTempUser();
+
   return (
     <>
-      <section className="product-list">
-        <div className="product-list-gallery">
-          {" "}
-          {allProducts.map((p) => (
-            <ProductCard
-              product={p}
-              allProducts={allProducts}
-              key={p.id}
-              addReview={addReview}
-              toggleWishedProduct={toggleWishedProduct}
-            />
-          ))}
-        </div>
-      </section>
+      {error || tempUserId === null ? (
+        <p className="error-message">{error}</p>
+      ) : (
+        <section className="product-list">
+          <div className="product-list-gallery">
+            {" "}
+            {allProducts.map((p) => (
+              <ProductCard
+                product={p}
+                userId={tempUserId}
+                key={p.id}
+                addReview={addReview}
+                toggleWishedProduct={toggleWishedProduct}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

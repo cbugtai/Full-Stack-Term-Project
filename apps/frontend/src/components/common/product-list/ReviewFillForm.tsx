@@ -1,19 +1,14 @@
+import { useComment } from "@/hooks/useReviews";
 import React from "react";
-import type { ReviewOnProduct } from "@/types/productModel";
+import type { ReviewFillFormParams } from "@/types/productModel";
 
 function ReviewFillForm({
   id,
   description,
   closeDrawer,
   addReview,
-}: {
-  id: number;
-  description: string;
-  addReview: ({ productId, comment }: ReviewOnProduct) => void;
-  closeDrawer: () => void;
-}) {
-  const [comment, setComment] = React.useState("");
-  const [isValid, setIsValid] = React.useState(true);
+}: ReviewFillFormParams) {
+  const { comment, setComment, tryValidateComment } = useComment();
   const [willClose, setWillClose] = React.useState(false);
 
   return (
@@ -23,9 +18,8 @@ function ReviewFillForm({
         className="review-fill-form"
         onSubmit={(e) => {
           e.preventDefault();
-          // validate
-          if (comment.length <= 10) {
-            setIsValid(false);
+          // validate the comment length
+          if (!tryValidateComment().isValid) {
             return;
           }
 
@@ -47,18 +41,22 @@ function ReviewFillForm({
           cols={50}
           value={comment}
           onChange={(e) => {
-            setIsValid(true);
             setComment(e.target.value);
           }}
           required
         ></textarea>
-        {!isValid ? (
+        {!tryValidateComment().isValid && comment.length > 0 ? (
           <p className="validation-error">
-            Review must be more than 10 characters.
+            {tryValidateComment().errors.map((err, idx) => (
+              <span key={idx}>{err}</span>
+            ))}
           </p>
         ) : null}
         {willClose && <p>Review submitted successfully.</p>}
-        <button disabled={willClose} type="submit">
+        <button
+          disabled={willClose || !tryValidateComment().isValid}
+          type="submit"
+        >
           Submit Comment
         </button>
       </form>
