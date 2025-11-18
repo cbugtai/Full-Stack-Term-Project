@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import setupSwagger from "../config/swagger";
 import errorHandler from "./api/v1/middleware/errorHandler";
 
+import sellerRoutes from "./api/v1/routes/sellerRoutes"
+
 // initialize express application
 const app: Express = express();
 
@@ -30,6 +32,9 @@ app.get("/", (_req, res) => {
 });
 
 // add specific routes here
+
+// ---------------------- Christian part ----------------------
+app.use("/api/v1/sellers", sellerRoutes);
 
 //errorhandler catches errors as last element in middleware chain
 // occurs when "next" is invoked
