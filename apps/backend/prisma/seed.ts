@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { seedSellers } from "./seedScripts/seedSellers";
-import { seedLookup } from "./seedLookup";
-import { seedBrandCategory } from "./seedJoin";
-import { seedCasper } from "./seedCasper";
+import { seedLookup } from "./seedScripts/seedLookup";
+import { seedBrandCategory } from "./seedScripts/seedJoin";
+import { seedCasper } from "./seedScripts/seedCasper";
 
 const prisma = new PrismaClient();
 

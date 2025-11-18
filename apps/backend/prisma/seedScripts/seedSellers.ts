@@ -14,13 +14,6 @@ export async function seedSellers(prisma: PrismaClient) {
         }))
     })
 
-    //adding mock user data (incomplete on purpose, use nicks table once its done instead)
-    console.log("seeding mock user...");
-
-    await prisma.user.create({
-        data: {}
-    })
-
     //query created users
     const mockUser = await prisma.user.findFirst({
     orderBy: { id: "asc" },

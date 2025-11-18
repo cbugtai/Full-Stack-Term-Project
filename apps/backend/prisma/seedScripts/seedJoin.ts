@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { brandCategoryMap } from "./seedJoinData";
+import { brandCategoryMap } from "../seedData/seedJoinData";
 
 const prisma = new PrismaClient();
 

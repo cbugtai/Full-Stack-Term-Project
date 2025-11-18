@@ -35,11 +35,13 @@ model Seller {
   photo  String? //url
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  listtings Listings[]
 
+  userId Int?   @unique
+  user   User?  @relation(fields: [userId], references: [id])
+  
   //relations
   preferences UserSellerPreference[]
+  listings Listings[]
 }
 
 //table that stores 1 to 1 user preference for a seller
@@ -74,11 +76,12 @@ model User {
     createdAt DateTime
     updatedAt DateTime
 
+    seller Seller?
+
+    //relations
     reviews Reviews[]
     wishlist Wishlist[]
     listingViews ListingViews[]
-    
-    //relations
     preferences UserSellerPreference[]
 }
 
@@ -111,7 +114,6 @@ model Listings {
     condition Condition @relation(fields:[conditionId], references:[id])
     brand Brand @relation(fields:[brandId], references:[id])
     status Status @relation(fields:[statusId], references:[id])
-    
 }
 
 
