@@ -46,7 +46,7 @@ export const getSellerById = async(
 ): Promise<void> => {
     try {
         const userId = getUserId(req);
-        const sellerId = Number(req.params.sellerId)
+        const sellerId = Number(req.params.id)
 
         if (Number.isNaN(sellerId)) {
             throw new Error("Invalid sellerId parameter")
@@ -70,7 +70,7 @@ export const addFavoriteSeller = async(
 ): Promise<void> => {
     try {
         const userId = getUserId(req);
-        const sellerId = Number(req.params.sellerId)
+        const sellerId = Number(req.query.sellerId)
 
         if (Number.isNaN(sellerId)) {
             throw new Error("Invalid sellerId parameter")
@@ -94,7 +94,7 @@ export const removeFavoriteSeller = async(
 ): Promise<void> => {
     try {
         const userId = getUserId(req);
-        const sellerId = Number(req.params.sellerId)
+        const sellerId = Number(req.query.sellerId)
 
         if (Number.isNaN(sellerId)) {
             throw new Error("Invalid sellerId parameter")
@@ -118,7 +118,7 @@ export const addBlockedSeller = async(
 ): Promise<void> => {
     try {
         const userId = getUserId(req);
-        const sellerId = Number(req.params.sellerId)
+        const sellerId = Number(req.query.sellerId)
 
         if (Number.isNaN(sellerId)) {
             throw new Error("Invalid sellerId parameter")
@@ -142,7 +142,7 @@ export const removeBlockedSeller = async(
 ): Promise<void> => {
     try {
         const userId = getUserId(req);
-        const sellerId = Number(req.params.sellerId)
+        const sellerId = Number(req.query.sellerId)
 
         if (Number.isNaN(sellerId)) {
             throw new Error("Invalid sellerId parameter")
