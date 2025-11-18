@@ -74,8 +74,6 @@ model User {
     createdAt DateTime
     updatedAt DateTime
 
-    seller Seller?
-
     reviews Reviews[]
     wishlist Wishlist[]
     listingViews ListingViews[]
