@@ -1,4 +1,18 @@
-import type { Product } from "../../types/productModel";
+type Review = { id: string; user: string; comment: string };
+type Product = {
+  id: number;
+  description: string;
+  category: string;
+  brand: string;
+  condition: string;
+  inventNum: number;
+  soldNum: number;
+  currentPrice: number;
+  originalPrice: number;
+  imgUrl: string;
+  isWishlisted: boolean;
+  reviews?: Review[];
+};
 
 export const mockProductData: Product[] = [
   {
@@ -55,7 +69,7 @@ export const mockProductData: Product[] = [
   {
     id: 4,
     description: "Wooden study desk",
-    category: "Furnitures",
+    category: "Furniture",
     brand: "IKEA",
     condition: "Good",
     inventNum: 2,
@@ -64,6 +78,13 @@ export const mockProductData: Product[] = [
     originalPrice: 120,
     imgUrl: "https://picsum.photos",
     isWishlisted: true,
+    reviews: [
+      {
+        id: "a7b8c9d0-1234-5678-9abc-def0121231313",
+        user: "Bob",
+        comment: "Another great product from IKEA.",
+      },
+    ],
   },
   {
     id: 5,
@@ -120,7 +141,7 @@ export const mockProductData: Product[] = [
   {
     id: 9,
     description: "Office chair",
-    category: "Furnitures",
+    category: "Furniture",
     brand: "IKEA",
     condition: "Very Good",
     inventNum: 2,
@@ -211,7 +232,7 @@ export const mockProductData: Product[] = [
   {
     id: 16,
     description: "Study lamp",
-    category: "Furnitures",
+    category: "Furniture",
     brand: "Philips",
     condition: "New",
     inventNum: 5,
