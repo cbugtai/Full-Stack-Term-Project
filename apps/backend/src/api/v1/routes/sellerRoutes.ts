@@ -1,7 +1,7 @@
 import { Router } from "express"
 import * as sellerController from "../controllers/sellerController";
 import { validateRequest } from "../middleware/validate";
-import { sellerIdSchema, idSchema } from "../validation/sellerValidation";
+import { sellerIdSchema, idSchema } from "../validations/sellerValidation";
 
 const router: Router = Router();
 
