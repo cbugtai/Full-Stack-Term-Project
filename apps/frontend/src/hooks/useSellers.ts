@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react";
 import * as sellerService from "../services/sellerService";
-import type { Seller } from "../types/sellerModel";
+import type { SellerDto as Seller } from "../../../../shared/types/seller-terms";
 
 export function useSellers(
     dependencies: unknown[] = [],
@@ -26,8 +26,15 @@ export function useSellers(
 
     const toggleFavoriteSeller = async (sellerId: number) => {
         try {
-            await sellerService.toggleFavoriteSeller(sellerId);
-            await fetchSellers();
+            const updated = await sellerService.toggleFavoriteSeller(sellerId);
+
+            setSellers((prev) => {
+                const updatedList = prev.map((s) => 
+                s.id === updated.id ? { ...s, ...updated } : s
+            )
+
+            return filterFn ? updatedList.filter(filterFn) : updatedList;
+            })
         } catch (err) {
             setError(`${err}`);
         }
@@ -35,8 +42,15 @@ export function useSellers(
 
     const toggleBlockedSeller = async (sellerId: number) => {
         try {
-            await sellerService.toggleBlockedSeller(sellerId);
-            await fetchSellers();
+            const updated = await sellerService.toggleBlockedSeller(sellerId);
+
+            setSellers((prev) => {
+                const updatedList = prev.map((s) => 
+                s.id === updated.id ? { ...s, ...updated } : s
+            )
+
+            return filterFn ? updatedList.filter(filterFn) : updatedList;
+            })
         } catch (err) {
             setError(`${err}`);
         }

@@ -1,6 +1,6 @@
-import { SellersNav } from "@/components/common/sellers/sellers-nav/SellersNav";
-import { SellersListDisplay } from "@/components/common//sellers/sellersListDisplay/SellersListDisplay";
-import type { Seller } from "@/types/sellerModel";
+import { SellersNav } from "../../../common/sellers/sellers-nav/SellersNav";
+import { SellersListDisplay } from "../../../common/sellers/sellersListDisplay/SellersListDisplay";
+import type { SellerDto as Seller } from "../../../../../../../shared/types/seller-terms";
 
 export function SellersBlocked() {
 
