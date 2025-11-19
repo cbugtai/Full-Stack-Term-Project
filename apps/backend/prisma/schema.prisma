@@ -24,7 +24,43 @@ datasource db {
 
 // Create models at below
 
+//Nick's Models
 
+//Christian's Models
+model Seller {
+  id Int @id @default(autoincrement())
+  username String @unique
+  rating Int //1-100
+  completedSales Int
+  photo  String? //url
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int?   @unique
+  user   User?  @relation(fields: [userId], references: [id])
+  
+  //relations
+  preferences UserSellerPreference[]
+  listings Listings[]
+}
+
+//table that stores 1 to 1 user preference for a seller
+model UserSellerPreference{
+  id Int @id @default(autoincrement())
+
+  userId Int
+  sellerId Int
+
+  isFavorite Boolean @default(false)
+  isBlocked Boolean @default(false)
+
+  //relations
+  user User @relation(fields: [userId], references: [id])
+  seller Seller @relation(fields: [sellerId], references: [id])
+
+  // user should only have one preference per seller
+  @@unique([userId, sellerId])
+}
 
 // casper's model
 model User {
@@ -42,21 +78,11 @@ model User {
 
     seller Seller?
 
+    //relations
     reviews Reviews[]
     wishlist Wishlist[]
     listingViews ListingViews[]
-}
-
-model Seller {
-    // id property, as the identifier, with a default value that autoincrements
-    id  Int @id @default(autoincrement())
-    
-    userId Int @unique
-    rating String
-
-    listtings Listings[]
-
-    user   User  @relation(fields: [userId], references: [id])
+    preferences UserSellerPreference[]
 }
 
 model Listings {
@@ -88,7 +114,6 @@ model Listings {
     condition Condition @relation(fields:[conditionId], references:[id])
     brand Brand @relation(fields:[brandId], references:[id])
     status Status @relation(fields:[statusId], references:[id])
-    
 }
 
 

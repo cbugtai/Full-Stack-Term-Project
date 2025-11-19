@@ -1,16 +1,19 @@
 import type { JSX } from "react";
-import type { Seller } from "@/types/sellerModel";
-import { useSellers } from "@/hooks/useSellers";
+import type { SellerDto as Seller } from "../../../../../../../shared/types/seller-terms";
+import { useSellers } from "../../../../hooks/useSellers";
 import { SellerCard } from "../sellerCard/SellerCard";
+
+type SellersListDisplayProps = {
+  dependencies?: unknown[];
+  filterFn?: (seller: Seller) => boolean;
+}
 
 export function SellersListDisplay({
     dependencies = [],
     filterFn,
-}: { 
-    dependencies?: any[]; 
-    filterFn: (seller: Seller) => boolean 
-}): JSX.Element {
-    const { sellers, toggleFavoriteSeller, toggleBlockedSeller } = useSellers(dependencies, filterFn);
+}: SellersListDisplayProps ): JSX.Element {
+    const { sellers, toggleFavoriteSeller, toggleBlockedSeller } = 
+        useSellers(dependencies, filterFn);
 
 
     async function handleSellerFavClick(target: Seller) {

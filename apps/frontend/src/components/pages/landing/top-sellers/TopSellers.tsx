@@ -1,99 +1,45 @@
-import type { JSX } from "react";
-import { sellerData } from "@/apis/sellers/mockSellerData";
-import type { Seller } from "@/types/sellerModel";
+import { useSellers } from "../../../../hooks/useSellers";
+import type { SellerDto as Seller} from "../../../../../../../shared/types/seller-terms"
 import "./TopSellers.css"
 
 export default function TopSellers() {
-    return (
-        <>
-            <ListDisplay sellers={sellerData}/>
-        </>
-    )
-}
 
-function ListDisplay({sellers}: {sellers:Seller[]}) {
-    const topSellersList: JSX.Element[] = [];
+    const { sellers } = useSellers([], (s: Seller) => !s.isBlocked)
 
-    //sorts the sellers list by descending rating
-    const sortedSellers = [...sellers].sort((b,a) => (a.rating - b.rating));
-
-    sortedSellers.forEach((seller, index) => {
-        topSellersList.push(
-            <SellerCard 
-            seller={seller}
-            index={index}
-            key={index} 
-            />
-        )
-    });
+    const topSellers = [...sellers]
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 5);
 
     return (
         <section className="top-sellers">
             <h2>Top Sellers By Rating</h2>
+
             <div className="top-sellers__list" role="region" tabIndex={0}>
-                {topSellersList}
+                {topSellers.map((seller, index) => (
+                    <div className="seller-card" key={seller.id}>
+                        <img
+                            src={seller.photo ?? "/placeholder-avatar.png"}
+                            alt="Seller Avatar"
+                            width={50}
+                            height={50}
+                        />
+
+                        <div className="seller-name">{seller.username}</div>
+
+                        <div className="seller-rating">
+                            Rating: {seller.rating}%
+                        </div>
+
+                        <div className="seller-sales">
+                            {seller.completedSales} Completed Sales
+                        </div>
+
+                        <div className={`rank-badge rank-${index}`}>
+                            #{index + 1}
+                        </div>
+                    </div>
+                ))}
             </div>
         </section>
     );
-}
-
-function SellerCard({ seller, index }: { seller: Seller, index: number }) {
-    return (
-        <div className="seller-card">
-            <img src={seller.photo} alt="Seller Avatar" width="50" height="50" />
-            <div className="seller-name">
-                {seller.username}
-            </div>
-            <div className="seller-rating">
-                < StarRating rating={seller.rating}/>
-            </div>
-            <div className="seller-sold">
-                {seller.completed_sales} Completed Sales
-            </div>
-            <div className="seller-rank">
-                <RankingCss index={index} />
-            </div>
-        </div>
-    );
-}
-
-function RankingCss({index}: {index:number}){
-    let ranking = `unranked` 
-
-    if(index == 0){
-        ranking = 'gold'
-    }
-    if(index == 1){
-        ranking = 'silver'
-    }
-    if(index == 2){
-        ranking = 'bronze'
-    }
-    return(
-        <div className={ranking}>
-            #{index +1}
-        </div>
-    )
-}
-
-function StarRating({rating}: {rating:number}){
-
-    return(
-        <div className="star-ratings">
-            <div className="star-ratings-top" id="star-ratings-top1" style={{width: `${rating}%`}}>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-                <span>★</span>
-            </div>
-            <div className="star-ratings-bottom">
-                <span>☆</span>
-                <span>☆</span>
-                <span>☆</span>
-                <span>☆</span>
-                <span>☆</span>
-            </div>
-        </div>
-    )
 }

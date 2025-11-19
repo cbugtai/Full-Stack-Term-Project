@@ -1,25 +1,26 @@
-import type { Seller } from "@/types/sellerModel";
-import * as sellerRepo from "@/apis/sellers/sellerRepo";
+import type { SellerDto as Seller } from "../../../../shared/types/seller-terms";
+import * as sellerRepo from "../apis/sellers/sellerRepo";
 
 /**
  * Fetch all sellers from the repository.
  * @returns A promise that resolves to an array of sellers.
  */
 export async function getAllSellers(): Promise<Seller[]> {
-    const sellers = await sellerRepo.fetchAllSellers();
-    return sellers;
+  return sellerRepo.fetchAllSellers();
 }
 
 /**
  * Toggle the favorite status of a seller.
  * @param sellerId - The ID of the seller to toggle.
+ * @returns The updated seller from the backend.
  */
-export async function toggleFavoriteSeller(sellerId: number): Promise<void> {
+export async function toggleFavoriteSeller(sellerId: number): Promise<Seller> {
     const seller = await sellerRepo.getSellerById(sellerId);
+
     if (seller.isFavorite) {
-        await sellerRepo.removeFavoriteSeller(seller.id);
+        return await sellerRepo.removeFavoriteSeller(seller.id);
     } else {
-        await sellerRepo.addFavoriteSeller(seller.id);
+        return await sellerRepo.addFavoriteSeller(seller.id);
     }
 }
 
@@ -27,13 +28,19 @@ export async function toggleFavoriteSeller(sellerId: number): Promise<void> {
  * Toggle the blocked status of a seller.
  * A seller cannot be a favorite while blocked.
  * @param sellerId - The ID of the seller to toggle.
+ * @returns The updated seller from the backend.
  */
-export async function toggleBlockedSeller(sellerId: number): Promise<void> {
+export async function toggleBlockedSeller(sellerId: number): Promise<Seller> {
     const seller = await sellerRepo.getSellerById(sellerId);
+
     if (seller.isBlocked) {
-        await sellerRepo.removeBlockedSeller(seller.id);
+        return await sellerRepo.removeBlockedSeller(seller.id);
     } else {
-        await sellerRepo.removeFavoriteSeller(seller.id);
-        await sellerRepo.addBlockedSeller(seller.id);
+
+        if (seller.isFavorite) {
+            await sellerRepo.removeFavoriteSeller(seller.id);
+        }
+
+        return await sellerRepo.addBlockedSeller(seller.id);
     }
 }

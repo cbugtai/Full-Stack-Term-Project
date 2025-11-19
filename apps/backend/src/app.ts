@@ -7,6 +7,7 @@ import corsOptions from "../config/cors";
 import setupSwagger from "../config/swagger";
 import errorHandler from "./api/v1/middleware/errorHandler";
 
+import sellerRoutes from "./api/v1/routes/sellerRoutes"
 import productRoutes from "./api/v1/routes/productRoutes";
 import reviewRoutes from "./api/v1/routes/reviewRoutes";
 import tempUserRoutes from "./api/v1/routes/tempUserRoutes";
@@ -36,6 +37,8 @@ app.get("/", (_req, res) => {
 });
 
 // add specific routes here
+// ---------------------- Christian part ----------------------
+app.use("/api/v1/sellers", sellerRoutes);
 
 // ---------------------- Casper part ----------------------
 app.use("/api/v1/products", productRoutes);

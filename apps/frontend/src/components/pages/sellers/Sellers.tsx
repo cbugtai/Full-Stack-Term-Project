@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { SellersListDisplay } from "@/components/common//sellers/sellersListDisplay/SellersListDisplay";
-import { Search } from "@/components/common/search/Search";
-import { SellersNav } from "@/components/common/sellers/sellers-nav/SellersNav";
+import { SellersNav } from "../../common/sellers/sellers-nav/SellersNav";
+import { SellersListDisplay } from "../../common/sellers/sellersListDisplay/SellersListDisplay";
+import { Search } from "../../common/search/Search";
 
 function Sellers() {
   
   const [searchValue, setSearchValue] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   return (
     <div>
@@ -15,11 +16,16 @@ function Sellers() {
       <Search
         searchValue={searchValue}
         handleSearchChange={setSearchValue}
+        handleSearchSubmit={() => {
+          setSearchTerm(searchValue);
+        }}
       />
   
       <SellersListDisplay
-        dependencies={[searchValue]}
-        filterFn={(s) => s.username.toLowerCase().includes(searchValue) && !s.isBlocked}
+        dependencies={[searchTerm]}
+        filterFn={(s) => 
+          s.username.toLowerCase().includes(searchTerm.toLowerCase().trim()) && 
+          !s.isBlocked}
       />
     </div>
   );

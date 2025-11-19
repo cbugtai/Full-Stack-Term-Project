@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { seedLookup } from "./seedLookup";
-import { seedBrandCategory } from "./seedJoin";
-import { seedCasper } from "./seedCasper";
+import { seedSellers } from "./seedScripts/seedSellers";
+import { seedLookup } from "./seedScripts/seedLookup";
+import { seedBrandCategory } from "./seedScripts/seedJoin";
+import { seedCasper } from "./seedScripts/seedCasper";
 
 const prisma = new PrismaClient();
 
@@ -9,17 +10,21 @@ const prisma = new PrismaClient();
 // IT WILL CLEAR THE DB WHEN INVOKED
 // see https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding
 async function main() {
+
   // clear all tables
-await prisma.reviews.deleteMany();
-await prisma.wishlist.deleteMany();
-await prisma.listings.deleteMany();
-await prisma.seller.deleteMany();
-await prisma.brandCategory.deleteMany();
-await prisma.category.deleteMany();
-await prisma.condition.deleteMany();
-await prisma.brand.deleteMany();
-await prisma.status.deleteMany();
-await prisma.user.deleteMany();
+  console.log("Clearing existing data")
+
+  await prisma.userSellerPreference.deleteMany();
+  await prisma.reviews.deleteMany();
+  await prisma.wishlist.deleteMany();
+  await prisma.listings.deleteMany();
+  await prisma.seller.deleteMany();
+  await prisma.brandCategory.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.condition.deleteMany();
+  await prisma.brand.deleteMany();
+  await prisma.status.deleteMany();
+  await prisma.user.deleteMany();
 
   // seed lookup tables
   await seedLookup();
@@ -29,6 +34,9 @@ await prisma.user.deleteMany();
 
   //insert seed data from Casper
   await seedCasper();
+  
+  //insert seed data from Christian
+   await seedSellers(prisma)
 }
 
 main()

@@ -4,7 +4,7 @@ import {
   brands,
   conditions,
   statuses
-} from "./seedLookupData";
+} from "../seedData/seedLookupData";
 
 const prisma = new PrismaClient();
 

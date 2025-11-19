@@ -1,4 +1,4 @@
-import type { Seller } from "@/types/sellerModel";
+import type { SellerDto as Seller } from "..//../../../../../../shared/types/seller-terms";
 
 export function SellerCard(
     { 
@@ -25,7 +25,7 @@ export function SellerCard(
             </div>
 
             <div className="seller-sold">
-                {seller.completed_sales} Completed Sales
+                {seller.completedSales} Completed Sales
             </div>
 
             <button onClick={onFavClick}>
