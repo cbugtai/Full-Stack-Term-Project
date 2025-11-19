@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+      // Common strictness rules
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "strictPropertyInitialization": true,
+      "noImplicitThis": true,
+  
+      // Shared compatibility/behavior
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "resolveJsonModule": true,
+
+      // adds the shared directory for compilation
+      // note the @ path alias makes this type available with this path in child directories
+      "paths": {
+        "@shared/*": ["./shared/*"]
+      }
+    }
+  }

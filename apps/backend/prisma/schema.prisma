@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// information about the database that prisma will connect to
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// The db schema is defined by adding models in schema.prisma
+// Each model corresponds to a single table
+// Each property corresponds to a column in that table
+// Each instance of a model corresponds to a record in that table
+// This structure lets us "code" our db schema in TypeScript
+
+// If you change the prisma schema, use [npx prisma migrate dev --name <migration-name>]
+// to create and deploy a migration (a set of SQL commands that will update the
+// database to match the Prisma schema)
+// see https://www.prisma.io/docs/orm/prisma-migrate/understanding-prisma-migrate/mental-model
+
+// Create models at below
+
+//Nick's Models
+
+//Christian's Models
+model Seller {
+  id Int @id @default(autoincrement())
+  username String @unique
+  rating Int //1-100
+  completedSales Int
+  photo  String? //url
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int?   @unique
+  user   User?  @relation(fields: [userId], references: [id])
+  
+  //relations
+  preferences UserSellerPreference[]
+  listings Listings[]
+}
+
+//table that stores 1 to 1 user preference for a seller
+model UserSellerPreference{
+  id Int @id @default(autoincrement())
+
+  userId Int
+  sellerId Int
+
+  isFavorite Boolean @default(false)
+  isBlocked Boolean @default(false)
+
+  //relations
+  user User @relation(fields: [userId], references: [id])
+  seller Seller @relation(fields: [sellerId], references: [id])
+
+  // user should only have one preference per seller
+  @@unique([userId, sellerId])
+}
+
+// casper's model
+model User {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    firstName String
+    lastName String
+    userName String
+    email String @unique
+    phone String
+    bio String
+    profilePic String
+    createdAt DateTime
+    updatedAt DateTime
+
+    seller Seller?
+
+    //relations
+    reviews Reviews[]
+    wishlist Wishlist[]
+    listingViews ListingViews[]
+    preferences UserSellerPreference[]
+}
+
+model Listings {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+
+    sellerId Int
+    title String
+    description String
+    categoryId Int
+    conditionId Int
+    price Decimal
+    originalPrice Decimal
+    statusId Int
+    imageUrl String
+    city String
+    isNegotiable Boolean
+    isFree Boolean
+    brandId Int
+    createdAt DateTime
+    updatedAt DateTime
+
+    reviews Reviews[]
+    wishlist Wishlist[]
+    listingViews ListingViews[]
+
+    seller Seller @relation(fields:[sellerId], references:[id])
+    category Category @relation(fields:[categoryId], references:[id])
+    condition Condition @relation(fields:[conditionId], references:[id])
+    brand Brand @relation(fields:[brandId], references:[id])
+    status Status @relation(fields:[statusId], references:[id])
+}
+
+
+model Category {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    category String
+
+    listtings Listings[]
+    brands BrandCategory[]
+}
+
+model Condition {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    condition String
+
+    listtings Listings[]
+}
+
+model Brand {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    brand String
+
+    listtings Listings[]
+    categories BrandCategory[]
+}
+
+model Status {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    status String
+
+    listtings Listings[]
+}
+
+model Reviews {
+    // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement())
+    userId Int
+    listingId Int
+    comment String
+    createdAt DateTime
+
+    listing Listings @relation(fields:[listingId], references:[id])
+    user User @relation(fields:[userId], references:[id])
+    @@unique([userId, listingId]) // only allow one user add one review for a listing at most
+}
+
+model Wishlist {    
+    userId Int
+    listingId Int
+    createdAt DateTime
+    
+    @@id([userId, listingId])
+
+    user User @relation(fields:[userId], references:[id])
+    listing Listings @relation(fields:[listingId], references:[id])
+
+}
+
+model ListingViews {   
+  // id property, as the identifier, with a default value that autoincrements
+    id  Int @id @default(autoincrement()) 
+    userId Int
+    listingId Int
+    viewedAt DateTime
+    
+    user User @relation(fields:[userId], references:[id])
+    listing Listings @relation(fields:[listingId], references:[id])
+
+}
+
+model BrandCategory {
+  brandId    Int
+  categoryId Int
+
+  brand      Brand    @relation(fields: [brandId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([brandId, categoryId])
+}
