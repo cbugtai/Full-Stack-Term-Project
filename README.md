@@ -79,3 +79,43 @@ materials, so they're better prepared without financial.
   - Test Data (testimonialData, userData)
   - New/Refactored Components
 - Architectural Layout Document
+
+
+## Sprint 4 Contributions
+
+### Christian Bugtai
+- T.2 Development SQL Database
+- T.3 Prisma Installation and Client Initialization (discussed with database diagram)
+
+- I.1: Back-end Resource Endpoint
+  - blocking seller management
+  - favourite seller management
+- I.2: Resource Database Schema
+  - Define models (Seller, UserSellerPreference)
+  - Create seed function to initialize data
+- I.3: Front-end Repository sends requests to back-end
+- I.4 Application State Persistence
+
+
+
+### Pinyi Rao
+- T.1: Back-end App Initialization
+- T.3 Prisma Installation and Client Initialization  (discussed with database diagram)
+- T.4 Back-end CORS Configuration
+
+- I.1: Back-end Resource Endpoint
+  - reviews management
+  - product and wishlist management
+- I.2: Resource Database Schema
+  - Define models (Reviews, Wishlist)
+  - Create seed function to initialize data
+- I.3: Front-end Repository sends requests to back-end
+- I.4 Application State Persistence
+
+### Nick Gowler
+- T.3 Prisma Installation and Client Initialization (built database diagram)
+- T.4 Back-end CORS Configuration
+
+- I.2: Resource Database Schema
+  - Define models (User, Listings, Category, Condition, Brand, Status, ListingViews, BrandCategory)
+  - Create seed function to initialize data
