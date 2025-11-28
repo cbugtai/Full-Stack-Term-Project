@@ -66,15 +66,16 @@ model UserSellerPreference{
 model User {
     // id property, as the identifier, with a default value that autoincrements
     id  Int @id @default(autoincrement())
-    firstName String
-    lastName String
-    userName String
+    clerkId String? @unique
+    firstName String?
+    lastName String?
+    userName String?
     email String @unique
-    phone String
-    bio String
-    profilePic String
-    createdAt DateTime
-    updatedAt DateTime
+    phone String?
+    bio String?
+    profilePic String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     seller Seller?
 
@@ -102,8 +103,8 @@ model Listings {
     isNegotiable Boolean
     isFree Boolean
     brandId Int
-    createdAt DateTime
-    updatedAt DateTime
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     reviews Reviews[]
     wishlist Wishlist[]
