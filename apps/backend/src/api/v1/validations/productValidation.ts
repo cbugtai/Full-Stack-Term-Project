@@ -10,7 +10,10 @@ export const getProductByIdSchema: ObjectSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
 }).unknown(false);
 
-export const getWishlistSchema: ObjectSchema = Joi.object({}).unknown(false);
+export const getWishlistSchema: ObjectSchema = Joi.object({
+  page: Joi.number().integer().positive().optional(),
+  pageSize: Joi.number().integer().positive().optional(),
+}).unknown(false);
 
 export const addWishlistSchema: ObjectSchema = Joi.object({
   productId: Joi.number().integer().positive().required(),

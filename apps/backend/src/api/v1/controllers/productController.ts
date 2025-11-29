@@ -60,7 +60,7 @@ export const getProductById = async (
 };
 
 export const getUserWishlist = async (
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -68,7 +68,18 @@ export const getUserWishlist = async (
     // temporary user handling,  will remove when auth is implemented
     const userId: number = await tempUserService.getTempUserId();
 
-    const wishlist: Product[] = await productService.getUserWishlist(userId);
+    // get the page and pageSize from query parameters
+    const page: number = Number.parseInt(req.query.page as string) || 1;
+    let pageSize: number = Number.parseInt(req.query.pageSize as string) || 6;
+    if (pageSize > 10) {
+      pageSize = 10; // set a maximum page size limit
+    }
+
+    const wishlist: ProductsRes = await productService.getUserWishlist(
+      userId,
+      page,
+      pageSize
+    );
     res
       .status(200)
       .json(successResponse(wishlist, "User's wishlist retrieved succesfully"));

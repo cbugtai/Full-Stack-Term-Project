@@ -144,8 +144,17 @@ export const fetchProductById = async (
   }
 };
 
-export const getUserWishlist = async (userId: number): Promise<Product[]> => {
+export const getUserWishlist = async (
+  userId: number,
+  page: number,
+  pageSize: number
+): Promise<ProductsRes> => {
+  // pagination calculation
+  const skip: number = (page - 1) * pageSize;
+
   const wishlistListings = await prisma.wishlist.findMany({
+    skip,
+    take: pageSize,
     where: { userId },
     include: {
       listing: {
@@ -167,6 +176,10 @@ export const getUserWishlist = async (userId: number): Promise<Product[]> => {
     orderBy: {
       createdAt: "desc", // oder by most recently added to wishlist
     },
+  });
+  // get the toal count of listings for pagination info
+  const totalCount = await prisma.wishlist.count({
+    where: { userId },
   });
 
   const products: Product[] = wishlistListings.map((wishListing) => {
@@ -195,7 +208,15 @@ export const getUserWishlist = async (userId: number): Promise<Product[]> => {
     };
   });
 
-  return products;
+  return {
+    products,
+    meta: {
+      page,
+      pageSize,
+      totalCount,
+      totalPages: Math.ceil(totalCount / pageSize),
+    },
+  };
 };
 
 export const addToWishlist = async ({

@@ -24,8 +24,14 @@ export async function fetchAllProducts(page?: number, pageSize?: number) {
   return products;
 }
 
-export async function fetchWishlistedProducts() {
-  const wishlishedProducts: Product[] = await productRepo.fetchWishlist();
+export async function fetchWishlistedProducts(
+  page?: number,
+  pageSize?: number
+) {
+  const wishlishedProducts: ProductsRes = await productRepo.fetchWishlist(
+    page,
+    pageSize
+  );
   return wishlishedProducts;
 }
 

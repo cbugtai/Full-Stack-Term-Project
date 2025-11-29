@@ -1,4 +1,5 @@
 import ProductList from "@/components/common/product-list/ProductList";
+import ProductPagination from "@/components/common/product-pagination/ProductPagination";
 import { useWishlistedProducts } from "@/hooks/useWishlistedProducts";
 
 /**
@@ -15,8 +16,16 @@ import { useWishlistedProducts } from "@/hooks/useWishlistedProducts";
  * - to improves maintainability and readability.
  */
 export function WishProducts() {
-  const { wishlistedProducts, error, toggleWishedProduct, addReview, loading } =
-    useWishlistedProducts();
+  const {
+    wishlistedProducts,
+    error,
+    toggleWishedProduct,
+    addReview,
+    loading,
+    page,
+    setPage,
+    maxPage,
+  } = useWishlistedProducts();
 
   if (loading) {
     return (
@@ -38,6 +47,7 @@ export function WishProducts() {
           />
         )}
       </section>
+      <ProductPagination page={page} setPage={setPage} maxPage={maxPage} />
     </>
   );
 }

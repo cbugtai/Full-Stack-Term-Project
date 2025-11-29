@@ -46,10 +46,17 @@ export async function fetchProductById(productId: number): Promise<Product> {
   return json.data;
 }
 
-export async function fetchWishlist(): Promise<Product[]> {
-  const wishlistResponse: Response = await fetch(
-    `${BASE_URL}${WISHLIST_ENDPOINT}`
-  );
+export async function fetchWishlist(
+  page?: number,
+  pageSize?: number
+): Promise<ProductsRes> {
+  const url = new URL(`${BASE_URL}${WISHLIST_ENDPOINT}`);
+
+  if (page !== undefined) url.searchParams.set("page", String(page));
+  if (pageSize !== undefined)
+    url.searchParams.set("pageSize", String(pageSize));
+
+  const wishlistResponse: Response = await fetch(url.toString());
 
   if (!wishlistResponse.ok) {
     throw new Error("Failed to fetch wishlist from server");
