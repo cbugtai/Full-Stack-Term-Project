@@ -16,8 +16,18 @@ import { useAllProducts } from "@/hooks/useAllProducts";
  * - to improves maintainability and readability.
  */
 export function AllProducts() {
-  const { allProducts, error, toggleWishedProduct, addReview, loading } =
-    useAllProducts();
+  const {
+    allProducts,
+    error,
+    toggleWishedProduct,
+    addReview,
+    loading,
+    page,
+    setPage,
+    maxPage,
+  } = useAllProducts();
+
+  // console.log("AllProducts render with products:", allProducts);
 
   if (loading) {
     return <div className="loading-placeholder">Loading Products...</div>;
@@ -37,7 +47,7 @@ export function AllProducts() {
           />
         </section>
       )}
-      <ProductPagination />
+      <ProductPagination page={page} setPage={setPage} maxPage={maxPage} />
     </>
   );
 }

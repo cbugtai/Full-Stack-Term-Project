@@ -1,3 +1,4 @@
+import { Dispatch } from "react";
 import type { Product } from "../../../../shared/types/frontend-product";
 
 export type NewReviewParams = {
@@ -26,7 +27,7 @@ export type ReviewFillFormParams = {
 };
 
 export type PaginationParams = {
-  pageInit: number;
-  pageSizeInit: number;
-  getPaginationList: (page: number, pageSize: number) => void;
+  page: number;
+  maxPage: number;
+  setPage: Dispatch<React.SetStateAction<number>>;
 };

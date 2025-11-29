@@ -1,5 +1,8 @@
-import type { Product } from "../../../../../shared/types/frontend-product";
-type ProductsResponseJSON = { message: string; data: Product[] };
+import type {
+  Product,
+  ProductsRes,
+} from "../../../../../shared/types/frontend-product";
+type ProductsResponseJSON = { message: string; data: ProductsRes };
 type ProductResponseJSON = { message: string; data: Product };
 
 // Base url for backend
@@ -8,10 +11,17 @@ const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 const PRODUCT_ENDPOINT = "/products";
 const WISHLIST_ENDPOINT = "/products/wishlist";
 
-export async function fetchAllProducts(): Promise<Product[]> {
-  const productResponse: Response = await fetch(
-    `${BASE_URL}${PRODUCT_ENDPOINT}`
-  );
+export async function fetchAllProducts(
+  page?: number,
+  pageSize?: number
+): Promise<ProductsRes> {
+  const url = new URL(`${BASE_URL}${PRODUCT_ENDPOINT}`);
+
+  if (page !== undefined) url.searchParams.set("page", String(page));
+  if (pageSize !== undefined)
+    url.searchParams.set("pageSize", String(pageSize));
+
+  const productResponse: Response = await fetch(url.toString());
 
   if (!productResponse.ok) {
     throw new Error("Failed to fetch products from server");

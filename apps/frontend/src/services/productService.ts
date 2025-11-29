@@ -1,4 +1,7 @@
-import type { Product } from "../../../../shared/types/frontend-product";
+import type {
+  Product,
+  ProductsRes,
+} from "../../../../shared/types/frontend-product";
 import * as productRepo from "../apis/product/productRepo";
 
 /**
@@ -13,8 +16,11 @@ import * as productRepo from "../apis/product/productRepo";
  *
  */
 
-export async function fetchAllProducts() {
-  const products: Product[] = await productRepo.fetchAllProducts();
+export async function fetchAllProducts(page?: number, pageSize?: number) {
+  const products: ProductsRes = await productRepo.fetchAllProducts(
+    page,
+    pageSize
+  );
   return products;
 }
 

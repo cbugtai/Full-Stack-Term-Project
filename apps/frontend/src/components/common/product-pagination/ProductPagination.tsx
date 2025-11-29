@@ -1,23 +1,21 @@
 import "./ProductPagination.css";
-import { useState } from "react";
+import type { PaginationParams } from "@/types/productModel";
 
-function ProductPagination({
-  pageInit = 1,
-  pageSizeInit = 10,
-  getPaginationList = () => {},
-}) {
-  const [page, setPage] = useState(pageInit);
-  const [pageSize, setPageSize] = useState(pageSizeInit);
-
+function ProductPagination({ page, maxPage, setPage }: PaginationParams) {
   return (
     <div className="product-pagination">
       <button onClick={() => setPage(page - 1)} disabled={page === 1}>
         Prev
       </button>
 
-      <span> Page {page} </span>
+      <span>
+        {" "}
+        Page {page} / {maxPage}
+      </span>
 
-      <button onClick={() => setPage(page + 1)}>Next</button>
+      <button onClick={() => setPage(page + 1)} disabled={page === maxPage}>
+        Next
+      </button>
     </div>
   );
 }

@@ -3,13 +3,25 @@
 // Use the listing type defined in prisma/schema.prisma
 // initialize a prisma client if not already and use in queries here
 import prisma from "../../../../prisma/client";
-import { Product } from "../../../../../../shared/types/frontend-product";
+import {
+  Product,
+  ProductsRes,
+} from "../../../../../../shared/types/frontend-product";
 import { Wishlist } from "@prisma/client";
 import { ExtendedError } from "../middleware/errorHandler";
 
-export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
+export const fetchAllProducts = async (
+  userId: number,
+  page: number,
+  pageSize: number
+): Promise<ProductsRes> => {
+  // pagination calculation
+  const skip: number = (page - 1) * pageSize;
+
   // get all records in the listings table
   const listings = await prisma.listings.findMany({
+    skip,
+    take: pageSize,
     include: {
       category: true,
       brand: true,
@@ -30,6 +42,8 @@ export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
       },
     },
   });
+  // get the toal count of listings for pagination info
+  const totalCount = await prisma.listings.count();
 
   // generate the Product[] to return
   const products: Product[] = listings.map((listing) => ({
@@ -54,7 +68,15 @@ export const fetchAllProducts = async (userId: number): Promise<Product[]> => {
     })),
   }));
 
-  return products;
+  return {
+    products,
+    meta: {
+      page,
+      pageSize,
+      totalCount,
+      totalPages: Math.ceil(totalCount / pageSize),
+    },
+  };
 };
 
 export const fetchProductById = async (
