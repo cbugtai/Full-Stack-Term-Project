@@ -24,3 +24,9 @@ export type ReviewFillFormParams = {
   addReview: ({ productId, comment }: NewReviewParams) => void;
   closeDrawer: () => void;
 };
+
+export type PaginationParams = {
+  pageInit: number;
+  pageSizeInit: number;
+  getPaginationList: (page: number, pageSize: number) => void;
+};

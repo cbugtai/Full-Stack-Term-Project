@@ -1,4 +1,5 @@
 import ProductList from "@/components/common/product-list/ProductList";
+import ProductPagination from "@/components/common/product-pagination/ProductPagination";
 import { useAllProducts } from "@/hooks/useAllProducts";
 
 /**
@@ -36,6 +37,7 @@ export function AllProducts() {
           />
         </section>
       )}
+      <ProductPagination />
     </>
   );
 }
