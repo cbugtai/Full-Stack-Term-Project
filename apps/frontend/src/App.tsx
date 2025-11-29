@@ -6,7 +6,6 @@ import { WishProducts } from "./components/pages/product/WishProducts";
 
 import Sellers from "./components/pages/sellers/Sellers";
 
-import { useState } from "react";
 import { SellersFavorites } from "./components/pages/sellers/favorites/FavoriteSellers";
 import { SellersBlocked } from "./components/pages/sellers/blocked/BlockedSellers";
 
@@ -22,6 +21,7 @@ import { DeleteAccount } from "./components/pages/dashboard/display/settings/del
 import { Listings } from "./components/pages/dashboard/display/listings/Listings";
 import { CurrentListings } from "./components/pages/dashboard/display/listings/currentListings/CurrentListings";
 import { ListingHistory } from "./components/pages/dashboard/display/listings/listingHistory/ListingHistory";
+import SignInPage from "./components/pages/signInPage/SignInPage";
 
 function App() {
   
@@ -60,6 +60,8 @@ function App() {
           <Route path="listings/current" element={<CurrentListings />} />
           <Route path="listings/history" element={<ListingHistory />} />
         </Route>
+
+        <Route path="/sign-in" element={<SignInPage />} />
       </Route>
     </Routes>
   );

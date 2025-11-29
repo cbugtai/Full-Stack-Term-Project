@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
-import { useUser } from "@/context/userContext";
+import { SignedIn, SignedOut, SignOutButton, useUser } from "@clerk/clerk-react";
 import { UserCard } from "@/components/common/userCard/UserCard";
 import "./Header.css";
 
@@ -38,29 +38,38 @@ function Header() {
                     </NavLink>
 
                     <div className="user-info">
-                        {user ? (
-                            <button className="profile-link" onClick={() => setShowCard(true)}>
+                        <SignedIn>
+                            <button
+                                className="profile-link"
+                                onClick={() => setShowCard(true)}
+                            >
                                 <div className="profile-content">
-                                    {user.username}
+                                    {user?.username || user?.primaryEmailAddress?.emailAddress}
                                     <img
-                                        src={user.profilePic}
+                                        src={user?.imageUrl}
                                         className="profile-pic"
-                                        alt={`${user.username}'s profile picture`}
+                                        alt={`${user?.username || "User"}'s profile picture`}
                                     />
                                 </div>
                             </button>
-                        ) : (
-                            <NavLink to="/login" className="profile-link">
+
+                            <SignOutButton signOutOptions={{ redirectUrl: "/" }}>
+                                <button className="signout-btn">Sign out</button>
+                            </SignOutButton>
+                        </SignedIn>
+
+                        <SignedOut>
+                            <NavLink to="/sign-in" className="profile-link">
                                 <div className="profile-content">
                                     Login
-                                    <img
-                                        src="/src/assets/default-user.png"
-                                        className="profile-pic"
-                                        alt="Default user profile icon"
-                                    />
+                                <img
+                                    src="/src/assets/default-user.png"
+                                    className="profile-pic"
+                                    alt="Default user profile icon"
+                                />
                                 </div>
                             </NavLink>
-                        )}
+                        </SignedOut>
                     </div>
                 </div>
             </header>

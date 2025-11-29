@@ -1,18 +1,35 @@
 import { useState } from "react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import UserIcon from "@/assets/icons/UserIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useUsernameValidation } from "@/hooks/profileValidation/useUsernameValidation";
-import { useUser } from "@/context/userContext";
 import { saveUser } from "@/apis/user/userRepo";
 import { SettingsNav } from "../SettingsNav";
+import type { User } from "@/types/userSchema";
+import { mapClerkUserToAppUser } from "@/utils/mapClerkUserToAppUser";
 import "../Settings.css";
 
 export function ChangeUsername() {
     const { error, validate } = useUsernameValidation();
-    const { user, setUser } = useUser();
-    const [username, setUsername] = useState(user?.username ?? "");
+    const { isSignedIn, user } = useUser();
+    const { getToken } = useAuth();
+
+    const [username, setUsername] = useState<string>(user?.username ?? "");
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
+
+    if (!isSignedIn) {
+        return (
+            <DashboardDisplay
+                heading="Change Username"
+                intro="You must be signed in to update your username."
+                icon={<UserIcon className="icon" />}
+                disableGrid
+            >
+                <p>Please sign in to change your username.</p>
+            </DashboardDisplay>
+        );
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,11 +39,18 @@ export function ChangeUsername() {
         if (trimmedUsername === user.username || !(await validate(trimmedUsername))) return;
 
         setSaving(true);
-        const updatedUser = { ...user, username: trimmedUsername };
 
         try {
-            await saveUser(updatedUser);
-            setUser(updatedUser);
+            await user.update({ username: trimmedUsername });
+
+            const token = await getToken({ template: "backend" });
+            if (token) {
+                const appUser: User = mapClerkUserToAppUser(user, {
+                username: trimmedUsername,
+                });
+                await saveUser(appUser, token);
+            }
+
             setSuccess(true);
         } catch (err) {
             console.error("Failed to update username:", err);

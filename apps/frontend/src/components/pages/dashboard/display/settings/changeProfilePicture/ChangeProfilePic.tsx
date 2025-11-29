@@ -1,41 +1,66 @@
 import { useState, useEffect } from "react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import ImageIcon from "@/assets/icons/ImageIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useProfilePictureValidation } from "@/hooks/profileValidation/useProfilePictureValidation";
-import { useMockUser } from "@/hooks/useMockUser";
-import { useUser } from "@/context/userContext";
-import { getUser, saveUser } from "@/apis/user/userRepo";
+import { saveUser } from "@/apis/user/userRepo";
 import { SettingsNav } from "../SettingsNav";
+import type { User } from "@/types/userSchema";
+import { mapClerkUserToAppUser } from "@/utils/mapClerkUserToAppUser";
 import "../Settings.css";
 
 export function ChangeProfilePicture() {
     const { error, validate } = useProfilePictureValidation();
-    const { updateProfilePicture } = useMockUser();
-    const { setUser } = useUser();
+    const { isSignedIn, user } = useUser();
+    const { getToken } = useAuth();
+
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
     const [file, setFile] = useState<File | null>(null);
 
     useEffect(() => {
         const upload = async () => {
-            if (!file || !validate(file)) return;
+            if (!file || !validate(file) || !user?.id) return;
 
             setSaving(true);
-            const newProfilePic = await updateProfilePicture(file);
 
-            const currentUser = await getUser();
-            if (currentUser) {
-                const updatedUser = { ...currentUser, profilePic: newProfilePic };
-                await saveUser(updatedUser);
-                setUser(updatedUser);
+            try {
+                const newProfilePic = URL.createObjectURL(file);
+
+                const token = await getToken({ template: "backend" });
+                if (!token) {
+                    console.error("No session token available");
+                    return;
+                }
+
+                const appUser: User = mapClerkUserToAppUser(user, {
+                    profilePic: newProfilePic,
+                });
+
+                await saveUser(appUser, token);
                 setSuccess(true);
+            } catch (err) {
+                console.error("Failed to update profile picture:", err);
+            } finally {
+                setSaving(false);
             }
-
-            setSaving(false);
         };
 
         upload();
-    }, [file]);
+    }, [file, user, getToken, validate]);
+
+    if (!isSignedIn) {
+        return (
+            <DashboardDisplay
+                heading="Change Profile Picture"
+                intro="You must be signed in to update your profile picture."
+                icon={<ImageIcon className="icon" />}
+                disableGrid
+            >
+                <p>Please sign in to change your profile picture.</p>
+            </DashboardDisplay>
+        );
+    }
 
     return (
         <div className="settings-page">
@@ -47,7 +72,7 @@ export function ChangeProfilePicture() {
                 intro="Upload a new profile image to personalize your account."
                 icon={<ImageIcon className="icon" />}
                 disableGrid
-            >       
+            >
                 <form className="form-wrapper" onSubmit={(e) => e.preventDefault()}>
                     <div className="form-group">
                         <label htmlFor="profilePicture" className="custom-file-label">

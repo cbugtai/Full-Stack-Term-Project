@@ -1,26 +1,53 @@
 import { useState } from "react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import WarnIcon from "@/assets/icons/WarnIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useDeleteAccountValidation } from "@/hooks/profileValidation/useDeleteAccountValidation";
-import { useMockUser } from "@/hooks/useMockUser";
+import { deleteUser  } from "@/apis/user/userRepo";
 import { SettingsNav } from "../SettingsNav";
 import "../Settings.css";
 
 export function DeleteAccount() {
     const { error, validate } = useDeleteAccountValidation();
-    const { deleteUser } = useMockUser();
+    const { isSignedIn, user } = useUser();
+    const { getToken } = useAuth();
+
     const [success, setSuccess] = useState(false);
     const [saving, setSaving] = useState(false);
+
+    if (!isSignedIn) {
+        return (
+            <DashboardDisplay
+                heading="Delete Account"
+                intro="You must be signed in to delete your account."
+                icon={<WarnIcon className="icon" />}
+                disableGrid
+            >
+                <p>Please sign in to continue.</p>
+            </DashboardDisplay>
+        );
+    }
 
     const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
         const confirmation = (e.target as HTMLFormElement).confirmation.value;
 
-        if (validate(confirmation)) {
-            setSaving(true);
-            await deleteUser();
-            setSaving(false);
+        if (!validate(confirmation)) return;
+
+        setSaving(true);
+        try {
+            await user.delete();
+
+            const token = await getToken({ template: "backend" });
+            if (token) {
+                await deleteUser(user.id, token);
+            }
+
             setSuccess(true);
+        } catch (err) {
+            console.error("Failed to delete account:", err);
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -50,7 +77,9 @@ export function DeleteAccount() {
                     </div>
 
                     {success && (
-                        <p className="form-success">Your account has been deleted successfully.</p>
+                        <p className="form-success">
+                            Your account has been deleted successfully.
+                        </p>
                     )}
 
                     <div className="form-actions">

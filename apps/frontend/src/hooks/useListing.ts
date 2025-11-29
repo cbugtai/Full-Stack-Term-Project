@@ -1,5 +1,5 @@
 import { listingService } from "../services/listingService";
-import { useUser } from "../context/userContext";
+import { useUser } from "../context/listingContext";
 
 export function useListing() {
     const { refreshListings } = useUser();

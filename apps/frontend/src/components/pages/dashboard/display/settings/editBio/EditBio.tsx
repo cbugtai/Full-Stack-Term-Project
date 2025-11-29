@@ -1,32 +1,59 @@
 import { useState } from "react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import PencilIcon from "@/assets/icons/PencilIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { useBioValidation } from "@/hooks/profileValidation/useBioValidation";
-import { useUser } from "@/context/userContext";
 import { saveUser } from "@/apis/user/userRepo";
 import { SettingsNav } from "../SettingsNav";
+import type { User } from "@/types/userSchema";
+import { mapClerkUserToAppUser } from "@/utils/mapClerkUserToAppUser";
 import "../Settings.css";
 
 export function EditBio() {
     const { error, validate } = useBioValidation();
-    const { user, setUser } = useUser();
-    const [bio, setBio] = useState(user?.bio ?? "");
+    const { getToken } = useAuth();
+    const { isSignedIn, user } = useUser();
+
+    const [bio, setBio] = useState<string>(
+        (user?.unsafeMetadata as { bio?: string })?.bio ?? ""
+    );
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState(false);
+
+    if (!isSignedIn) {
+        return (
+            <DashboardDisplay
+                heading="Edit Bio"
+                intro="You must be signed in to update your bio."
+                icon={<PencilIcon className="icon" />}
+                disableGrid
+            >
+                <p>Please sign in to edit your bio.</p>
+            </DashboardDisplay>
+        );
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!user?.id) return;
 
         const trimmedBio = bio.trim();
-        if (trimmedBio === user.bio || !validate(trimmedBio)) return;
+        if (!validate(trimmedBio)) return;
 
         setSaving(true);
-        const updatedUser = { ...user, bio: trimmedBio };
 
         try {
-            await saveUser(updatedUser);
-            setUser(updatedUser);
+            const token = await getToken({ template: "backend" });
+            if (!token) {
+                console.error("No session token available");
+                return;
+            }
+
+            const appUser: User = mapClerkUserToAppUser(user, {
+                bio: trimmedBio,
+            });
+
+            await saveUser(appUser, token);
             setSuccess(true);
         } catch (err) {
             console.error("Failed to update bio:", err);
