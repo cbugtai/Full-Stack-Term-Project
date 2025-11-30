@@ -12,6 +12,16 @@ export type Product = {
   reviews?: Review[];
 };
 
+export type ProductsRes = {
+  products: Product[];
+  meta: {
+    page: number;
+    pageSize: number;
+    totalCount: number;
+    totalPages: number;
+  };
+};
+
 export type Review = {
   id: number;
   userId: number;
