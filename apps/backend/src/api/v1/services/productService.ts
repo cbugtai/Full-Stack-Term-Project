@@ -15,68 +15,76 @@ export const fetchAllProducts = async (
   page: number,
   pageSize: number
 ): Promise<ProductsRes> => {
-  // pagination calculation
-  const skip: number = (page - 1) * pageSize;
+  try {
+    // pagination calculation
+    const skip: number = (page - 1) * pageSize;
 
-  // get all records in the listings table
-  const listings = await prisma.listings.findMany({
-    skip,
-    take: pageSize,
-    include: {
-      category: true,
-      brand: true,
-      condition: true,
-      // check the wishlist for the current user
-      wishlist: {
-        where: {
-          userId,
+    // get all records in the listings table
+    const listings = await prisma.listings.findMany({
+      skip,
+      take: pageSize,
+      include: {
+        category: true,
+        brand: true,
+        condition: true,
+        // check the wishlist for the current user
+        wishlist: {
+          where: {
+            userId,
+          },
+        },
+        reviews: {
+          include: {
+            user: true, // join the user table to get userName
+          },
+          orderBy: {
+            createdAt: "desc", // oder by most recently created reviews
+          },
         },
       },
-      reviews: {
-        include: {
-          user: true, // join the user table to get userName
-        },
-        orderBy: {
-          createdAt: "desc", // oder by most recently created reviews
-        },
+    });
+    // get the toal count of listings for pagination info
+    const totalCount = await prisma.listings.count();
+
+    // generate the Product[] to return
+    const products: Product[] = listings.map((listing) => ({
+      id: listing.id,
+      description: listing.description,
+      category: listing.category.category,
+      brand: listing.brand.brand,
+      condition: listing.condition.condition,
+      price: listing.price.toNumber(), // Decimal -> number
+      originalPrice: listing.originalPrice.toNumber(),
+      imgUrl: listing.imageUrl,
+      isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
+      hasReviewed: listing.reviews.some((r) => r.userId === userId),
+      reviews: listing.reviews.map((r) => ({
+        id: r.id,
+        productId: listing.id,
+        productDescription: listing.description,
+        userId: r.userId,
+        userName: `${r.user.userName}`,
+        comment: r.comment,
+        createdAt: r.createdAt,
+      })),
+    }));
+
+    return {
+      products,
+      meta: {
+        page,
+        pageSize,
+        totalCount,
+        totalPages: Math.ceil(totalCount / pageSize),
       },
-    },
-  });
-  // get the toal count of listings for pagination info
-  const totalCount = await prisma.listings.count();
-
-  // generate the Product[] to return
-  const products: Product[] = listings.map((listing) => ({
-    id: listing.id,
-    description: listing.description,
-    category: listing.category.category,
-    brand: listing.brand.brand,
-    condition: listing.condition.condition,
-    price: listing.price.toNumber(), // Decimal -> number
-    originalPrice: listing.originalPrice.toNumber(),
-    imgUrl: listing.imageUrl,
-    isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
-    hasReviewed: listing.reviews.some((r) => r.userId === userId),
-    reviews: listing.reviews.map((r) => ({
-      id: r.id,
-      productId: listing.id,
-      productDescription: listing.description,
-      userId: r.userId,
-      userName: `${r.user.userName}`,
-      comment: r.comment,
-      createdAt: r.createdAt,
-    })),
-  }));
-
-  return {
-    products,
-    meta: {
-      page,
-      pageSize,
-      totalCount,
-      totalPages: Math.ceil(totalCount / pageSize),
-    },
-  };
+    };
+  } catch (error) {
+    const err: ExtendedError = new Error(
+      `Failed to fetch products from database`
+    );
+    err.statusCode = 500;
+    err.code = "Database_Fetch_All_Products_Failed";
+  }
 };
 
 export const fetchProductById = async (

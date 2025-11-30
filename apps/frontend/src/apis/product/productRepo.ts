@@ -2,7 +2,12 @@ import type {
   Product,
   ProductsRes,
 } from "../../../../../shared/types/frontend-product";
-type ProductsResponseJSON = { message: string; data: ProductsRes };
+type ProductsResponseJSON = {
+  message: string;
+  data: ProductsRes;
+  status: "success";
+};
+type ErrResponseJSON = { message: string; code: string; status: "error" };
 type ProductResponseJSON = { message: string; data: Product };
 
 // Base url for backend
@@ -23,11 +28,21 @@ export async function fetchAllProducts(
 
   const productResponse: Response = await fetch(url.toString());
 
-  if (!productResponse.ok) {
-    throw new Error("Failed to fetch products from server");
+  // if the server is unreachable, the json parsing will fail
+  let json: ProductsResponseJSON | ErrResponseJSON;
+  try {
+    json = await productResponse.json();
+  } catch (e) {
+    throw new Error(`SERVER_UNREACHABLE, ${e}`);
   }
 
-  const json: ProductsResponseJSON = await productResponse.json();
+  // if the response indicates there is an error, throw an error
+  if (json.status === "error") {
+    const error = new Error(`${json.message}`) as Error & { code: string };
+    error.code = json.code;
+    throw error;
+  }
+
   return json.data;
 }
 
