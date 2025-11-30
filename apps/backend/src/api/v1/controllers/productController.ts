@@ -23,11 +23,8 @@ export const getAllProducts = async (
     if (pageSize > 20) {
       pageSize = 20; // set a maximum page size limit
     }
-    const productRes: ProductsRes = await productService.fetchAllProducts(
-      userId,
-      page,
-      pageSize
-    );
+    const productRes: ProductsRes | undefined =
+      await productService.fetchAllProducts(userId, page, pageSize);
     res
       .status(200)
       .json(successResponse(productRes, "Products retrieved succesfully"));

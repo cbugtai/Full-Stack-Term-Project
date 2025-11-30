@@ -14,7 +14,7 @@ export const fetchAllProducts = async (
   userId: number,
   page: number,
   pageSize: number
-): Promise<ProductsRes> => {
+): Promise<ProductsRes | undefined> => {
   try {
     // pagination calculation
     const skip: number = (page - 1) * pageSize;
