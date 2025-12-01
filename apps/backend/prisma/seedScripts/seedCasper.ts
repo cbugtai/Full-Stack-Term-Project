@@ -51,6 +51,7 @@ export async function seedCasper() {
   const user1 = await prisma.user.upsert({
     where: { email: "alice@example.com" },
     create: {
+      clerkUserId: "fake-clerk-user-id-alice",
       firstName: "Alice",
       lastName: "Wang",
       userName: "alicew",
@@ -60,11 +61,9 @@ export async function seedCasper() {
       profilePic: "https://picsum.photos/seed/alice/200/200",
       createdAt: new Date(),
       updatedAt: new Date(),
-      seller: { create: { rating: 96,
-                          username: "alicew",
-                          completedSales: 12  
-                        } 
-                    },
+      seller: {
+        create: { rating: 96, username: "alicew", completedSales: 12 },
+      },
     },
     update: {},
     include: { seller: true },
@@ -73,6 +72,7 @@ export async function seedCasper() {
   const user2 = await prisma.user.upsert({
     where: { email: "bob@example.com" },
     create: {
+      clerkUserId: "fake-clerk-user-id-bob",
       firstName: "Bob",
       lastName: "Li",
       userName: "bobli",
