@@ -7,10 +7,11 @@ import corsOptions from "../config/cors";
 import setupSwagger from "../config/swagger";
 import errorHandler from "./api/v1/middleware/errorHandler";
 
-import sellerRoutes from "./api/v1/routes/sellerRoutes"
+import sellerRoutes from "./api/v1/routes/sellerRoutes";
 import productRoutes from "./api/v1/routes/productRoutes";
 import reviewRoutes from "./api/v1/routes/reviewRoutes";
 import tempUserRoutes from "./api/v1/routes/tempUserRoutes";
+import { clerkMiddleware } from "@clerk/express";
 
 // initialize express application
 const app: Express = express();
@@ -27,6 +28,9 @@ app.use(express.json());
 // This will refuse requests from origins that do not fulfill corsOptions requirements
 // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
 app.use(cors(corsOptions));
+
+// add clerk middleware
+app.use(clerkMiddleware());
 
 // invoke swagger middleware for serving docs in /api-docs
 setupSwagger(app);
