@@ -44,10 +44,13 @@ Create the following `.env` files before running the app.
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/FullStackApp?schema=public"
 PORT=3000
 FRONTEND_URL=http://localhost:5173
+CLERK_PUBLISHABLE_KEY=<CLERK PUBLISHABLE KEY>
+CLERK_SECRET_KEY=<CLERK SECRET KEY>
 ```
 **Frontend** - `apps/frontend/.env`
 ```env
 VITE_API_BASE_URL="http://localhost:3000"
+VITE_CLERK_PUBLISHABLE_KEY=<CLERK PUBLISHABLE KEY>
 ```
 
 ### Step 3. Initialize Project
