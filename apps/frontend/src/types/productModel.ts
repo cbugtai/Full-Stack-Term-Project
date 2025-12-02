@@ -1,3 +1,4 @@
+import { Dispatch } from "react";
 import type { Product } from "../../../../shared/types/frontend-product";
 
 export type NewReviewParams = {
@@ -23,4 +24,10 @@ export type ReviewFillFormParams = {
   description: string;
   addReview: ({ productId, comment }: NewReviewParams) => void;
   closeDrawer: () => void;
+};
+
+export type PaginationParams = {
+  page: number;
+  maxPage: number;
+  setPage: Dispatch<React.SetStateAction<number>>;
 };
