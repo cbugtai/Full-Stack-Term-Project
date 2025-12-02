@@ -5,7 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+
+    "docker:up": "docker compose up -d",
+    "seed": "prisma db seed"
   },
   "keywords": [],
   "author": "",
