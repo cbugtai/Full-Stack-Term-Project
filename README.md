@@ -35,6 +35,7 @@ These are the steps to run the app on your local machine.
 - **Node.js (v16+)** installed and added to PATH
 - **Docker Desktop** installed and running
 - Required Ports are free: **5432**, **3000**, **5173**
+- **Clerk AUTH** application is created
 
 ### Step 2. Create Environment Variables
 Create the following `.env` files before running the app.
@@ -44,13 +45,13 @@ Create the following `.env` files before running the app.
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/FullStackApp?schema=public"
 PORT=3000
 FRONTEND_URL=http://localhost:5173
-CLERK_PUBLISHABLE_KEY=<CLERK PUBLISHABLE KEY>
-CLERK_SECRET_KEY=<CLERK SECRET KEY>
+CLERK_PUBLISHABLE_KEY=<YOUR CLERK PUBLISHABLE KEY>
+CLERK_SECRET_KEY=<YOUR CLERK SECRET KEY>
 ```
 **Frontend** - `apps/frontend/.env`
 ```env
 VITE_API_BASE_URL="http://localhost:3000"
-VITE_CLERK_PUBLISHABLE_KEY=<CLERK PUBLISHABLE KEY>
+VITE_CLERK_PUBLISHABLE_KEY=<YOUR CLERK PUBLISHABLE KEY>
 ```
 
 ### Step 3. Initialize Project
