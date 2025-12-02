@@ -2,11 +2,13 @@
     flex: 0 0 250px;
     width: 250px;
     flex-shrink: 0;
-    overflow: hidden;
+    overflow: auto;
     padding: 1rem;
     border-radius: 8px;
     background-color: #1a3257;
     color: white;
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 .dashboard-section {

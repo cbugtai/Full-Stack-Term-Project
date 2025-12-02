@@ -1,0 +1,51 @@
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 3rem 1rem;
+}
+
+.auth-page .cl-card {
+    width: 100%;
+    max-width: 840px;
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+}
+
+.auth-page .cl-headerTitle {
+    font-size: 2.25rem;
+    line-height: 1.2;
+}
+
+.auth-page .cl-headerSubtitle {
+    font-size: 1.125rem;
+}
+
+.auth-page .cl-socialButtonsProviderIconButton {
+    font-size: 1.0625rem;
+    padding: 0.9rem 1.25rem;
+}
+
+.auth-page .cl-formFieldLabel {
+    font-size: 1rem;
+}
+
+.auth-page .cl-formFieldInput {
+    font-size: 1.0625rem;
+    padding: 0.9rem 1rem;
+}
+
+.auth-page .cl-formButtonPrimary {
+    font-size: 1.125rem;
+    padding: 1rem 1.5rem;
+}
+
+.auth-page .cl-dividerText {
+    font-size: 1rem;
+}
+
+.auth-page .cl-footerActionLink {
+    font-size: 1rem;
+}
