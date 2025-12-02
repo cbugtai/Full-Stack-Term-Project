@@ -11,14 +11,13 @@ export const createUser = async (userData: {
     userName?: string;
     firstName?: string;
     lastName?: string;
+    profilePic?: string | null;
 }): Promise<User> => {
     return prisma.user.create({ data: userData });
 };
 
-export const updateUser = async (id: number, data: Partial<User>): Promise<User> => {
-    return prisma.user.update({ where: { id }, data });
-};
+export const updateUserByClerkId = async (clerkId: string, data: Partial<User>) =>
+    prisma.user.update({ where: { clerkId }, data });
 
-export const deleteUser = async (id: number): Promise<User> => {
-    return prisma.user.delete({ where: { id } });
-};
+export const deleteUserByClerkId = async (clerkId: string) =>
+    prisma.user.delete({ where: { clerkId } });

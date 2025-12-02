@@ -2,13 +2,9 @@ import BoxIcon from "@/assets/icons/BoxIcon.svg?react";
 import ClipIcon from "@/assets/icons/ClipIcon.svg?react";
 import ClockIcon from "@/assets/icons/ClockIcon.svg?react";
 import CogIcon from "@/assets/icons/CogIcon.svg?react";
-import ImageIcon from "@/assets/icons/ImageIcon.svg?react";
-import LockIcon from "@/assets/icons/LockIcon.svg?react";
 import OptionsIcon from "@/assets/icons/OptionsIcon.svg?react";
 import PencilIcon from "@/assets/icons/PencilIcon.svg?react";
-import PhoneIcon from "@/assets/icons/PhoneIcon.svg?react";
 import UserIcon from "@/assets/icons/UserIcon.svg?react";
-import WarnIcon from "@/assets/icons/WarnIcon.svg?react";
 import { NavLink } from "react-router-dom";
 import "./DashboardOptions.css";
 
@@ -32,55 +28,25 @@ export function DashboardOptions() {
 
                 <ul>
                     <li className="option-item">
-                        <NavLink to="/dashboard/settings/change-username" className={({ isActive }) => isActive ? "active" : ""}>
+                        <NavLink
+                            to="/dashboard/settings/profile"
+                            className={({ isActive }) => (isActive ? "active" : "")}
+                        >
                             <div className="options-row">
                                 <UserIcon className="icon" />
-                                <p>Change Username</p>
+                                <p>Account</p>
                             </div>
                         </NavLink>
                     </li>
 
                     <li className="option-item">
-                        <NavLink to="/dashboard/settings/change-password" className={({ isActive }) => isActive ? "active" : ""}>
-                            <div className="options-row">
-                                <LockIcon className="icon" />
-                                <p>Change Password</p>
-                            </div>
-                        </NavLink>
-                    </li>
-
-                    <li className="option-item">
-                        <NavLink to="/dashboard/settings/change-profile-picture" className={({ isActive }) => isActive ? "active" : ""}>
-                            <div className="options-row">
-                                <ImageIcon className="icon" />
-                                <p>Change Profile Picture</p>
-                            </div>
-                        </NavLink>
-                    </li>
-
-                    <li className="option-item">
-                        <NavLink to="/dashboard/settings/edit-bio" className={({ isActive }) => isActive ? "active" : ""}>
+                        <NavLink
+                            to="/dashboard/settings/profile-info"
+                            className={({ isActive }) => (isActive ? "active" : "")}
+                        >
                             <div className="options-row">
                                 <PencilIcon className="icon" />
-                                <p>Edit Bio</p>
-                            </div>
-                        </NavLink>
-                    </li>
-
-                    <li className="option-item">
-                        <NavLink to="/dashboard/settings/manage-contact" className={({ isActive }) => isActive ? "active" : ""}>
-                            <div className="options-row">
-                                <PhoneIcon className="icon" />
-                                <p>Manage Contact Information</p>
-                            </div>
-                        </NavLink>
-                    </li>
-
-                    <li className="option-item">
-                        <NavLink to="/dashboard/settings/delete-account" className={({ isActive }) => isActive ? "active" : ""}>
-                            <div className="options-row">
-                                <WarnIcon className="icon" />
-                                <p>Delete Account</p>
+                                <p>Profile Info</p>
                             </div>
                         </NavLink>
                     </li>

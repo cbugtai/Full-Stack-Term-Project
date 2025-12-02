@@ -12,19 +12,14 @@ declare global {
     }
 }
 
-export const findOrCreateUser = async (
-    req: Request,
-    _res: Response,
-    next: NextFunction
-): Promise<void> => {
+export const findOrCreateUser = async (req: Request, _res: Response, next: NextFunction) => {
     try {
         const auth = getAuth(req);
         const clerkId = auth.userId;
 
         if (clerkId) {
-            const clerkUser = await clerkClient.users.getUser(clerkId);
-
             let backendUser = await userService.getUserByClerkId(clerkId);
+            const clerkUser = await clerkClient.users.getUser(clerkId);
 
             if (!backendUser) {
                 backendUser = await userService.createUser({
@@ -33,6 +28,11 @@ export const findOrCreateUser = async (
                     userName: clerkUser.username ?? "",
                     firstName: clerkUser.firstName ?? "",
                     lastName: clerkUser.lastName ?? "",
+                    profilePic: clerkUser.imageUrl ?? null,
+                });
+            } else if (backendUser.profilePic !== clerkUser.imageUrl) {
+                    backendUser = await userService.updateUserByClerkId(clerkId, {
+                    profilePic: clerkUser.imageUrl ?? null,
                 });
             }
 
@@ -42,6 +42,7 @@ export const findOrCreateUser = async (
 
         next();
     } catch (error) {
+        console.error("findOrCreateUser error:", error);
         next(error);
     }
 };

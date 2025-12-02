@@ -1,79 +1,53 @@
-import type { User } from "@/types/userSchema";
+import type { User } from "../../../../../shared/types/user";
 
 type UserResponseJSON = { message: string; data: User };
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 const USER_ENDPOINT = "/users";
 
-export async function getUser(userId: string, sessionToken?: string | null): Promise<User | null> {
-    const response: Response = await fetch(
-        `${BASE_URL}${USER_ENDPOINT}/${userId}`,
-        sessionToken
-        ? {
-            headers: {
-                Authorization: `Bearer ${sessionToken}`,
-            },
-        }
-        : undefined
-    );
+export async function getUser(sessionToken?: string | null): Promise<User | null> {
+    const response = await fetch(`${BASE_URL}${USER_ENDPOINT}/user`, sessionToken
+        ? { headers: { Authorization: `Bearer ${sessionToken}` } }
+        : undefined);
 
     if (!response.ok) {
         if (response.status === 404) return null;
-        throw new Error(`Failed to fetch user with id ${userId}`);
+        throw new Error("Failed to fetch current user");
     }
 
     const json: UserResponseJSON = await response.json();
     return json.data;
 }
 
-export async function saveUser(user: User, sessionToken: string): Promise<User> {
-    const response: Response = await fetch(`${BASE_URL}${USER_ENDPOINT}`, {
-        method: "POST",
-        body: JSON.stringify(user),
+export async function saveUser(data: Partial<User>, token: string): Promise<User> {
+    const response = await fetch(`${BASE_URL}${USER_ENDPOINT}/user`, {
+        method: "PUT",
+        body: JSON.stringify(data),
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionToken}`,
+            Authorization: `Bearer ${token}`,
         },
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to save user");
-    }
-
-    const json: UserResponseJSON = await response.json();
-    return json.data;
+    if (!response.ok) throw new Error("Failed to save user");
+    return response.json();
 }
 
-export async function deleteUser(userId: string, sessionToken: string): Promise<void> {
-    const response: Response = await fetch(`${BASE_URL}${USER_ENDPOINT}/${userId}`, {
+export async function deleteUser(sessionToken: string): Promise<void> {
+    const response = await fetch(`${BASE_URL}${USER_ENDPOINT}/user`, {
         method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${sessionToken}`,
-        },
+        headers: { Authorization: `Bearer ${sessionToken}` },
     });
 
-    if (!response.ok) {
-        throw new Error(`Failed to delete user with id ${userId}`);
-    }
+    if (!response.ok) throw new Error("Failed to delete current user");
 }
 
-export async function getHydratedUser(userId: string, sessionToken?: string | null): Promise<User | null> {
-    const user = await getUser(userId, sessionToken);
-    if (!user) return null;
-
-    const picResponse: Response = await fetch(`${BASE_URL}${USER_ENDPOINT}/${userId}/profile-pic`, {
-        headers: sessionToken
-        ? {
-            Authorization: `Bearer ${sessionToken}`,
-        }
-        : undefined,
+export async function getHydratedUser(token: string): Promise<User> {
+    const response = await fetch(`${BASE_URL}${USER_ENDPOINT}/user`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
-
-    if (picResponse.ok) {
-        const blob = await picResponse.blob();
-        const blobUrl = URL.createObjectURL(blob);
-        return { ...user, profilePic: blobUrl };
-    }
-
-    return user;
+    if (!response.ok) throw new Error("Failed to fetch user");
+    return response.json();
 }

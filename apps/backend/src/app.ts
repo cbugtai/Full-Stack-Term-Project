@@ -1,3 +1,4 @@
+import { clerkMiddleware, requireAuth } from "@clerk/express";
 import express, { Express } from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -11,6 +12,7 @@ import sellerRoutes from "./api/v1/routes/sellerRoutes"
 import productRoutes from "./api/v1/routes/productRoutes";
 import reviewRoutes from "./api/v1/routes/reviewRoutes";
 import tempUserRoutes from "./api/v1/routes/tempUserRoutes";
+import userRoutes from "./api/v1/routes/userRoutes";
 
 // initialize express application
 const app: Express = express();
@@ -28,6 +30,8 @@ app.use(express.json());
 // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
 app.use(cors(corsOptions));
 
+app.use(clerkMiddleware());
+
 // invoke swagger middleware for serving docs in /api-docs
 setupSwagger(app);
 
@@ -44,6 +48,9 @@ app.use("/api/v1/sellers", sellerRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/reviews", reviewRoutes);
 app.use("/api/v1/tempuser", tempUserRoutes);
+
+// ---------------------- Nick part ----------------------
+app.use("/api/v1/users", requireAuth(), userRoutes);
 
 //errorhandler catches errors as last element in middleware chain
 // occurs when "next" is invoked

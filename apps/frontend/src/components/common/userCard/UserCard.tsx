@@ -1,6 +1,6 @@
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
-import type { User } from "@/types/userSchema";
+import type { User } from "../../../../../../shared/types/user";
 import { getHydratedUser } from "@/apis/user/userRepo";
 import "./UserCard.css";
 
@@ -11,14 +11,15 @@ export function UserCard({ onClose }: { onClose: () => void }) {
 
     useEffect(() => {
         const fetchBackendUser = async () => {
-        if (!user?.id) return;
-        try {
-            const token = await getToken({ template: "default" });
-            const data = await getHydratedUser(user.id, token ?? undefined);
-            setBackendUser(data);
-        } catch (err) {
-            console.error("Failed to fetch backend user:", err);
-        }
+            if (!user?.id) return;
+            try {
+                const token = await getToken({ template: "default" });
+                if (!token) return;
+                const data = await getHydratedUser(token);
+                setBackendUser(data);
+            } catch (err) {
+                console.error("Failed to fetch backend user:", err);
+            }
         };
         fetchBackendUser();
     }, [user?.id, getToken]);

@@ -39,24 +39,27 @@ function Header() {
 
                     <div className="user-info">
                         <SignedIn>
-                            <button
-                                className="profile-link"
-                                onClick={() => setShowCard(true)}
-                            >
-                                <div className="profile-content">
-                                    {user?.username || user?.primaryEmailAddress?.emailAddress}
-                                    <img
-                                        src={user?.imageUrl}
-                                        className="profile-pic"
-                                        alt={`${user?.username || "User"}'s profile picture`}
-                                    />
-                                </div>
-                            </button>
+                            <div className="profile-actions">
+                                <button
+                                    className="profile-link"
+                                    onClick={() => setShowCard(true)}
+                                >
+                                    <div className="profile-content">
+                                        {user?.username || user?.primaryEmailAddress?.emailAddress}
+                                        <img
+                                            src={user?.imageUrl}
+                                            className="profile-pic"
+                                            alt={`${user?.username || "User"}'s profile picture`}
+                                        />
+                                    </div>
+                                </button>
 
-                            <SignOutButton signOutOptions={{ redirectUrl: "/" }}>
-                                <button className="signout-btn">Sign out</button>
-                            </SignOutButton>
+                                <SignOutButton signOutOptions={{ redirectUrl: "/" }}>
+                                    <button className="signout-btn">Sign out</button>
+                                </SignOutButton>
+                            </div>
                         </SignedIn>
+
 
                         <SignedOut>
                             <NavLink to="/sign-in" className="profile-link">

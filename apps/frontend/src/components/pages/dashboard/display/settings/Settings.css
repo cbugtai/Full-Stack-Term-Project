@@ -3,6 +3,13 @@
     flex-direction: column;
     gap: 0.25rem;
     width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.settings-nav-wrapper {
+    display: block;
+    margin-bottom: 1rem;
 }
 
 .form-wrapper {
@@ -10,7 +17,8 @@
     flex-direction: column;
     gap: 1.5rem;
     max-width: 600px;
-    margin-top: 1rem;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .form-group {
@@ -32,6 +40,9 @@
     border-radius: 6px;
     font-size: 1rem;
     background-color: white;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     transition: border-color 0.2s ease;
 }
 
@@ -42,9 +53,24 @@
     outline: none;
 }
 
+.form-group textarea {
+    min-height: 160px;
+    line-height: 1.5;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.char-count {
+    font-size: 0.875rem;
+    color: white;
+    margin-top: 0.25rem;
+}
+
 .form-actions {
     display: flex;
     justify-content: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .form-actions button {
@@ -62,38 +88,9 @@
     background-color: #1a3257;
 }
 
-.hidden-file-input {
-    display: none;
-}
-
-.custom-file-label {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #274b82;
-    color: white;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    text-align: center;
-}
-
-.custom-file-label:hover {
-    background-color: #1a3257;
-}
-
-.form-group textarea {
-    min-height: 160px;
-    width: 100%;
-    min-width: 600px;
-    line-height: 1.5;
-    font-family: inherit;
-    resize: vertical;
-}
-
-.widget-link {
-    text-decoration: none;
-    color: inherit;
+.form-actions button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 .form-error {
@@ -101,7 +98,6 @@
     background-color: white;
     border-left: 4px solid #c8102e;
     padding: 0.5rem 0.75rem;
-    margin-top: 0.5rem;
     font-size: 0.875rem;
     font-weight: 500;
     border-radius: 6px;
@@ -125,17 +121,29 @@
     margin-left: 1rem;
 }
 
-.settings-nav-wrapper {
-    display: block;
-}
-
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 768px) {
+    .settings-page {
+        padding: 0.5rem;
+    }
+
+    .form-wrapper {
+        gap: 1.5rem;
+    }
+
     .form-group textarea {
+        min-height: 120px;
         min-width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
     .settings-nav-wrapper {
