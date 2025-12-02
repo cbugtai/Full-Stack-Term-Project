@@ -51,6 +51,7 @@ export async function seedCasper() {
   const user1 = await prisma.user.upsert({
     where: { email: "alice@example.com" },
     create: {
+      clerkId: "seed_alice_123",
       firstName: "Alice",
       lastName: "Wang",
       userName: "alicew",
@@ -73,6 +74,7 @@ export async function seedCasper() {
   const user2 = await prisma.user.upsert({
     where: { email: "bob@example.com" },
     create: {
+      clerkId: "seed_bob_123",
       firstName: "Bob",
       lastName: "Li",
       userName: "bobli",

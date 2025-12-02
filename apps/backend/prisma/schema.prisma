@@ -66,10 +66,10 @@ model UserSellerPreference{
 model User {
     // id property, as the identifier, with a default value that autoincrements
     id  Int @id @default(autoincrement())
-    clerkId String? @unique
+    clerkId String @unique
     firstName String?
     lastName String?
-    userName String?
+    userName String @unique
     email String @unique
     phone String?
     bio String?

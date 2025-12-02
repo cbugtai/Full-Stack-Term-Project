@@ -8,4 +8,4 @@ export const updateUserSchema = Joi.object({
     phone: Joi.string().pattern(/^[0-9]+$/).optional(),
     bio: Joi.string().max(500).optional(),
     profilePic: Joi.string().uri().optional(),
-}).unknown(true);
+});
