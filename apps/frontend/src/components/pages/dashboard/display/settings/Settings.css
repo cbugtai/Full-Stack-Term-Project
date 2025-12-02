@@ -245,6 +245,12 @@
     line-height: 1;
 }
 
+.widget-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
 @keyframes underlineReveal {
     from {
         transform: scaleX(0);
