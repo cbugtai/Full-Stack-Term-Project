@@ -25,8 +25,13 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
 
         const firstName = nullToUndefined(clerkUser.firstName);
         const lastName = nullToUndefined(clerkUser.lastName);
-        const userName = nullToUndefined(clerkUser.username);
-        const email = clerkUser.emailAddresses[0]?.emailAddress ?? undefined;
+        const email = clerkUser.emailAddresses[0]?.emailAddress;
+
+        const userName: string =
+            clerkUser.username ??
+            `${firstName ?? "user"}${lastName ?? ""}`.toLowerCase() ??
+            (email ? email.split("@")[0] : `user_${clerkId}`);
+
         const profilePic = nullToUndefined(clerkUser.imageUrl);
 
         if (!email) {
@@ -47,11 +52,11 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
             });
         } else {
             const updates: Partial<typeof backendUser> = {};
-            if (email) updates.email = email;
-            if (firstName) updates.firstName = firstName;
-            if (lastName) updates.lastName = lastName;
-            if (userName) updates.userName = userName;
-            if (profilePic) updates.profilePic = profilePic;
+            if (email && backendUser.email !== email) updates.email = email;
+            if (firstName && backendUser.firstName !== firstName) updates.firstName = firstName;
+            if (lastName && backendUser.lastName !== lastName) updates.lastName = lastName;
+            if (userName && backendUser.userName !== userName) updates.userName = userName;
+            if (profilePic && backendUser.profilePic !== profilePic) updates.profilePic = profilePic;
 
             if (Object.keys(updates).length > 0) {
                 backendUser = await userService.updateUserByClerkId(clerkId, updates);

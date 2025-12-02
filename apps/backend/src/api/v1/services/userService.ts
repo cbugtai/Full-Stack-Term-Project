@@ -8,7 +8,7 @@ export const getUserByClerkId = async (clerkId: string): Promise<User | null> =>
 export const createUser = async (userData: {
     clerkId: string;
     email: string;
-    userName?: string;
+    userName: string;
     firstName?: string;
     lastName?: string;
     profilePic?: string | null;
