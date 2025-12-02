@@ -32,7 +32,7 @@ materials, so they're better prepared without financial.
 These are the steps to run the app on your local machine.
 
 ### Step 1. Check Prerequisites
-- **Node.js** installed and added to PATH
+- **Node.js (v16+)** installed and added to PATH
 - **Docker Desktop** installed and running
 - Required Ports are free: **5432**, **3000**, **5173**
 
