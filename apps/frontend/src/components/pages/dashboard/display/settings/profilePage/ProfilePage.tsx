@@ -3,7 +3,7 @@ import { SettingsNav } from "../SettingsNav";
 import { DashboardDisplay } from "../../DashboardDisplay";
 import UserIcon from "@/assets/icons/UserIcon.svg?react";
 import { useEffect } from "react";
-import { saveUser, deleteUser } from "@/apis/user/userRepo";
+import { saveUser } from "@/apis/user/userRepo";
 import "../Settings.css";
 
 export function ProfilePage() {
@@ -18,14 +18,15 @@ export function ProfilePage() {
                 const token = await getToken({ template: "default" });
                 if (!token) throw new Error("No session token");
 
-                await saveUser({
-                    firstName: user.firstName ?? undefined,
-                    lastName: user.lastName ?? undefined,
-                    username: user.username ?? undefined,
-                    email: user.emailAddresses[0]?.emailAddress ?? undefined,
-                    profilePic: user.imageUrl ?? undefined,
-                },
-                token
+                await saveUser(
+                    {
+                        firstName: user.firstName ?? undefined,
+                        lastName: user.lastName ?? undefined,
+                        username: user.username ?? undefined,
+                        email: user.emailAddresses[0]?.emailAddress ?? undefined,
+                        profilePic: user.imageUrl ?? undefined,
+                    },
+                    token
                 );
             } catch (err) {
                 console.error("Failed to sync Clerk user to backend:", err);
@@ -42,24 +43,6 @@ export function ProfilePage() {
         user?.emailAddresses,
         getToken,
     ]);
-
-    useEffect(() => {
-        if (user) return;
-
-        const deleteBackendUser = async () => {
-            try {
-                const token = await getToken({ template: "default" });
-                if (!token) throw new Error("No session token");
-
-                await deleteUser(token);
-                console.log("Backend user deleted successfully");
-            } catch (err) {
-                console.error("Failed to delete backend user:", err);
-            }
-        };
-
-        deleteBackendUser();
-    }, [user, getToken]);
 
     return (
         <div className="settings-page">
@@ -78,12 +61,12 @@ export function ProfilePage() {
                         <UserProfile
                             appearance={{
                                 elements: {
-                                rootBox: {
-                                    width: "100%",
-                                    maxWidth: "700px",
-                                    zoom: "1",
-                                    fontSize: "0.9rem",
-                                },
+                                    rootBox: {
+                                        width: "100%",
+                                        maxWidth: "700px",
+                                        zoom: "1",
+                                        fontSize: "0.9rem",
+                                    },
                                 },
                             }}
                         />

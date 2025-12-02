@@ -19,7 +19,6 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
     try {
         const auth = getAuth(req);
         const clerkId = auth.userId;
-
         if (!clerkId) return next();
 
         const clerkUser = await clerkClient.users.getUser(clerkId);
@@ -27,8 +26,13 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
         const firstName = nullToUndefined(clerkUser.firstName);
         const lastName = nullToUndefined(clerkUser.lastName);
         const userName = nullToUndefined(clerkUser.username);
-        const email = clerkUser.emailAddresses[0]?.emailAddress ?? "";
+        const email = clerkUser.emailAddresses[0]?.emailAddress ?? undefined;
         const profilePic = nullToUndefined(clerkUser.imageUrl);
+
+        if (!email) {
+            console.error(`Clerk user ${clerkId} has no email!`);
+            return next();
+        }
 
         let backendUser = await userService.getUserByClerkId(clerkId);
 
@@ -42,15 +46,16 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
                 profilePic,
             });
         } else {
-            const updates: {
-                email: string;
-                firstName?: string;
-                lastName?: string;
-                userName?: string;
-                profilePic?: string | null;
-            } = { email, firstName, lastName, userName, profilePic };
+            const updates: Partial<typeof backendUser> = {};
+            if (email) updates.email = email;
+            if (firstName) updates.firstName = firstName;
+            if (lastName) updates.lastName = lastName;
+            if (userName) updates.userName = userName;
+            if (profilePic) updates.profilePic = profilePic;
 
-            backendUser = await userService.updateUserByClerkId(clerkId, updates);
+            if (Object.keys(updates).length > 0) {
+                backendUser = await userService.updateUserByClerkId(clerkId, updates);
+            }
         }
 
         req.userId = backendUser.id;

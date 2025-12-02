@@ -1,47 +1,61 @@
-import { useUser, useAuth } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import type { User } from "../../../../../../shared/types/user";
 import { getHydratedUser } from "@/apis/user/userRepo";
 import "./UserCard.css";
 
 export function UserCard({ onClose }: { onClose: () => void }) {
-    const { user } = useUser();
     const { getToken } = useAuth();
     const [backendUser, setBackendUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchBackendUser = async () => {
-            if (!user?.id) return;
+        let isMounted = true;
+
+        const fetchUser = async () => {
             try {
                 const token = await getToken({ template: "default" });
-                if (!token) return;
+                if (!token) throw new Error("No session token");
+
                 const data = await getHydratedUser(token);
-                setBackendUser(data);
+                if (isMounted) setBackendUser(data);
             } catch (err) {
                 console.error("Failed to fetch backend user:", err);
+            } finally {
+                if (isMounted) setLoading(false);
             }
         };
-        fetchBackendUser();
-    }, [user?.id, getToken]);
 
-    if (!user) return null;
+        fetchUser();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [getToken]);
+
+    if (loading) return <p>Loading user...</p>;
+    if (!backendUser) return <p>User not found</p>;
 
     return (
         <div className="user-card-overlay">
             <div className="user-card">
-                <button className="close-button" onClick={onClose} aria-label="Close profile card">x</button>
+                <button className="close-button" onClick={onClose} aria-label="Close profile card">
+                    X
+                </button>
+
                 <img
-                    src={user.imageUrl}
-                    alt={`${user.username || "User"}'s profile`}
+                    src={backendUser.profilePic ?? "/default-profile.png"}
+                    alt={`${backendUser.username || "User"}'s profile`}
                     className="profile-pic"
                 />
-                <h2 className="username">
-                    {user.username || user.primaryEmailAddress?.emailAddress}
-                </h2>
-                <p className="bio">{backendUser?.bio ?? "No bio available"}</p>
+
+                <h2 className="username">{backendUser.username || backendUser.email}</h2>
+
+                <p className="bio">{backendUser.bio ?? "No bio available"}</p>
+
                 <div className="contact-info">
-                    <p><strong>Email:</strong> {user.primaryEmailAddress?.emailAddress}</p>
-                    {backendUser?.phone && <p><strong>Phone:</strong> {backendUser.phone}</p>}
+                    <p><strong>Email:</strong> {backendUser.email}</p>
+                    <p><strong>Phone:</strong> {backendUser.phone ?? "Not provided"}</p>
                 </div>
             </div>
         </div>

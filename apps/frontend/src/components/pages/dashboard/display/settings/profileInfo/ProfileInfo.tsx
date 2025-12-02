@@ -5,7 +5,8 @@ import { DashboardDisplay } from "../../DashboardDisplay";
 import { saveUser, getHydratedUser } from "@/apis/user/userRepo";
 import { SettingsNav } from "../SettingsNav";
 import "../Settings.css";
-import type { User } from "../../../../../../../../../shared/types/user";
+import { useBioValidation } from "@/hooks/profileValidation/useBioValidation";
+import { usePhoneValidation } from "@/hooks/profileValidation/usePhoneValidation";
 
 type ProfileFields = {
     bio: string;
@@ -15,11 +16,14 @@ type ProfileFields = {
 export function ProfileInfoPage() {
     const { isSignedIn, user: clerkUser } = useUser();
     const { getToken } = useAuth();
+
     const [userData, setUserData] = useState<ProfileFields>({ bio: "", phone: "" });
     const [loading, setLoading] = useState(true);
     const [savingField, setSavingField] = useState<"bio" | "phone" | null>(null);
     const [successField, setSuccessField] = useState<"bio" | "phone" | null>(null);
-    const [errorField, setErrorField] = useState<"bio" | "phone" | null>(null);
+
+    const { error: bioError, validate: validateBio } = useBioValidation();
+    const { error: phoneError, validate: validatePhone } = usePhoneValidation();
 
     useEffect(() => {
         const fetchBackendUser = async () => {
@@ -32,7 +36,7 @@ export function ProfileInfoPage() {
                 const token = await getToken({ template: "default" });
                 if (!token) throw new Error("No session token available");
 
-                const backendUser: User = await getHydratedUser(token);
+                const backendUser = await getHydratedUser(token);
 
                 setUserData({
                     bio: backendUser.bio ?? "",
@@ -40,7 +44,6 @@ export function ProfileInfoPage() {
                 });
             } catch (err) {
                 console.error("Failed to load profile info:", err);
-                setErrorField("bio");
             } finally {
                 setLoading(false);
             }
@@ -55,18 +58,26 @@ export function ProfileInfoPage() {
 
     const handleSaveField = async (field: keyof ProfileFields) => {
         setSavingField(field);
-        setErrorField(null);
         setSuccessField(null);
+
+        // Validate field
+        let isValid = true;
+        if (field === "bio") isValid = validateBio(userData.bio);
+        if (field === "phone") isValid = validatePhone(userData.phone);
+
+        if (!isValid) {
+            setSavingField(null);
+            return;
+        }
 
         try {
             const token = await getToken({ template: "default" });
-            if (!token) throw new Error("No session token available");
+            if (!token) throw new Error("No session token");
 
             await saveUser({ [field]: userData[field] }, token);
             setSuccessField(field);
         } catch (err) {
             console.error(`Failed to save ${field}:`, err);
-            setErrorField(field);
         } finally {
             setSavingField(null);
         }
@@ -99,6 +110,7 @@ export function ProfileInfoPage() {
                 icon={<PencilIcon className="icon" />}
                 disableGrid
             >
+                {/* Bio */}
                 <div className="form-group">
                     <label htmlFor="bio">Bio</label>
                     <textarea
@@ -110,7 +122,7 @@ export function ProfileInfoPage() {
                         maxLength={500}
                     />
                     <p className="char-count">{userData.bio.length}/500 characters</p>
-                    {errorField === "bio" && <p className="form-error">Failed to save bio.</p>}
+                    {bioError && <p className="form-error">{bioError}</p>}
                     {successField === "bio" && <p className="form-success">Bio updated successfully!</p>}
                     <div className="form-actions">
                         <button
@@ -123,6 +135,7 @@ export function ProfileInfoPage() {
                     </div>
                 </div>
 
+                {/* Phone */}
                 <div className="form-group">
                     <label htmlFor="phone">Phone</label>
                     <input
@@ -132,7 +145,7 @@ export function ProfileInfoPage() {
                         onChange={(e) => handleChange("phone", e.target.value)}
                         placeholder="+1 555 123 4567"
                     />
-                    {errorField === "phone" && <p className="form-error">Failed to save phone.</p>}
+                    {phoneError && <p className="form-error">{phoneError}</p>}
                     {successField === "phone" && <p className="form-success">Phone updated successfully!</p>}
                     <div className="form-actions">
                         <button
