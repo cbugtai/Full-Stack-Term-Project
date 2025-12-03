@@ -1,5 +1,5 @@
 import ProductList from "@/components/common/product-list/ProductList";
-import ProductPagination from "@/components/common/pagination/Pagination";
+import Pagination from "@/components/common/pagination/Pagination";
 import { useWishlistedProducts } from "@/hooks/useWishlistedProducts";
 
 /**
@@ -47,7 +47,7 @@ export function WishProducts() {
           />
         )}
       </section>
-      <ProductPagination page={page} setPage={setPage} maxPage={maxPage} />
+      <Pagination page={page} setPage={setPage} maxPage={maxPage} />
     </>
   );
 }
