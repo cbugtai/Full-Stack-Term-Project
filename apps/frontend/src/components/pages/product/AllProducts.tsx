@@ -1,5 +1,5 @@
 import ProductList from "@/components/common/product-list/ProductList";
-import ProductPagination from "@/components/common/product-pagination/ProductPagination";
+import ProductPagination from "@/components/common/pagination/Pagination";
 import { useAllProducts } from "@/hooks/useAllProducts";
 
 /**
