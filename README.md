@@ -36,7 +36,7 @@ These are the steps to run the app on your local machine.
 - **Docker Desktop** installed and running
 - Required Ports are free: **5432**, **3000**, **5173**
 - **Clerk AUTH** application is created
-    - Must create a JWT template named default
+    - Must create a JWT template named `default`
 
 ### Step 2. Create Environment Variables
 Create the following `.env` files before running the app.
