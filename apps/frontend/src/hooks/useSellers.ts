@@ -5,29 +5,27 @@ import type { SellerDto as Seller } from "../../../../shared/types/seller-terms"
 
 export function useSellers(
     dependencies: unknown[] = [],
-    filterFn?: (seller: Seller) => boolean
 ) {
     const [sellers, setSellers] = useState<Seller[]>([]);
     const [error, setError] = useState<string | null>(null);
     const { getToken, isSignedIn, isLoaded } = useAuth();
 
-    const fetchSellers = async () => {
-        try {
-            if (!isLoaded) return;
+    useEffect(() => {
+        const fetchSellers = async () => {
+            try {
+                if (!isLoaded) return;
 
-            let sessionToken = isSignedIn? await getToken() : null;
-            let result = await sellerService.getAllSellers(sessionToken);
+                let sessionToken = isSignedIn? await getToken() : null;
+                let result = await sellerService.getAllSellers(sessionToken);
 
-            if (filterFn) {
-                result = result.filter(filterFn);
+                setSellers(result);
+            } catch (err) {
+                setError(`${err}`);
             }
+        };
 
-            setSellers([...result]);
-        } catch (err) {
-            setError(`${err}`);
-        }
-
-    };
+        fetchSellers();
+    }, [isLoaded, isSignedIn, getToken, ...dependencies]);
 
     const toggleFavoriteSeller = async (sellerId: number) => {
         try {
@@ -37,13 +35,9 @@ export function useSellers(
 
             const updated = await sellerService.toggleFavoriteSeller(sellerId, sessionToken);
 
-            setSellers((prev) => {
-                const updatedList = prev.map((s) => 
-                s.id === updated.id ? { ...s, ...updated } : s
+            setSellers((prev) =>
+                prev.map((s) => (s.id === updated.id ? { ...s, ...updated } : s ))
             )
-
-            return filterFn ? updatedList.filter(filterFn) : updatedList;
-            })
         } catch (err) {
             setError(`${err}`);
         }
@@ -57,21 +51,13 @@ export function useSellers(
             
             const updated = await sellerService.toggleBlockedSeller(sellerId, sessionToken);
 
-            setSellers((prev) => {
-                const updatedList = prev.map((s) => 
-                s.id === updated.id ? { ...s, ...updated } : s
+            setSellers((prev) => 
+                prev.map((s) => (s.id === updated.id ? { ...s, ...updated } : s ))
             )
-
-            return filterFn ? updatedList.filter(filterFn) : updatedList;
-            })
         } catch (err) {
             setError(`${err}`);
         }
     };
-
-    useEffect(() => {
-        fetchSellers();
-    }, [isSignedIn, getToken, filterFn, ...dependencies]);
 
     return {
         sellers,

@@ -22,7 +22,7 @@ function Sellers() {
       />
   
       <SellersListDisplay
-        dependencies={[searchTerm]}
+        dependencies={[]}
         filterFn={(s) => 
           s.username.toLowerCase().includes(searchTerm.toLowerCase().trim()) && 
           !s.isBlocked}
