@@ -6,6 +6,7 @@ import type {
   ProductsRes,
 } from "../../../../shared/types/frontend-product";
 import { useLoading } from "./useLoading";
+import { usePagination } from "./usePagination";
 
 /**
  * userProducts Hook
@@ -22,9 +23,8 @@ export function useWishlistedProducts() {
   const [wishlistedProducts, setWishlistedProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { loading, start, stop } = useLoading();
-  const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(1);
-  const pageSize = 6; // default number of wishlist products per page
+  const { page, setPage, maxPage, setMaxPage, pageSize } = usePagination(6);
+  // console.log("useAllProducts hook invoked, pagesize:", pageSize);
 
   const fetchWishlistedProducts = async () => {
     try {

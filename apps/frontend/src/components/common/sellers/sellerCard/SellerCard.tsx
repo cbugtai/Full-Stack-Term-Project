@@ -1,14 +1,21 @@
-import type { SellerDto as Seller } from "..//../../../../../../shared/types/seller-terms";
+import type { SellerDto as Seller } from "../../../../../../../shared/types/seller-terms";
 
 export function SellerCard(
-    { 
+    {
         seller,
         onFavClick,
-        onBlockClick
+        onBlockClick,
+        showActions = true,
+        showFavoriteAction = true,
+        showBlockedAction = true
     }: {
         seller: Seller
         onFavClick: () => void
         onBlockClick: () => void
+        showActions?: boolean
+        showFavoriteAction?: boolean
+        showBlockedAction?: boolean
+        
     }
 ) {
     return (
@@ -28,13 +35,21 @@ export function SellerCard(
                 {seller.completedSales} Completed Sales
             </div>
 
-            <button onClick={onFavClick}>
-                {seller.isFavorite ? "Unfavorite" : "Favorite"}
-            </button>
+            {showActions && (
+                <>
+                    {showFavoriteAction && (
+                        <button onClick={onFavClick}>
+                            {seller.isFavorite ? "Unfavorite" : "Favorite"}
+                        </button>
+                    )}
 
-            <button onClick={onBlockClick}>
-                {seller.isBlocked ? "Unblock" : "Block"}
-            </button>
+                    {showBlockedAction && (
+                        <button onClick={onBlockClick}>
+                            {seller.isBlocked ? "Unblock" : "Block"}
+                        </button>
+                    )}
+                </>
+            )}
             
         </div>
     );

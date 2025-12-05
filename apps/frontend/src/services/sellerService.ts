@@ -5,8 +5,9 @@ import * as sellerRepo from "../apis/sellers/sellerRepo";
  * Fetch all sellers from the repository.
  * @returns A promise that resolves to an array of sellers.
  */
-export async function getAllSellers(): Promise<Seller[]> {
-  return sellerRepo.fetchAllSellers();
+export async function getAllSellers(sessionToken? : string|null): Promise<Seller[]> {
+   const sellers = await sellerRepo.fetchAllSellers(sessionToken);
+   return sellers
 }
 
 /**
@@ -14,13 +15,13 @@ export async function getAllSellers(): Promise<Seller[]> {
  * @param sellerId - The ID of the seller to toggle.
  * @returns The updated seller from the backend.
  */
-export async function toggleFavoriteSeller(sellerId: number): Promise<Seller> {
-    const seller = await sellerRepo.getSellerById(sellerId);
+export async function toggleFavoriteSeller(sellerId: number, sessionToken? : string|null): Promise<Seller> {
+    const seller = await sellerRepo.getSellerById(sellerId, sessionToken);
 
     if (seller.isFavorite) {
-        return await sellerRepo.removeFavoriteSeller(seller.id);
+        return await sellerRepo.removeFavoriteSeller(seller.id, sessionToken);
     } else {
-        return await sellerRepo.addFavoriteSeller(seller.id);
+        return await sellerRepo.addFavoriteSeller(seller.id, sessionToken);
     }
 }
 
@@ -30,17 +31,17 @@ export async function toggleFavoriteSeller(sellerId: number): Promise<Seller> {
  * @param sellerId - The ID of the seller to toggle.
  * @returns The updated seller from the backend.
  */
-export async function toggleBlockedSeller(sellerId: number): Promise<Seller> {
-    const seller = await sellerRepo.getSellerById(sellerId);
+export async function toggleBlockedSeller(sellerId: number, sessionToken? : string|null): Promise<Seller> {
+    const seller = await sellerRepo.getSellerById(sellerId, sessionToken);
 
     if (seller.isBlocked) {
-        return await sellerRepo.removeBlockedSeller(seller.id);
+        return await sellerRepo.removeBlockedSeller(seller.id, sessionToken);
     } else {
 
         if (seller.isFavorite) {
-            await sellerRepo.removeFavoriteSeller(seller.id);
+            await sellerRepo.removeFavoriteSeller(seller.id, sessionToken);
         }
 
-        return await sellerRepo.addBlockedSeller(seller.id);
+        return await sellerRepo.addBlockedSeller(seller.id, sessionToken);
     }
 }

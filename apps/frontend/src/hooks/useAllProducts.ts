@@ -6,6 +6,7 @@ import type {
   ProductsRes,
 } from "../../../../shared/types/frontend-product";
 import { useLoading } from "./useLoading";
+import { usePagination } from "./usePagination";
 
 /**
  * userProducts Hook
@@ -22,9 +23,8 @@ export function useAllProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { loading, start, stop } = useLoading();
-  const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(1);
-  const pageSize = 12;
+  const { page, setPage, maxPage, setMaxPage, pageSize } = usePagination(12);
+  // console.log("useAllProducts hook invoked, pagesize:", pageSize);
 
   const fetchAllProducts = async () => {
     try {

@@ -12,12 +12,28 @@ function getUserId(req: Request): number {
     const userId = (req as AuthRequest).userId;
 
     if (!userId) {
-        // throw new Error("User not authenticated")
-
-        return 1 // TEMPORARY!!! DELETE ONCE AUTHENTICATION IS IMPLEMENTED!!!
+        throw new Error("User not authenticated")
     }
-
     return userId
+}
+
+export const addSeller = async(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try{
+        const userId = getUserId(req);
+        const { rating } = req.body;
+
+        const seller: SellerDto = await sellerService.addSeller(userId, rating)
+
+        res.status(200).json(
+            successResponse(seller, "Seller created Successfully")
+        )
+    } catch (error) {
+        next (error)
+    }
 }
 
 export const getAllSellers = async(
@@ -26,7 +42,7 @@ export const getAllSellers = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const userId = getUserId(req);
+        const userId = (req as AuthRequest).userId;
 
         const sellers: SellerDto[] = await sellerService.fetchAllSellers(userId)
         
@@ -45,7 +61,7 @@ export const getSellerById = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const userId = getUserId(req);
+        const userId = (req as AuthRequest).userId;
         const sellerId = Number(req.params.id)
 
         if (Number.isNaN(sellerId)) {
