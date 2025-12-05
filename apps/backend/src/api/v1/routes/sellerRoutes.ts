@@ -9,11 +9,13 @@ const router: Router = Router();
 
 router.get(
     "/",
+    findOrCreateUser,
     sellerController.getAllSellers
 )
 
 router.get(
     "/:id",
+    findOrCreateUser,
     validateRequest(idSchema),
     sellerController.getSellerById
 )
