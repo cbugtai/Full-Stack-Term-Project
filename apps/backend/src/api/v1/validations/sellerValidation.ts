@@ -8,3 +8,7 @@ export const sellerIdSchema: ObjectSchema = Joi.object({
 export const idSchema: ObjectSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
 }).unknown(false);
+
+export const sellerCreateSchema: ObjectSchema = Joi.object({
+  rating: Joi.number().integer().min(1).max(100).optional(),
+}).unknown(false);

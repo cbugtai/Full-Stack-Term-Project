@@ -8,7 +8,10 @@ export function SellersBlocked() {
     <div>
       <SellersNav />
       <h1>Blocked Sellers</h1>
-      <SellersListDisplay filterFn={(s: Seller) => s.isBlocked} />
+      <SellersListDisplay 
+          filterFn={(s: Seller) => s.isBlocked} 
+          showFavoriteAction={false}
+        />
     </div>
   );
 }

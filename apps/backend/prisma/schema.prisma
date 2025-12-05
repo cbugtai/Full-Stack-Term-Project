@@ -29,15 +29,13 @@ datasource db {
 //Christian's Models
 model Seller {
   id Int @id @default(autoincrement())
-  username String @unique
   rating Int //1-100
-  completedSales Int
-  photo  String? //url
+  completedSales Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId Int?   @unique
-  user   User?  @relation(fields: [userId], references: [id])
+  userId Int   @unique
+  user   User  @relation(fields: [userId], references: [id])
   
   //relations
   preferences UserSellerPreference[]
