@@ -1,5 +1,5 @@
 import prisma from "../../../../prisma/client"
-import type { SellerDto } from "../../../../../../shared/types/seller-terms"
+import type { SellerDto, SellersPageDto } from "../../../../../../shared/types/seller-terms"
 
 // creates a new seller linked to the given user
 // requires userId and optional rating (defaults to 50)
@@ -30,8 +30,15 @@ export const addSeller = async (
 // requires userId as an argument
 // returns list of sellers
 export const fetchAllSellers = async(
-    userId?: number
-) : Promise<SellerDto[]> => {
+    userId: number | undefined,
+    page: number,
+    pageSize: number
+) : Promise<SellersPageDto> => {
+    
+    // pagination calculation
+    const skip: number = (page - 1) * pageSize;
+    // get the toal count of listings for pagination info
+    const totalCount = await prisma.listings.count();
 
     const preferencesSelect = userId?
         {
@@ -50,6 +57,8 @@ export const fetchAllSellers = async(
         }
 
     const sellers = await prisma.seller.findMany({
+        skip,
+        take: pageSize,
         select: {
             id: true,
             rating: true,
@@ -82,7 +91,15 @@ export const fetchAllSellers = async(
         }
     })
 
-    return sellersDto
+    return {
+        sellers: sellersDto,
+        meta: {
+            page,
+            pageSize,
+            totalCount,
+            totalPages: Math.ceil(totalCount / pageSize),
+        },
+    };
 }
 
 // grabs the a seller using a sellerId
