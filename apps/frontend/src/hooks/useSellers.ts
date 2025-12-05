@@ -13,6 +13,8 @@ export function useSellers(
 
     const fetchSellers = async () => {
         try {
+            if (!isSignedIn) return;
+
             let sessionToken = isSignedIn? await getToken() : null;
             let result = await sellerService.getAllSellers(sessionToken);
 
@@ -69,7 +71,7 @@ export function useSellers(
 
     useEffect(() => {
         fetchSellers();
-    }, [...dependencies]);
+    }, [isSignedIn, getToken, filterFn, ...dependencies]);
 
     return {
         sellers,
