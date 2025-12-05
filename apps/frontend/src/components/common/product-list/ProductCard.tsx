@@ -4,6 +4,7 @@ import Drawer from "@/components/common/drawer/Drawer";
 import ReviewFillForm from "./ReviewFillForm";
 import ReviewsDisplay from "./ReviewsDisplay";
 import type { ProductCardParams } from "@/types/productModel";
+import { SignedIn } from "@clerk/clerk-react";
 
 function ProductCard({
   product,
@@ -69,22 +70,29 @@ function ProductCard({
           </p>
         </a>
       ) : null}
-      <button
-        onClick={() => {
-          openWrite();
-        }}
-        // add the validation to hidden the button if the user has already written a review for this product
-        hidden={product.hasReviewed}
-      >
-        Write a review
-      </button>
-      <button
-        onClick={() => {
-          toggleWishedProduct(product.id);
-        }}
-      >
-        {product.isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-      </button>
+
+      <SignedIn>
+        {" "}
+        <button
+          onClick={() => {
+            openWrite();
+          }}
+          // add the validation to hidden the button if the user has already written a review for this product
+          hidden={product.hasReviewed}
+        >
+          Write a review
+        </button>{" "}
+      </SignedIn>
+      <SignedIn>
+        {" "}
+        <button
+          onClick={() => {
+            toggleWishedProduct(product.id);
+          }}
+        >
+          {product.isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        </button>{" "}
+      </SignedIn>
 
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         {drawerMode === "write" && (
