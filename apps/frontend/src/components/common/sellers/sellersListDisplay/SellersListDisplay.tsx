@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { useUser } from "@clerk/clerk-react";
 import type { SellerDto as Seller } from "../../../../../../../shared/types/seller-terms";
 import { useSellers } from "../../../../hooks/useSellers";
 import { SellerCard } from "../sellerCard/SellerCard";
@@ -12,8 +13,10 @@ export function SellersListDisplay({
     dependencies = [],
     filterFn,
 }: SellersListDisplayProps ): JSX.Element {
-    const { sellers, toggleFavoriteSeller, toggleBlockedSeller } = 
+    const { sellers, toggleFavoriteSeller, toggleBlockedSeller } =
         useSellers(dependencies, filterFn);
+    const { isLoaded, isSignedIn} = useUser();
+    const showActions = isLoaded && isSignedIn;
 
 
     async function handleSellerFavClick(target: Seller) {
@@ -35,11 +38,12 @@ export function SellersListDisplay({
     return (
         <div className="sellers-list">
             {sellers.map((seller) => (
-                <SellerCard 
+                <SellerCard
                     key={seller.id}
                     seller={seller}
                     onFavClick={() => handleSellerFavClick(seller)}
                     onBlockClick={() => handleSellerBlockClick(seller)}
+                    showActions={showActions}
                 />
             ))}
         </div>
