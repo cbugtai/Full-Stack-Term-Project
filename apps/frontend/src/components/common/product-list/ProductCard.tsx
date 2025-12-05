@@ -11,8 +11,12 @@ function ProductCard({
   addReview,
   toggleWishedProduct,
 }: ProductCardParams) {
-  // use the seed to generate random image, rather than use the original same image url in sample data
-  const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
+  let productImgUrl = product.imgUrl;
+
+  if (product.imgUrl.includes("picsum.photos")) {
+    // if the image is random image, to generate random image, rather than use the original same image url
+    productImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
+  }
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [drawerMode, setDrawerMode] = React.useState<"write" | "view">("view");
@@ -30,7 +34,7 @@ function ProductCard({
   return (
     <div className="product-card">
       <img
-        src={randomImgUrl}
+        src={productImgUrl}
         alt={product.description}
         className="product-img"
       />
