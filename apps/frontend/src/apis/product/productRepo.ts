@@ -18,7 +18,8 @@ const WISHLIST_ENDPOINT = "/products/wishlist";
 
 export async function fetchAllProducts(
   page?: number,
-  pageSize?: number
+  pageSize?: number,
+  sessionToken?: string | null
 ): Promise<ProductsRes> {
   const url = new URL(`${BASE_URL}${PRODUCT_ENDPOINT}`);
 
@@ -26,7 +27,16 @@ export async function fetchAllProducts(
   if (pageSize !== undefined)
     url.searchParams.set("pageSize", String(pageSize));
 
-  const productResponse: Response = await fetch(url.toString());
+  const productResponse: Response = await fetch(
+    url.toString(),
+    sessionToken
+      ? {
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+          },
+        }
+      : undefined
+  );
 
   // if the server is unreachable, the json parsing will fail
   let json: ProductsResponseJSON | ErrResponseJSON;
@@ -46,9 +56,19 @@ export async function fetchAllProducts(
   return json.data;
 }
 
-export async function fetchProductById(productId: number): Promise<Product> {
+export async function fetchProductById(
+  productId: number,
+  sessionToken?: string | null
+): Promise<Product> {
   const productResponse: Response = await fetch(
-    `${BASE_URL}${PRODUCT_ENDPOINT}/${productId}`
+    `${BASE_URL}${PRODUCT_ENDPOINT}/${productId}`,
+    sessionToken
+      ? {
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+          },
+        }
+      : undefined
   );
 
   if (!productResponse.ok) {
@@ -62,6 +82,7 @@ export async function fetchProductById(productId: number): Promise<Product> {
 }
 
 export async function fetchWishlist(
+  sessionToken: string,
   page?: number,
   pageSize?: number
 ): Promise<ProductsRes> {
@@ -71,7 +92,11 @@ export async function fetchWishlist(
   if (pageSize !== undefined)
     url.searchParams.set("pageSize", String(pageSize));
 
-  const wishlistResponse: Response = await fetch(url.toString());
+  const wishlistResponse: Response = await fetch(url.toString(), {
+    headers: {
+      Authorization: `Bearer ${sessionToken}`,
+    },
+  });
 
   if (!wishlistResponse.ok) {
     throw new Error("Failed to fetch wishlist from server");
@@ -81,7 +106,7 @@ export async function fetchWishlist(
   return json.data;
 }
 
-export async function addToWishlist(productId: number) {
+export async function addToWishlist(sessionToken: string, productId: number) {
   const addToWishlistResponse: Response = await fetch(
     `${BASE_URL}${WISHLIST_ENDPOINT}`,
     {
@@ -89,6 +114,7 @@ export async function addToWishlist(productId: number) {
       body: JSON.stringify({ productId }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionToken}`,
       },
     }
   );
@@ -97,7 +123,10 @@ export async function addToWishlist(productId: number) {
   return json.data;
 }
 
-export async function removeFromWishlist(productId: number) {
+export async function removeFromWishlist(
+  sessionToken: string,
+  productId: number
+) {
   const addToWishlistResponse: Response = await fetch(
     `${BASE_URL}${WISHLIST_ENDPOINT}`,
     {
@@ -105,6 +134,7 @@ export async function removeFromWishlist(productId: number) {
       body: JSON.stringify({ productId }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionToken}`,
       },
     }
   );

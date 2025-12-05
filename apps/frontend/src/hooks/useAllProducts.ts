@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
 import * as productService from "../services/productService";
 import * as reviewService from "../services/reviewService";
 import type {
@@ -20,6 +21,7 @@ import { usePagination } from "./usePagination";
  */
 
 export function useAllProducts() {
+  const { getToken, isSignedIn } = useAuth();
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { loading, start, stop } = useLoading();
@@ -28,25 +30,30 @@ export function useAllProducts() {
 
   const fetchAllProducts = async () => {
     try {
-      start();
+      const sessionToken = await getToken().catch(() => null);
+      // console.log("sessionToken in fetchAllProducts:", sessionToken);
       const result: ProductsRes = await productService.fetchAllProducts(
         page,
-        pageSize
+        pageSize,
+        sessionToken
       );
       setMaxPage(result.meta.totalPages);
       setAllProducts(result.products);
     } catch (errorObject) {
       // set the error state to the error object if an error is caught
       setError(`${errorObject}`);
-    } finally {
-      stop();
     }
   };
 
   const toggleWishedProduct = async (productId: number) => {
     try {
       start();
-      await productService.toggleWishedProduct(productId);
+      const sessionToken = isSignedIn ? await getToken() : null;
+      // console.log("sessionToken in toggleWishedProduct:", sessionToken);
+      if (!sessionToken) {
+        throw new Error("Not Authorized");
+      }
+      await productService.toggleWishedProduct(sessionToken, productId);
       await fetchAllProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
@@ -64,7 +71,12 @@ export function useAllProducts() {
   }) => {
     try {
       start();
-      await reviewService.addReview({ productId, comment });
+      const sessionToken = isSignedIn ? await getToken() : null;
+
+      if (!sessionToken) {
+        throw new Error("Not Authorized");
+      }
+      await reviewService.addReview({ sessionToken, productId, comment });
       await fetchAllProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);

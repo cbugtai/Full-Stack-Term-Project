@@ -4,15 +4,19 @@ import Drawer from "@/components/common/drawer/Drawer";
 import ReviewFillForm from "./ReviewFillForm";
 import ReviewsDisplay from "./ReviewsDisplay";
 import type { ProductCardParams } from "@/types/productModel";
+import { SignedIn } from "@clerk/clerk-react";
 
 function ProductCard({
-  userId,
   product,
   addReview,
   toggleWishedProduct,
 }: ProductCardParams) {
-  // use the seed to generate random image, rather than use the original same image url in sample data
-  const randomImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
+  let productImgUrl = product.imgUrl;
+
+  if (product.imgUrl.includes("picsum.photos")) {
+    // if the image is random image, to generate random image, rather than use the original same image url
+    productImgUrl = `${product.imgUrl}/seed/${product.id}/165`;
+  }
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [drawerMode, setDrawerMode] = React.useState<"write" | "view">("view");
@@ -30,7 +34,7 @@ function ProductCard({
   return (
     <div className="product-card">
       <img
-        src={randomImgUrl}
+        src={productImgUrl}
         alt={product.description}
         className="product-img"
       />
@@ -70,24 +74,29 @@ function ProductCard({
           </p>
         </a>
       ) : null}
-      <button
-        onClick={() => {
-          openWrite();
-        }}
-        // add the validation to hidden the button if the user has already written a review for this product
-        hidden={
-          product.reviews && product.reviews.some((r) => r.userId === userId)
-        }
-      >
-        Write a review
-      </button>
-      <button
-        onClick={() => {
-          toggleWishedProduct(product.id);
-        }}
-      >
-        {product.isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-      </button>
+
+      <SignedIn>
+        {" "}
+        <button
+          onClick={() => {
+            openWrite();
+          }}
+          // add the validation to hidden the button if the user has already written a review for this product
+          hidden={product.hasReviewed}
+        >
+          Write a review
+        </button>{" "}
+      </SignedIn>
+      <SignedIn>
+        {" "}
+        <button
+          onClick={() => {
+            toggleWishedProduct(product.id);
+          }}
+        >
+          {product.isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        </button>{" "}
+      </SignedIn>
 
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         {drawerMode === "write" && (

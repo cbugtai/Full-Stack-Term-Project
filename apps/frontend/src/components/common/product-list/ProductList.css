@@ -1,6 +1,6 @@
 .product-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .product-list-gallery {
@@ -43,7 +43,8 @@
   height: 165px;
 }
 
-.review-number {
+.review-number,
+.clickable {
   color: var(--color-deep-blue);
   text-decoration: underline;
 }
@@ -72,6 +73,16 @@
 
 .review-display .product-name {
   background-color: var(--color-mid-blue);
+}
+
+.sign-in-prompt-btn {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .loading-placeholder {

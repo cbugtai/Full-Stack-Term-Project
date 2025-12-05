@@ -4,7 +4,10 @@ import type { PaginationParams } from "@/types/productModel";
 function Pagination({ page, maxPage, setPage }: PaginationParams) {
   return (
     <div className="pagination">
-      <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+      <button
+        onClick={() => setPage(page - 1)}
+        disabled={page === 1 || page === 0}
+      >
         Prev
       </button>
 

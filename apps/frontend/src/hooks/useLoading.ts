@@ -23,35 +23,42 @@ export function useLoading() {
     if (loading || showTimerRef.current) return;
 
     showTimerRef.current = setTimeout(() => {
-      setLoading(true);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      setLoading((_prev) => true);
       shownAtRef.current = Date.now();
       showTimerRef.current = null;
     }, showDelay);
+    // console.log("loading started");
   };
 
   const stop = () => {
+    // console.log("loading stopped");
+    // console.log("loading:", loading);
     // if has show timer, clear it and do nothing
     if (showTimerRef.current) {
       clearTimeout(showTimerRef.current);
       showTimerRef.current = null;
       return;
     }
-
+    // console.log("loading:", loading);
     // if not loading, do nothing
-    if (!loading) return;
-
+    // if (!loading) return;
+    // console.log("xy");
     // ensure loading placeholder is shown at least minShowTime
     const elapsed = shownAtRef.current
       ? Date.now() - shownAtRef.current
       : Infinity;
     const remain = minShowTime - elapsed;
+    // console.log("loading elapsed:", elapsed, "remain:", remain);
     if (remain <= 0) {
-      setLoading(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      setLoading((_prev) => false);
       shownAtRef.current = null;
     } else {
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
       hideTimerRef.current = setTimeout(() => {
-        setLoading(false);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        setLoading((_prev) => false);
         shownAtRef.current = null;
         hideTimerRef.current = null;
       }, remain);

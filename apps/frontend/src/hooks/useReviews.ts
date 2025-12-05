@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "@clerk/clerk-react";
 import * as reviewService from "../services/reviewService";
 import type { Review } from "../../../../shared/types/frontend-product";
 
 export function useReviews(productId: number) {
+  const { getToken, isSignedIn } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const fetchReviewsByProductId = async (productId: number) => {
     try {
+      const sessionToken = isSignedIn ? await getToken() : null;
       const result: Review[] = await reviewService.fetchReviewByProductId(
-        productId
+        productId,
+        sessionToken
       );
       setReviews(result);
     } catch (errorObject) {
