@@ -1,8 +1,11 @@
 import { User } from "@prisma/client";
 import prisma from "../../../../prisma/client";
 
-export const getUserByClerkId = async (clerkId: string): Promise<User | null> => {
-    return prisma.user.findUnique({ where: { clerkId } });
+export const getUserByClerkId = async (clerkId: string): Promise<User & { seller?: any } | null> => {
+    return prisma.user.findUnique({
+        where: { clerkId },
+        include: { seller: true },
+    });
 };
 
 export const createUser = async (userData: {
@@ -12,12 +15,16 @@ export const createUser = async (userData: {
     firstName?: string;
     lastName?: string;
     profilePic?: string | null;
-}): Promise<User> => {
-    return prisma.user.create({ data: userData });
+}): Promise<User & { seller?: any }> => {
+    return prisma.user.create({ data: userData, include: { seller: true } });
 };
 
 export const updateUserByClerkId = async (clerkId: string, data: Partial<User>) =>
-    prisma.user.update({ where: { clerkId }, data });
+    prisma.user.update({
+        where: { clerkId },
+        data,
+        include: { seller: true },
+    });
 
 export const deleteUserByClerkId = async (clerkId: string) =>
-    prisma.user.delete({ where: { clerkId } });
+    prisma.user.delete({ where: { clerkId }, include: { seller: true } });

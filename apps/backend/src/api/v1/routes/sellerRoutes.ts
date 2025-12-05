@@ -60,4 +60,11 @@ router.delete(
     sellerController.removeBlockedSeller
 )
 
+router.get(
+    "/me",
+    requireAuth(),
+    findOrCreateUser,
+    sellerController.getSellerByUserId
+);
+
 export default router;

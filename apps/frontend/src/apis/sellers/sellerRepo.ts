@@ -137,3 +137,41 @@ export async function removeBlockedSeller(sellerId: number, sessionToken?: strin
     const json: TermResponseJSON = await res.json()
     return json.data
 }
+
+export async function createSeller(rating: number = 50, sessionToken?: string | null): Promise<Seller> {
+    const res: Response = await fetch(
+        `${BASE_URL}${SELLERS_ENDPOINT}`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                ...(sessionToken && { Authorization: `Bearer ${sessionToken}` })
+            },
+            body: JSON.stringify({ rating })
+        }
+    );
+
+    if (!res.ok) {
+        if (res.status === 409) throw new Error("Seller already exists for this user");
+        throw new Error("Failed to create Seller");
+    }
+
+    const json: TermResponseJSON = await res.json();
+    return json.data;
+}
+
+export async function getSellerForCurrentUser(sessionToken?: string | null): Promise<Seller | null> {
+    const res: Response = await fetch(
+        `${BASE_URL}${SELLERS_ENDPOINT}/me`,
+        sessionToken ? { headers: { Authorization: `Bearer ${sessionToken}` } } : undefined
+    );
+
+    if (res.status === 404) return null;
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch seller profile for current user");
+    }
+
+    const json: TermResponseJSON = await res.json();
+    return json.data;
+}

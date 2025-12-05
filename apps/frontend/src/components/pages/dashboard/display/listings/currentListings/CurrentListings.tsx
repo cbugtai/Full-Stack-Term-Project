@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useUser, useAuth } from "@clerk/clerk-react";
+
 import { DashboardDisplay } from "../../DashboardDisplay";
 import { ListingsNav } from "../ListingsNav";
 import { CreateListing } from "../createListing/CreateListing";
 import { EditListing } from "../editListing/EditListing";
+
 import ClipIcon from "@/assets/icons/ClipIcon.svg?react";
 import AddIcon from "@/assets/icons/AddIcon.svg?react";
 import PencilIcon from "@/assets/icons/PencilIcon.svg?react";
@@ -11,233 +13,228 @@ import TrashIcon from "@/assets/icons/TrashIcon.svg?react";
 
 import { getListingsBySeller, updateListing } from "@/apis/listing/listingRepo";
 import { getCategories, getConditions, getBrands, getStatuses } from "@/apis/meta/metaRepo";
-import { getUser, saveUser } from "@/apis/user/userRepo";
+import { getSellerForCurrentUser, createSeller } from "@/apis/sellers/sellerRepo";
 
 import type { Listing } from "@/types/listing/listingModel";
-import type { User } from "../../../../../../../../../shared/types/user";
-import type { Category, Condition, Brand, Status } from "../../../../../../../../../shared/types/metaTypes";
+import type { SellerDto } from "../../../../../../../../../shared/types/seller-terms";
+import type { Status } from "../../../../../../../../../shared/types/metaTypes";
 
 import "../Listings.css";
 
 export function CurrentListings() {
-    const { user: clerkUser, isSignedIn } = useUser();
+    const { isSignedIn } = useUser();
     const { getToken } = useAuth();
 
-    const [backendUser, setBackendUser] = useState<User | null>(null);
-    const [listings, setListings] = useState<Listing[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [showCreateModal, setShowCreateModal] = useState(false);
-    const [editingListing, setEditingListing] = useState<Listing | null>(null);
+    const [seller, setSeller] = useState<SellerDto | null>(null);
+    const [checkingSeller, setCheckingSeller] = useState(true);
     const [becomingSeller, setBecomingSeller] = useState(false);
 
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [conditions, setConditions] = useState<Condition[]>([]);
-    const [brands, setBrands] = useState<Brand[]>([]);
+    const [listings, setListings] = useState<Listing[]>([]);
+    const [loadingListings, setLoadingListings] = useState(true);
+
     const [statuses, setStatuses] = useState<Status[]>([]);
 
-    const isSeller = backendUser?.isSeller;
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [editingListing, setEditingListing] = useState<Listing | null>(null);
+
+    const isSeller = !!seller?.id;
+
+    const loadSeller = useCallback(async () => {
+        console.log("[CurrentListings] loadSeller: start");
+        try {
+            const token = await getToken();
+            console.log("[CurrentListings] Token:", token);
+
+            if (!token) {
+                console.warn("[CurrentListings] No token, aborting seller fetch");
+                return;
+            }
+
+            const found = await getSellerForCurrentUser(token);
+            console.log("[CurrentListings] Seller fetched from /me:", found);
+
+            setSeller(found);
+        } catch (err) {
+            console.error("[CurrentListings] Error fetching seller:", err);
+            setSeller(null);
+        } finally {
+            console.log("[CurrentListings] loadSeller: finished");
+            setCheckingSeller(false);
+        }
+    }, [getToken]);
 
     useEffect(() => {
-        const fetchBackendUser = async () => {
-        if (!clerkUser?.id) return;
+        console.log("[CurrentListings] useEffect -> loadSeller");
+        loadSeller();
+    }, [loadSeller]);
 
-        try {
-            const token = await getToken({ template: "default" });
-            if (!token) throw new Error("No session token");
-
-            const data = await getUser(token);
-            setBackendUser(data ?? null);
-        } catch (err) {
-            console.error("Failed to fetch backend user:", err);
-        }
-        };
-
-        fetchBackendUser();
-    }, [clerkUser?.id, getToken]);
-
-    const refreshListings = async () => {
-        if (!backendUser?.id || !isSeller) {
-            setListings([]);
-            setLoading(false);
+    const loadListings = useCallback(async () => {
+        if (!seller?.id) {
+            console.log("[CurrentListings] loadListings: No seller ID, skipping");
             return;
         }
 
+        console.log("[CurrentListings] loadListings: sellerId =", seller.id);
+        setLoadingListings(true);
+
         try {
-            const sellerListings = await getListingsBySeller(Number(backendUser.id));
+            const sellerListings = await getListingsBySeller(seller.id);
+            console.log("[CurrentListings] Listings fetched:", sellerListings.length);
             setListings(sellerListings);
         } catch (err) {
-            console.error("Failed to fetch listings:", err);
+            console.error("[CurrentListings] Error fetching listings:", err);
         } finally {
-            setLoading(false);
+            console.log("[CurrentListings] loadListings: finished");
+            setLoadingListings(false);
         }
-    };
+    }, [seller]);
 
-    const fetchMeta = async () => {
-        try {
-            const [catRes, condRes, brandRes, statusRes] = await Promise.all([
+    useEffect(() => {
+        console.log("[CurrentListings] useEffect -> loadListings");
+        loadListings();
+    }, [loadListings]);
+
+    useEffect(() => {
+        const loadStatuses = async () => {
+            console.log("[CurrentListings] loadStatuses: start");
+            try {
+                const [, , , statusList] = await Promise.all([
                 getCategories(),
                 getConditions(),
                 getBrands(),
                 getStatuses(),
-            ]);
-            setCategories(catRes);
-            setConditions(condRes);
-            setBrands(brandRes);
-            setStatuses(statusRes);
-        } catch (err) {
-            console.error("Failed to load meta options:", err);
-        }
-    };
-
-    useEffect(() => {
-        refreshListings();
-        fetchMeta();
-    }, [backendUser?.id, isSeller]);
-
-    const getCategoryName = (id: number) => categories.find(c => c.id === id)?.name ?? "Uncategorized";
-    const getConditionName = (id: number) => conditions.find(c => c.id === id)?.name ?? "Unknown";
-    const getBrandName = (id?: number) => id ? brands.find(b => b.id === id)?.name ?? "Unknown" : "Unknown";
-    const getStatusName = (id: number) => statuses.find(s => s.id === id)?.name ?? "Unknown";
-
-    const activeListings = listings.filter(l => getStatusName(l.statusId).toLowerCase() === "active");
-
-    const handleMarkAsSold = async (listing: Listing) => {
-        const soldStatus = statuses.find(s => s.name.toLowerCase() === "sold");
-        if (!soldStatus) return alert("Sold status not found");
-
-        try {
-            await updateListing(listing.id, { statusId: soldStatus.id });
-            refreshListings();
-        } catch (err) {
-            console.error("Failed to mark listing as sold:", err);
-        }
-    };
+                ]);
+                console.log("[CurrentListings] Statuses fetched:", statusList.map(s => s.name));
+                setStatuses(statusList);
+            } catch (err) {
+                console.error("[CurrentListings] Error fetching statuses:", err);
+            } finally {
+                console.log("[CurrentListings] loadStatuses: finished");
+            }
+        };
+        loadStatuses();
+    }, []);
 
     const handleBecomeSeller = async () => {
-        if (!backendUser) return;
+        console.log("[CurrentListings] handleBecomeSeller: start");
         setBecomingSeller(true);
 
         try {
-            const token = await getToken({ template: "default" });
-            if (!token) throw new Error("No session token");
+            const token = await getToken();
+            console.log("[CurrentListings] Token for creating seller:", token);
 
-            await saveUser({ isSeller: true }, token);
-            const updated = await getUser(token);
-            setBackendUser(updated);
+            if (!token) return;
+
+            const newSeller = await createSeller(50, token);
+            console.log("[CurrentListings] New seller created:", newSeller);
+
+            setSeller(newSeller);
         } catch (err) {
-            console.error("Failed to become a seller:", err);
+            console.error("[CurrentListings] Failed to become a seller:", err);
         } finally {
+            console.log("[CurrentListings] handleBecomeSeller: finished");
             setBecomingSeller(false);
         }
     };
 
-    if (!isSignedIn) {
-        return (
-            <DashboardDisplay
-                heading="Current Listings"
-                intro="You must be signed in to view your listings."
-                icon={<ClipIcon className="icon" />}
-                disableGrid
-            >
-                <p>Please <a href="/sign-in">sign in</a> to manage your listings.</p>
-            </DashboardDisplay>
-        );
-    }
+    const handleMarkAsSold = async (listing: Listing) => {
+        console.log("[CurrentListings] handleMarkAsSold: listingId =", listing.id);
+        const soldStatus = statuses.find(s => s.name.toLowerCase() === "sold");
 
-    if (!isSeller) {
-        return (
-            <DashboardDisplay
-                heading="Current Listings"
-                intro="You need to become a seller to create or manage listings."
-                icon={<ClipIcon className="icon" />}
-                disableGrid
-            >
-                <p>You are not a seller yet.</p>
+        if (!soldStatus) {
+            console.warn("[CurrentListings] No SOLD status configured");
+            return alert("No SOLD status configured.");
+        }
+
+        try {
+            await updateListing(listing.id, { statusId: soldStatus.id });
+            console.log("[CurrentListings] Listing updated, refreshing...");
+            await loadListings();
+        } catch (err) {
+            console.error("[CurrentListings] Error marking listing as sold:", err);
+        }
+    };
+
+    const activeListings = listings.filter(
+        l => statuses.find(s => s.id === l.statusId)?.name.toLowerCase() === "active"
+    );
+
+    const renderContent = () => {
+        console.log("[CurrentListings] renderContent: start");
+
+        if (!isSignedIn) {
+            console.log("[CurrentListings] User not signed in");
+            return (
+                <p>Please <a href="/sign-in">sign in</a>.</p>
+            );
+        }
+
+        if (checkingSeller) {
+            console.log("[CurrentListings] Checking seller...");
+            return <p>Verifying account...</p>;
+        }
+
+        if (!isSeller) {
+            console.log("[CurrentListings] User is not a seller");
+            return (
                 <button onClick={handleBecomeSeller} disabled={becomingSeller}>
-                    {becomingSeller ? "Becoming a Seller..." : "Become a Seller"}
+                    {becomingSeller ? "Creating..." : "Become a Seller"}
                 </button>
-            </DashboardDisplay>
-        );
-    }
+            );
+        }
 
-    if (loading) {
+        if (loadingListings) {
+            console.log("[CurrentListings] Loading listings...");
+            return <p>Loading your listings...</p>;
+        }
+
+        console.log("[CurrentListings] Rendering active listings:", activeListings.length);
+
         return (
-            <DashboardDisplay
-                heading="Current Listings"
-                intro="Manage your active listings below."
-                icon={<ClipIcon className="icon" />}
-                disableGrid
-            >
-                <p>Loading your listings...</p>
-            </DashboardDisplay>
-        );
-    }
-
-    return (
-        <div className="listings-page">
-            <div className="listings-nav-wrapper"><ListingsNav /></div>
-
-            <DashboardDisplay
-                heading="Current Listings"
-                intro="Manage your active listings below. You can edit or remove them directly from this view."
-                icon={<ClipIcon className="icon" />}
-                disableGrid
-            >
+            <>
+                <ListingsNav />
                 <div className="listings-grid">
                     <div className="listing-card create-card" onClick={() => setShowCreateModal(true)}>
                         <AddIcon className="icon" />
-                        <p>Create New Listing</p>
+                        <p>Create New</p>
                     </div>
-
                     {activeListings.length === 0 ? (
-                        <p className="empty-state">No active listings found.</p>
+                        <p>No active listings</p>
                     ) : (
-                        activeListings.map(listing => (
-                            <div key={listing.id} className="listing-card">
-                                {listing.imageUrl && <img src={listing.imageUrl} alt={listing.title} className="listing-image" />}
-                                <div className="listing-content">
-                                <h4>{listing.title}</h4>
-                                <p>{listing.description}</p>
-                                    <div className="listing-meta">
-                                        <div><strong>Category:</strong> {getCategoryName(listing.categoryId)}</div>
-                                        <div><strong>Condition:</strong> {getConditionName(listing.conditionId)}</div>
-                                        <div><strong>Brand:</strong> {getBrandName(listing.brandId)}</div>
-                                        <div><strong>Views:</strong> {listing.views ?? 0}</div>
-                                        <div><strong>Price:</strong> {listing.price === 0 ? "Free" : `$${listing.price.toFixed(2)}${listing.isNegotiable ? " - Negotiable" : ""}`}</div>
-                                        <div><strong>City:</strong> {listing.city ?? "Not specified"}</div>
-                                        <div><strong>Status:</strong> {getStatusName(listing.statusId)}</div>
-                                    </div>
-                                </div>
-                                <div className="listing-actions">
-                                    <button onClick={() => setEditingListing(listing)}>
-                                        <PencilIcon className="action-icon" /> Edit
-                                    </button>
-                                    <button onClick={() => handleMarkAsSold(listing)}>
-                                        <TrashIcon className="action-icon" /> Mark as Sold
-                                    </button>
-                                </div>
-                            </div>
+                        activeListings.map(l => (
+                        <div key={l.id} className="listing-card">
+                            {l.imageUrl && <img src={l.imageUrl} alt={l.title} />}
+                            <h4>{l.title}</h4>
+                            <p>{l.description}</p>
+                            <button onClick={() => setEditingListing(l)}><PencilIcon /> Edit</button>
+                            <button onClick={() => handleMarkAsSold(l)}><TrashIcon /> Sold</button>
+                        </div>
                         ))
                     )}
                 </div>
-            </DashboardDisplay>
 
-            {showCreateModal && (
-                <CreateListing
-                    onClose={() => {
-                        setShowCreateModal(false);
-                        refreshListings();
-                    }}
-                />
-            )}
+                {showCreateModal && <CreateListing onClose={() => setShowCreateModal(false)} />}
+                {editingListing && (
+                    <EditListing
+                        listing={editingListing}
+                        onClose={() => setEditingListing(null)}
+                        onUpdate={loadListings}
+                    />
+                )}
+            </>
+        );
+    };
 
-            {editingListing && (
-                <EditListing
-                    listing={editingListing}
-                    onClose={() => setEditingListing(null)}
-                    onUpdate={() => refreshListings()}
-                />
-            )}
-        </div>
+    console.log("[CurrentListings] render: start, isSeller =", isSeller);
+
+    return (
+        <DashboardDisplay
+            heading={isSeller ? "Current Listings" : "Become a Seller"}
+            intro={isSeller ? "Manage your active sale listings." : "You must create a seller account to begin listing."}
+            icon={<ClipIcon />}
+            disableGrid
+        >
+            {renderContent()}
+        </DashboardDisplay>
     );
 }
