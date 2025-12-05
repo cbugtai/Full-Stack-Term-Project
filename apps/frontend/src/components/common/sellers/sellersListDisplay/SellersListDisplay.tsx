@@ -7,11 +7,15 @@ import { SellerCard } from "../sellerCard/SellerCard";
 type SellersListDisplayProps = {
   dependencies?: unknown[];
   filterFn?: (seller: Seller) => boolean;
+  showFavoriteAction?: boolean;
+  showBlockedAction?: boolean;
 }
 
 export function SellersListDisplay({
     dependencies = [],
     filterFn,
+    showFavoriteAction = true,
+    showBlockedAction = true
 }: SellersListDisplayProps ): JSX.Element {
     const { sellers, toggleFavoriteSeller, toggleBlockedSeller } =
         useSellers(dependencies, filterFn);
@@ -44,6 +48,8 @@ export function SellersListDisplay({
                     onFavClick={() => handleSellerFavClick(seller)}
                     onBlockClick={() => handleSellerBlockClick(seller)}
                     showActions={showActions}
+                    showFavoriteAction={showFavoriteAction}
+                    showBlockedAction={showBlockedAction}
                 />
             ))}
         </div>
