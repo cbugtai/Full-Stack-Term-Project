@@ -47,7 +47,10 @@ export async function toggleWishedProduct(
   productId: number
 ) {
   // check if the product is already wishlisted
-  const product: Product = await productRepo.fetchProductById(productId);
+  const product: Product = await productRepo.fetchProductById(
+    productId,
+    sessionToken
+  );
 
   if (product.isWishlisted) {
     await productRepo.removeFromWishlist(sessionToken, productId);
