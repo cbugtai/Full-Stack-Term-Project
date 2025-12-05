@@ -61,11 +61,11 @@ export async function seedCasper() {
       profilePic: "https://picsum.photos/seed/alice/200/200",
       createdAt: new Date(),
       updatedAt: new Date(),
-      seller: { create: { rating: 96,
-                          username: "alicew",
-                          completedSales: 12  
-                        } 
-                    },
+      seller: {
+        create: {
+          rating: 96,
+        },
+      },
     },
     update: {},
     include: { seller: true },
