@@ -4,7 +4,6 @@ import {
   ProductsRes,
 } from "../../../../../../shared/types/frontend-product";
 import * as productService from "../services/productService";
-import * as tempUserService from "../services/tempUserService";
 import { successResponse } from "../models/responseModel";
 import { Wishlist } from "@prisma/client";
 
@@ -14,8 +13,14 @@ export const getAllProducts = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // temporary user handling,  will remove when auth is implemented
-    const userId: number = await tempUserService.getTempUserId();
+    // check if userId is available in the request
+    let userId: number | undefined;
+    if (!req.userId) {
+      userId = undefined;
+    } else {
+      userId = req.userId;
+    }
+    console.log("userId in getAllProducts:", userId);
 
     // get the page and pageSize from query parameters
     const page: number = Number.parseInt(req.query.page as string) || 1;
@@ -39,8 +44,13 @@ export const getProductById = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // temporary user handling,  will remove when auth is implemented
-    const userId: number = await tempUserService.getTempUserId();
+    // check if userId is available in the request
+    let userId: number | undefined;
+    if (!req.userId) {
+      userId = undefined;
+    } else {
+      userId = req.userId;
+    }
 
     const product: Product | null = await productService.fetchProductById(
       userId,
@@ -62,8 +72,12 @@ export const getUserWishlist = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // temporary user handling,  will remove when auth is implemented
-    const userId: number = await tempUserService.getTempUserId();
+    // check if userId is available in the request
+    if (!req.userId) {
+      throw new Error("User not found");
+    }
+
+    const userId: number = req.userId;
 
     // get the page and pageSize from query parameters
     const page: number = Number.parseInt(req.query.page as string) || 1;
@@ -91,8 +105,12 @@ export const addToWishlist = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // temporary user handling,  will remove when auth is implemented
-    const userId: number = await tempUserService.getTempUserId();
+    // check if userId is available in the request
+    if (!req.userId) {
+      throw new Error("User not found");
+    }
+
+    const userId: number = req.userId;
 
     const newTerm: Wishlist = await productService.addToWishlist({
       ...req.body,
@@ -112,8 +130,12 @@ export const removeFromWishlist = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // temporary user handling,  will remove when auth is implemented
-    const userId: number = await tempUserService.getTempUserId();
+    // check if userId is available in the request
+    if (!req.userId) {
+      throw new Error("User not found");
+    }
+
+    const userId: number = req.userId;
 
     const count: Number = await productService.removeFromWishlist({
       ...req.body,

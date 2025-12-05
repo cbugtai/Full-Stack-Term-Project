@@ -16,32 +16,42 @@ import * as productRepo from "../apis/product/productRepo";
  *
  */
 
-export async function fetchAllProducts(page?: number, pageSize?: number) {
+export async function fetchAllProducts(
+  page?: number,
+  pageSize?: number,
+  sessionToken?: string | null
+) {
   const products: ProductsRes = await productRepo.fetchAllProducts(
     page,
-    pageSize
+    pageSize,
+    sessionToken
   );
   return products;
 }
 
 export async function fetchWishlistedProducts(
+  sessionToken: string,
   page?: number,
   pageSize?: number
 ) {
   const wishlishedProducts: ProductsRes = await productRepo.fetchWishlist(
+    sessionToken,
     page,
     pageSize
   );
   return wishlishedProducts;
 }
 
-export async function toggleWishedProduct(productId: number) {
+export async function toggleWishedProduct(
+  sessionToken: string,
+  productId: number
+) {
   // check if the product is already wishlisted
   const product: Product = await productRepo.fetchProductById(productId);
 
   if (product.isWishlisted) {
-    await productRepo.removeFromWishlist(productId);
+    await productRepo.removeFromWishlist(sessionToken, productId);
   } else {
-    await productRepo.addToWishlist(productId);
+    await productRepo.addToWishlist(sessionToken, productId);
   }
 }

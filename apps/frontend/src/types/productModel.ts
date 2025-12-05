@@ -13,7 +13,6 @@ export type ProductListParams = {
 };
 
 export type ProductCardParams = {
-  userId: number;
   product: Product;
   addReview: ({ productId, comment }: NewReviewParams) => void;
   toggleWishedProduct: (productId: number) => void;

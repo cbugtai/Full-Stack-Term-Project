@@ -6,7 +6,6 @@ import ReviewsDisplay from "./ReviewsDisplay";
 import type { ProductCardParams } from "@/types/productModel";
 
 function ProductCard({
-  userId,
   product,
   addReview,
   toggleWishedProduct,
@@ -75,9 +74,7 @@ function ProductCard({
           openWrite();
         }}
         // add the validation to hidden the button if the user has already written a review for this product
-        hidden={
-          product.reviews && product.reviews.some((r) => r.userId === userId)
-        }
+        hidden={product.hasReviewed}
       >
         Write a review
       </button>

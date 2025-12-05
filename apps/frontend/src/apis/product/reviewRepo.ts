@@ -7,10 +7,18 @@ const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 const REVIEW_ENDPOINT = "/reviews";
 
 export async function fetchReviewByProductId(
-  productId: number
+  productId: number,
+  sessionToken?: string | null
 ): Promise<Review[]> {
   const reviewResponse: Response = await fetch(
-    `${BASE_URL}${REVIEW_ENDPOINT}/product/${productId}`
+    `${BASE_URL}${REVIEW_ENDPOINT}/product/${productId}`,
+    sessionToken
+      ? {
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+          },
+        }
+      : undefined
   );
 
   if (!reviewResponse.ok) {
@@ -24,9 +32,11 @@ export async function fetchReviewByProductId(
 }
 
 export async function addReview({
+  sessionToken,
   productId,
   comment,
 }: {
+  sessionToken: string;
   productId: number;
   comment: string;
 }) {
@@ -37,6 +47,7 @@ export async function addReview({
       body: JSON.stringify({ productId, comment }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionToken}`,
       },
     }
   );

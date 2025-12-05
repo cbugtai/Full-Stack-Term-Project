@@ -39,6 +39,8 @@ export function WishProducts() {
       <section>
         {error ? (
           <p className="error-message">{error}</p>
+        ) : maxPage === 0 ? (
+          <p>No products in wishlist.</p>
         ) : (
           <ProductList
             allProducts={wishlistedProducts}
