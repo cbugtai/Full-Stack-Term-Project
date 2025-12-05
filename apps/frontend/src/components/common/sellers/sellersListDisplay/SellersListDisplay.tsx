@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import { useUser } from "@clerk/clerk-react";
 import type { SellerDto as Seller } from "../../../../../../../shared/types/seller-terms";
 import { SellerCard } from "../sellerCard/SellerCard";
+import "./SellersListDisplay.css"
 
 type SellersListDisplayProps = {
     sellers: Seller[];

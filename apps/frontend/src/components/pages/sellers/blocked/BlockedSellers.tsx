@@ -2,6 +2,7 @@ import { SellersNav } from "../../../common/sellers/sellers-nav/SellersNav";
 import { SellersListDisplay } from "../../../common/sellers/sellersListDisplay/SellersListDisplay";
 import Pagination from "@/components/common/pagination/Pagination";
 import { useSellers } from "@/hooks/useSellers";
+import "../SellersPage.css"
 
 export function SellersBlocked() {
   const {
@@ -19,9 +20,12 @@ export function SellersBlocked() {
   const blockedSellers = sellers.filter((s) => s.isBlocked);
 
   return (
-    <div>
+    <div className="sellers-page">
       <SellersNav />
-      <h1>Blocked Sellers</h1>
+      <div className="sellers-heading">
+        <h1>Blocked Sellers</h1>
+        <p className="sellers-subtitle">Review and unblock sellers whenever you are ready to see them again.</p>
+      </div>
 
       {error && <p className="error-message">{error}</p>}
       
