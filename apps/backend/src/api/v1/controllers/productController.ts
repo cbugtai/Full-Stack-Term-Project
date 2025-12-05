@@ -20,7 +20,7 @@ export const getAllProducts = async (
     } else {
       userId = req.userId;
     }
-    console.log("userId in getAllProducts:", userId);
+    // console.log("userId in getAllProducts:", userId);
 
     // get the page and pageSize from query parameters
     const page: number = Number.parseInt(req.query.page as string) || 1;

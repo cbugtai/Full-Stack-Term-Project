@@ -30,7 +30,7 @@ export function useAllProducts() {
 
   const fetchAllProducts = async () => {
     try {
-      const sessionToken = isSignedIn ? await getToken() : null;
+      const sessionToken = await getToken().catch(() => null);
       // console.log("sessionToken in fetchAllProducts:", sessionToken);
       const result: ProductsRes = await productService.fetchAllProducts(
         page,
@@ -49,7 +49,7 @@ export function useAllProducts() {
     try {
       start();
       const sessionToken = isSignedIn ? await getToken() : null;
-
+      // console.log("sessionToken in toggleWishedProduct:", sessionToken);
       if (!sessionToken) {
         throw new Error("Not Authorized");
       }

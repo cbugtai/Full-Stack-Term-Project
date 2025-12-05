@@ -15,7 +15,7 @@ export const fetchAllProducts = async (
   page: number,
   pageSize: number
 ): Promise<ProductsRes | undefined> => {
-  console.log("fetchAllProducts called with userId in service layer:", userId);
+  // console.log("fetchAllProducts called with userId in service layer:", userId);
   try {
     // pagination calculation
     const skip: number = (page - 1) * pageSize;
@@ -42,7 +42,7 @@ export const fetchAllProducts = async (
     });
     // get the toal count of listings for pagination info
     const totalCount = await prisma.listings.count();
-
+    // console.log("user id in fetchAllProducts:", userId);
     // generate the Product[] to return
     const products: Product[] = listings.map((listing) => ({
       id: listing.id,
