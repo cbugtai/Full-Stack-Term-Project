@@ -11,7 +11,6 @@ import errorHandler from "./api/v1/middleware/errorHandler";
 import sellerRoutes from "./api/v1/routes/sellerRoutes";
 import productRoutes from "./api/v1/routes/productRoutes";
 import reviewRoutes from "./api/v1/routes/reviewRoutes";
-// import tempUserRoutes from "./api/v1/routes/tempUserRoutes";
 import userRoutes from "./api/v1/routes/userRoutes";
 
 // initialize express application
@@ -47,7 +46,6 @@ app.use("/api/v1/sellers", sellerRoutes);
 // ---------------------- Casper part ----------------------
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/reviews", reviewRoutes);
-// app.use("/api/v1/tempuser", tempUserRoutes);
 
 // ---------------------- Nick part ----------------------
 app.use("/api/v1/users", requireAuth(), userRoutes);

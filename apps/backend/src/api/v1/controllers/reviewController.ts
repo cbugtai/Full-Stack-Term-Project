@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Review } from "../../../../../../shared/types/frontend-product";
 import * as reviewService from "../services/reviewService";
-// import * as tempUserService from "../services/tempUserService";
 import { successResponse } from "../models/responseModel";
 
 export const getReviewsByProductId = async (
