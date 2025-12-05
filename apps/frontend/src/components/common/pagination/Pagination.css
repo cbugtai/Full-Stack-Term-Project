@@ -1,10 +1,10 @@
-.product-pagination {
+.pagination {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.product-pagination button {
+.pagination button {
   margin: 0 10px;
   padding: 5px 10px;
   background-color: var(--color-secondary);
@@ -13,7 +13,7 @@
   border-radius: 4px;
   cursor: pointer;
 }
-.product-pagination button:disabled {
+.pagination button:disabled {
   background-color: lightgrey;
   color: lightwhite;
   cursor: not-allowed;

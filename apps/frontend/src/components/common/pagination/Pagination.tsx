@@ -1,9 +1,9 @@
-import "./ProductPagination.css";
+import "./Pagination.css";
 import type { PaginationParams } from "@/types/productModel";
 
-function ProductPagination({ page, maxPage, setPage }: PaginationParams) {
+function Pagination({ page, maxPage, setPage }: PaginationParams) {
   return (
-    <div className="product-pagination">
+    <div className="pagination">
       <button onClick={() => setPage(page - 1)} disabled={page === 1}>
         Prev
       </button>
@@ -20,4 +20,4 @@ function ProductPagination({ page, maxPage, setPage }: PaginationParams) {
   );
 }
 
-export default ProductPagination;
+export default Pagination;
