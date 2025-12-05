@@ -2,7 +2,6 @@ import type { ProductListParams } from "@/types/productModel";
 import { SignedOut } from "@clerk/clerk-react";
 import { NavLink } from "react-router-dom";
 import ProductCard from "./ProductCard";
-// import { useTempUser } from "@/hooks/useTempUser";
 
 function ProductList({
   allProducts,
@@ -10,7 +9,6 @@ function ProductList({
   toggleWishedProduct,
 }: ProductListParams) {
   // this userid will be replaced with real user auth in future
-  // const { tempUserId, error } = useTempUser();
 
   return (
     <>
