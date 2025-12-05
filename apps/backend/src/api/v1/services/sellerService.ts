@@ -5,8 +5,24 @@ import type { SellerDto } from "../../../../../../shared/types/seller-terms"
 // requires userId as an argument
 // returns list of sellers
 export const fetchAllSellers = async(
-    userId: number
+    userId?: number
 ) : Promise<SellerDto[]> => {
+
+    const preferencesSelect = userId?
+        {
+            where: { userId },
+            select: {
+                isFavorite: true,
+                isBlocked: true,
+            }
+        } :
+        {
+            take: 0,
+            select: {
+                isFavorite: true,
+                isBlocked: true,
+            }
+        }
 
     const sellers = await prisma.seller.findMany({
         select: {
@@ -23,13 +39,7 @@ export const fetchAllSellers = async(
                     profilePic: true,
                 }
             },
-            preferences: {
-                where: { userId },
-                select: {
-                    isFavorite: true,
-                    isBlocked: true,
-                }
-            }
+            preferences: preferencesSelect
         }
     })
 
@@ -54,9 +64,25 @@ export const fetchAllSellers = async(
 // requires userId asn sellerId as an argument
 // returns a single seller
 export const fetchSellerById = async(
-    userId: number,
+    userId: number | undefined,
     sellerId: number
 ) : Promise<SellerDto> => {
+
+    const preferencesSelect = userId?
+        {
+            where: { userId },
+            select: {
+                isFavorite: true,
+                isBlocked: true,
+            }
+        } :
+        {
+            take: 0,
+            select: {
+                isFavorite: true,
+                isBlocked: true,
+            }
+        }
 
     const seller = await prisma.seller.findUnique({
         where: {id:  sellerId },
@@ -74,13 +100,7 @@ export const fetchSellerById = async(
                     profilePic: true
                 }
             },
-            preferences: {
-                where: { userId },
-                select: {
-                    isFavorite: true,
-                    isBlocked: true,
-                }
-            }
+            preferences: preferencesSelect
         }
     })
 

@@ -23,7 +23,7 @@ export const getAllSellers = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const userId = getUserId(req);
+        const userId = (req as AuthRequest).userId;
 
         const sellers: SellerDto[] = await sellerService.fetchAllSellers(userId)
         
@@ -42,7 +42,7 @@ export const getSellerById = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const userId = getUserId(req);
+        const userId = (req as AuthRequest).userId;
         const sellerId = Number(req.params.id)
 
         if (Number.isNaN(sellerId)) {
