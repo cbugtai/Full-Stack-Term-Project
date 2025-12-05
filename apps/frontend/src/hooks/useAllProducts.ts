@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import * as productService from "../services/productService";
 import * as reviewService from "../services/reviewService";
-import type { Product } from "../../../../shared/types/frontend-product";
+import type {
+  Product,
+  ProductsRes,
+} from "../../../../shared/types/frontend-product";
 import { useLoading } from "./useLoading";
+import { usePagination } from "./usePagination";
 
 /**
  * userProducts Hook
@@ -19,12 +23,18 @@ export function useAllProducts() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { loading, start, stop } = useLoading();
+  const { page, setPage, maxPage, setMaxPage, pageSize } = usePagination(12);
+  // console.log("useAllProducts hook invoked, pagesize:", pageSize);
 
   const fetchAllProducts = async () => {
     try {
       start();
-      const result: Product[] = await productService.fetchAllProducts();
-      setAllProducts(result);
+      const result: ProductsRes = await productService.fetchAllProducts(
+        page,
+        pageSize
+      );
+      setMaxPage(result.meta.totalPages);
+      setAllProducts(result.products);
     } catch (errorObject) {
       // set the error state to the error object if an error is caught
       setError(`${errorObject}`);
@@ -77,7 +87,7 @@ export function useAllProducts() {
 
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
   return {
     allProducts,
@@ -85,5 +95,8 @@ export function useAllProducts() {
     toggleWishedProduct,
     addReview,
     loading,
+    page,
+    setPage,
+    maxPage,
   };
 }

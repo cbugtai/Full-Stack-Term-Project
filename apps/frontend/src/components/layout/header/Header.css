@@ -8,16 +8,16 @@
     color: #1a3257;
     position: relative;
     height: 128px;
+    box-sizing: border-box;
 }
 
 .app-logo {
     height: 128px;
     width: auto;
     max-width: 100%;
-    vertical-align: middle;
 }
 
-.app-title .app-logo:hover {
+.app-logo:hover {
     cursor: pointer;
 }
 
@@ -32,14 +32,6 @@
     text-align: center;
 }
 
-.active {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: inherit;
-}
-
 .app-title {
     font-size: clamp(1.8rem, 2.5vw, 3rem);
     color: #1a3257;
@@ -52,7 +44,6 @@
     padding: 8px;
     border-radius: 50%;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-right: auto;
 }
 
 .home-icon:hover {
@@ -69,11 +60,23 @@
     background-color: #a00c24;
 }
 
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: auto;
+}
+
 .user-info {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: auto;
+}
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .profile-link {
@@ -109,15 +112,39 @@
     object-fit: cover;
 }
 
-.right-section {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
-    width: auto;
+.signout-btn {
+    padding: 0.5rem 1rem;
+    background-color: #274b82;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-@media (max-width: 600px) {
+.signout-btn:hover {
+    background-color: #1a3257;
+    transform: scale(1.05);
+}
+
+.signout-btn:active {
+    transform: scale(0.95);
+}
+
+.signout-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: 16px;
+    }
+
     .center-section {
         position: static;
         transform: none;
@@ -125,19 +152,6 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
-    }
-
-    .center-wrapper {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .app-header {
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-        padding: 16px;
     }
 
     .left-section,
@@ -158,12 +172,5 @@
 
     .home-icon {
         font-size: 1.6rem;
-    }
-
-        .user-info {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-left: auto;
     }
 }

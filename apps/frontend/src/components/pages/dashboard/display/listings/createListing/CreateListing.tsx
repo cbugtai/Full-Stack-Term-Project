@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { useUser } from "@clerk/clerk-react";
 import { CategoryOptions } from "../CatagoryOptions";
 import { ConditionOptions } from "../ConditionOptions";
 import { generateId } from "@/utils/generateId";
 import { saveListing } from "@/apis/listing/listingRepo";
 import { saveListingImage } from "@/apis/listing/listingImageRepo";
 import { useListingValidation } from "@/hooks/useListingValidation";
-import { useUser } from "@/context/userContext";
 import type { Category } from "@/types/listing/catagory";
 import type { Condition } from "@/types/listing/condition";
 import Portal from "@/components/common/drawer/Portal";
@@ -13,11 +13,12 @@ import "../ListingPortal.css";
 
 export function CreateListing({ onClose }: { onClose: () => void }) {
     const { user } = useUser();
-    const { refreshListings } = useUser();
     const { errors, validate } = useListingValidation();
-    const [pricing, setPricing] = useState("standard");
+
+    const [pricing, setPricing] = useState<"standard" | "negotiable" | "free">("standard");
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
     const [formData, setFormData] = useState<{
         title: string;
         description: string;
@@ -36,8 +37,7 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
         image: null,
     });
 
-    const handlePricingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
+    const handlePricingChange = (value: "standard" | "negotiable" | "free") => {
         setPricing(value);
         if (value === "free") {
             setFormData((prev) => ({ ...prev, price: 0 }));
@@ -45,21 +45,40 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        const file = e.target.files?.[0] ?? null;
+        setFormData((prev) => ({ ...prev, image: file }));
+
         if (file) {
-            setFormData((prev) => ({ ...prev, image: file }));
             const reader = new FileReader();
             reader.onloadend = () => setImagePreview(reader.result as string);
             reader.readAsDataURL(file);
+        } else {
+            setImagePreview(null);
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
             [name]: name === "price" ? (value === "" ? 0 : parseFloat(value)) : value,
         }));
+    };
+
+    const resetForm = () => {
+        setFormData({
+            title: "",
+            description: "",
+            price: 0,
+            category: "" as Category,
+            condition: "" as Condition,
+            city: "",
+            image: null,
+        });
+        setImagePreview(null);
+        setPricing("standard");
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -74,11 +93,13 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
 
         setIsSubmitting(true);
 
-        const id = generateId("listing");
-        const status = "active" as "active" | "sold";
-
         try {
-            await saveListingImage(id, formData.image!);
+            const id = generateId("listing");
+            const status: "active" | "sold" = "active";
+
+            if (formData.image) {
+                await saveListingImage(id, formData.image);
+            }
 
             const listing = {
                 id,
@@ -97,20 +118,8 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
             };
 
             await saveListing(listing);
-            await refreshListings();
 
-            setFormData({
-                title: "",
-                description: "",
-                price: 0,
-                category: "" as Category,
-                condition: "" as Condition,
-                city: "",
-                image: null,
-            });
-            setImagePreview(null);
-            setPricing("standard");
-
+            resetForm();
             onClose();
         } catch (err) {
             console.error("Error saving listing:", err);
@@ -134,7 +143,7 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                             onChange={handleChange}
                         />
                         {errors.title && <p className="form-error">{errors.title}</p>}
-                        
+
                         <textarea
                             name="description"
                             placeholder="Description"
@@ -142,22 +151,24 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                             onChange={handleChange}
                         />
                         {errors.description && <p className="form-error">{errors.description}</p>}
-                        
+
                         {pricing !== "free" && (
-                            <input
-                                type="number"
-                                name="price"
-                                placeholder={formData.price ? "Price" : "Pricing"}
-                                value={formData.price || ""}
-                                onChange={handleChange}
-                            />
+                        <input
+                            type="number"
+                            name="price"
+                            placeholder="Price"
+                            value={formData.price || ""}
+                            onChange={handleChange}
+                        />
                         )}
                         {errors.price && <p className="form-error">{errors.price}</p>}
 
                         <select name="category" value={formData.category} onChange={handleChange}>
                             <option value="">Select Category</option>
                             {CategoryOptions.map((cat) => (
-                                <option key={cat} value={cat}>{cat}</option>
+                                <option key={cat} value={cat}>
+                                    {cat}
+                                </option>
                             ))}
                         </select>
                         {errors.category && <p className="form-error">{errors.category}</p>}
@@ -165,7 +176,9 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                         <select name="condition" value={formData.condition} onChange={handleChange}>
                             <option value="">Select Condition</option>
                             {ConditionOptions.map((cond) => (
-                                <option key={cond} value={cond}>{cond}</option>
+                                <option key={cond} value={cond}>
+                                    {cond}
+                                </option>
                             ))}
                         </select>
                         {errors.condition && <p className="form-error">{errors.condition}</p>}
@@ -180,33 +193,20 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                         {errors.city && <p className="form-error">{errors.city}</p>}
 
                         <div className="radio-group">
-                            <label className="radio-wrapper">
-                                <input
-                                    type="radio"
-                                    name="pricing"
-                                    value="standard"
-                                    checked={pricing === "standard"}
-                                    onChange={handlePricingChange}
-                                /> Set a Price
-                            </label>
-                            <label className="radio-wrapper">
-                                <input
-                                    type="radio"
-                                    name="pricing"
-                                    value="negotiable"
-                                    checked={pricing === "negotiable"}
-                                    onChange={handlePricingChange}
-                                /> Negotiable
-                            </label>
-                            <label className="radio-wrapper">
-                                <input
-                                    type="radio"
-                                    name="pricing"
-                                    value="free"
-                                    checked={pricing === "free"}
-                                    onChange={handlePricingChange}
-                                /> Free
-                            </label>
+                            {["standard", "negotiable", "free"].map((option) => (
+                                <label key={option} className="radio-wrapper">
+                                    <input
+                                        type="radio"
+                                        name="pricing"
+                                        value={option}
+                                        checked={pricing === option}
+                                        onChange={() => handlePricingChange(option as typeof pricing)}
+                                    />
+                                    {option === "standard"
+                                        ? "Set a Price"
+                                        : option.charAt(0).toUpperCase() + option.slice(1)}
+                                </label>
+                            ))}
                         </div>
 
                         <div className="form-group">
@@ -220,9 +220,7 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                                 onChange={handleImageUpload}
                                 className="hidden-file-input"
                             />
-                            {imagePreview && (
-                                <img src={imagePreview} alt="Preview" className="image-preview" />
-                            )}
+                            {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
                             {errors.image && <p className="form-error">{errors.image}</p>}
                         </div>
 
@@ -230,7 +228,9 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                             <button type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? "Creating..." : "Create Listing"}
                             </button>
-                            <button type="button" onClick={onClose}>Cancel</button>
+                            <button type="button" onClick={onClose}>
+                                Cancel
+                            </button>
                         </div>
                     </form>
                 </div>

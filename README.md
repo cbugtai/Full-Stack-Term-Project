@@ -28,28 +28,73 @@ so I can declutter and earn back some costs.
 - As an instructor, I want somewhere I can send my students for cheaper class
 materials, so they're better prepared without financial.
 
-## Sprint 1 Contributions
+## Local Setup
+These are the steps to run the app on your local machine.
 
-### Christian Bugtai
-- **Set up Project Git Repository** - Christian Bugtai
-- **Top Sellers List Component** - Christian Bugtai
-- **Styling Top Sellers List** - Christian Bugtai
+### Step 1. Check Prerequisites
+- **Node.js (v16+)** installed and added to PATH
+- **Docker Desktop** installed and running
+- Required Ports are free: **5432**, **3000**, **5173**
+- **Clerk AUTH** application is created
+    - Must create a JWT template named `default`
+
+### Step 2. Create Environment Variables
+Create the following `.env` files before running the app.
+
+**Backend** - `apps/backend/.env`
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/FullStackApp?schema=public"
+PORT=3000
+FRONTEND_URL=http://localhost:5173
+CLERK_PUBLISHABLE_KEY=<YOUR CLERK PUBLISHABLE KEY>
+CLERK_SECRET_KEY=<YOUR CLERK SECRET KEY>
+```
+**Frontend** - `apps/frontend/.env`
+```env
+VITE_API_BASE_URL="http://localhost:3000"
+VITE_CLERK_PUBLISHABLE_KEY=<YOUR CLERK PUBLISHABLE KEY>
+```
+
+### Step 3. Initialize Project
+Ensure that all environment variables are set, then from the **project root**, run:
+```bash
+npm run deploy
+```
+This will:
+- Install all dependencies
+- Start the PostgeSQL container
+- Apply backend migrations
+- Seed the database
+
+### Step 4. Start the App
+```bash
+npm run dev
+```
+
+## Sprint Contributions
+
+### Sprint 1
+
+**Christian Bugtai**
+- Set up Project Git Repository
+- Top Sellers List Component
+- Styling Top Sellers List
   
-### Pinyi Rao
-- **App Integration** - Pinyi Rao
-- **App Stylesheet** - Pinyi Rao
-- **List of Featured Products Component** - Pinyi Rao
-- **Styling List of Featured Products** - Pinyi Rao
-- **Project Initialization** - Pinyi Rao
+**Pinyi Rao**
+- App Integration
+- App Stylesheet
+- List of Featured Products Component
+- Styling List of Featured Products
+- Project Initialization
   
-### Nick Gowler
-- **Project Readme** - Nick Gowler
-- **Testimonials Component** - Nick Gowler
-- **Styling Testimonials** - Nick Gowler
+**Nick Gowler**
+- Project Readme
+- Testimonials Component
+- Styling Testimonials
 
-## Sprint 2 and 3 Contributions
+### Sprint 2 and 3
 
-### Christian Bugtai
+**Christian Bugtai**
 -  App Outlet Navigation
 -  Feature Page (All Sellers)
    - Form Component (Search Bar)
@@ -59,7 +104,7 @@ materials, so they're better prepared without financial.
   - New/Refactored Components (SellerListDisplay)
 - Architectural Layout Document (sellerRepo, sellerService, useSellers)
 
-### Pinyi Rao
+**Pinyi Rao**
 - Hook Definitions
 - Featured Page (Wishlist)
   - Form Component (Product Review)
@@ -69,7 +114,7 @@ materials, so they're better prepared without financial.
   - New/Refactored Components
 - Architectural Layout Document (productRepo, productService, useProduct)
 
-### Nick Gowler
+**Nick Gowler**
 - Navigation Interface
 - Service Definitions
 - Featured Page (Dashboard)
@@ -81,9 +126,9 @@ materials, so they're better prepared without financial.
 - Architectural Layout Document
 
 
-## Sprint 4 Contributions
+### Sprint 4
 
-### Christian Bugtai
+**Christian Bugtai**
 - T.2 Development SQL Database
 - T.3 Prisma Installation and Client Initialization (discussed with database diagram)
 
@@ -96,9 +141,7 @@ materials, so they're better prepared without financial.
 - I.3: Front-end Repository sends requests to back-end
 - I.4 Application State Persistence
 
-
-
-### Pinyi Rao
+**Pinyi Rao**
 - T.1: Back-end App Initialization
 - T.3 Prisma Installation and Client Initialization  (discussed with database diagram)
 - T.4 Back-end CORS Configuration
@@ -112,7 +155,7 @@ materials, so they're better prepared without financial.
 - I.3: Front-end Repository sends requests to back-end
 - I.4 Application State Persistence
 
-### Nick Gowler
+**Nick Gowler**
 - T.3 Prisma Installation and Client Initialization (built database diagram)
 - T.4 Back-end CORS Configuration
 

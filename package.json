@@ -3,13 +3,19 @@
   "workspaces": [
     "apps/*"
   ],
+  "private": true,
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm:start:frontend\" \"npm:start:backend\"",
     "migrate:backend": "npx --workspace=@full-stack-term-project/backend prisma migrate dev",
     "start:frontend": "npm run dev --workspace=@full-stack-term-project/frontend",
-    "start:backend": "npm start --workspace=@full-stack-term-project/backend"
+    "start:backend": "npm start --workspace=@full-stack-term-project/backend",
+
+    "docker:up": "npm run docker:up --workspace=@full-stack-term-project/backend",
+    "seed": "npm run seed --workspace=@full-stack-term-project/backend",
+    "migrate": "npx --workspace=@full-stack-term-project/backend prisma migrate dev",
+    "deploy": "npm install && npm run docker:up && npm run migrate && npm run seed"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +27,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@clerk/types": "^4.50.2",
     "dotenv": "^16.4.7"
   }
 }

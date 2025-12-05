@@ -5,7 +5,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "vercel-build": "prisma migrate deploy && prisma db seed && npm run build",
+    "postinstall": "prisma generate",
+
+    "docker:up": "docker compose up -d",
+    "seed": "prisma db seed"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +30,8 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
+    "@clerk/express": "^1.7.20",
     "@prisma/client": "^6.5.0",
     "@types/cors": "^2.8.17",
     "@types/morgan": "^1.9.9",
