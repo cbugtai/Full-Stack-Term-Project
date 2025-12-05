@@ -1,224 +1,208 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Listing } from "@/types/listing/listingModel";
+import type { Brand, Category, Condition } from "../../../../../../../../../shared/types/metaTypes";
 import Portal from "@/components/common/drawer/Portal";
-import { saveListing } from "@/apis/listing/listingRepo";
-import { saveListingImage } from "@/apis/listing/listingImageRepo";
+import { updateListing } from "@/apis/listing/listingRepo";
 import { useListingValidation } from "@/hooks/useListingValidation";
-import { CategoryOptions } from "../CatagoryOptions";
-import { ConditionOptions } from "../ConditionOptions";
+import { getBrands, getCategories, getConditions } from "@/apis/meta/metaRepo";
 import "../ListingPortal.css";
 
-export function EditListing({
-    listing,
-    onClose,
-    onUpdate,
-}: {
+type EditListingProps = {
     listing: Listing;
     onClose: () => void;
     onUpdate: (updated: Listing) => void;
-}) {
+};
+
+export function EditListing({ listing, onClose, onUpdate }: EditListingProps) {
     const [formData, setFormData] = useState({
         title: listing.title,
         description: listing.description,
         price: listing.price,
-        category: listing.category,
-        condition: listing.condition,
+        categoryId: listing.categoryId,
+        conditionId: listing.conditionId,
+        brandId: listing.brandId ?? 0,
         city: listing.city ?? "",
         image: null as File | null,
+        isNegotiable: listing.isNegotiable ?? false,
+        isFree: listing.isFree ?? false,
     });
 
-    const [pricing, setPricing] = useState(() => {
-        if (listing.isFree) return "free";
-        if (listing.isNegotiable) return "negotiable";
-        return "standard";
-    });
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [conditions, setConditions] = useState<Condition[]>([]);
+    const [brands, setBrands] = useState<Brand[]>([]);
+    const [imagePreview, setImagePreview] = useState<string | null>(listing.imageUrl ?? null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { errors, validate } = useListingValidation();
-    const [submitting, setSubmitting] = useState(false);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-    const handleChange = (field: string, value: any) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
+    useEffect(() => {
+        const fetchMeta = async () => {
+            try {
+                const [catRes, condRes, brandRes] = await Promise.all([
+                    getCategories(),
+                    getConditions(),
+                    getBrands(),
+                ]);
+                setCategories(catRes);
+                setConditions(condRes);
+                setBrands(brandRes);
+            } catch (err) {
+                console.error("Failed to load meta options:", err);
+            }
+        };
+        fetchMeta();
+    }, []);
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
+        const { name, type, value, checked } = e.target as HTMLInputElement;
+        let newValue: string | number | boolean = value;
+
+        if (type === "checkbox") newValue = checked;
+        if (type === "number") newValue = parseFloat(value);
+
+        setFormData((prev) => ({ ...prev, [name]: newValue }));
     };
 
-    const handlePricingChange = (value: string) => {
-        setPricing(value);
-        if (value === "free") {
-            handleChange("price", 0);
-        } else if (formData.price === 0) {
-            handleChange("price", listing.price);
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        setFormData((prev) => ({ ...prev, image: file }));
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setImagePreview(reader.result as string);
+            reader.readAsDataURL(file);
+        } else {
+            setImagePreview(listing.imageUrl ?? null);
         }
     };
 
-    const handleSubmit = async () => {
-        const isValid = validate(formData, pricing, listing.imageUrl);
-        if (!isValid) return;
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-        setSubmitting(true);
+        const pricing = formData.isFree ? "free" : formData.isNegotiable ? "negotiable" : "standard";
+        if (!validate(formData, pricing, listing.imageUrl)) return;
+
+        setIsSubmitting(true);
 
         try {
-            const updatedListing: Listing = {
-                ...listing,
-                ...formData,
+            const payload: Partial<Listing> = {
+                title: formData.title,
+                description: formData.description,
                 price: pricing === "free" ? 0 : formData.price,
-                isFree: pricing === "free",
-                isNegotiable: pricing === "negotiable",
-                updatedAt: new Date().toISOString(),
+                categoryId: formData.categoryId,
+                conditionId: formData.conditionId,
+                brandId: formData.brandId,
+                city: formData.city,
+                isNegotiable: formData.isNegotiable,
+                isFree: formData.isFree,
             };
 
-            await saveListing(updatedListing);
+            const updated = await updateListing(listing.id, payload);
 
-            if (formData.image) {
-                await saveListingImage(listing.id, formData.image);
-            }
-
-            onUpdate(updatedListing);
+            onUpdate(updated);
             onClose();
         } catch (err) {
             console.error("Error updating listing:", err);
-            alert("Something went wrong while updating your listing.");
+            alert("Failed to update listing.");
         } finally {
-            setSubmitting(false);
+            setIsSubmitting(false);
         }
     };
 
     return (
         <Portal>
-            <div className="modal-overlay">
-                <div className="modal-content">
+            <div className="modal-overlay" onClick={onClose}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                     <h2>Edit Listing</h2>
-
-                    <input
-                        type="text"
-                        value={formData.title}
-                        onChange={(e) => handleChange("title", e.target.value)}
-                        placeholder="Title"
-                        autoFocus
-                    />
-                    {errors.title && <p className="form-error">{errors.title}</p>}
-
-                    <textarea
-                        value={formData.description}
-                        onChange={(e) => handleChange("description", e.target.value)}
-                        placeholder="Description"
-                    />
-                    {errors.description && <p className="form-error">{errors.description}</p>}
-
-                    {pricing !== "free" && (
+                    <form onSubmit={handleSubmit}>
                         <input
-                            type="number"
-                            value={formData.price}
-                            onChange={(e) => handleChange("price", parseFloat(e.target.value))}
-                            placeholder="Price"
+                            type="text"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            placeholder="Title"
+                            autoFocus
                         />
-                    )}
-                    {errors.price && <p className="form-error">{errors.price}</p>}
+                        {errors.title && <p className="form-error">{errors.title}</p>}
 
-                    <select
-                        value={formData.category}
-                        onChange={(e) => handleChange("category", e.target.value)}
-                    >
-                        {CategoryOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.category && <p className="form-error">{errors.category}</p>}
+                        <textarea
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            placeholder="Description"
+                        />
+                        {errors.description && <p className="form-error">{errors.description}</p>}
 
-                    <select
-                        value={formData.condition}
-                        onChange={(e) => handleChange("condition", e.target.value)}
-                    >
-                        {ConditionOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                    {errors.condition && <p className="form-error">{errors.condition}</p>}
-
-                    <input
-                        type="text"
-                        value={formData.city}
-                        onChange={(e) => handleChange("city", e.target.value)}
-                        placeholder="City"
-                    />
-                    {errors.city && <p className="form-error">{errors.city}</p>}
-
-                    <div className="radio-group">
-                        <label className="radio-wrapper">
+                        {!formData.isFree && (
                             <input
-                                type="radio"
-                                name="pricing"
-                                value="standard"
-                                checked={pricing === "standard"}
-                                onChange={() => handlePricingChange("standard")}
+                                type="number"
+                                name="price"
+                                value={formData.price || ""}
+                                onChange={handleChange}
+                                placeholder="Price"
                             />
-                            Set a Price
-                        </label>
-                        <label className="radio-wrapper">
+                        )}
+                        {errors.price && <p className="form-error">{errors.price}</p>}
+
+                        <select name="categoryId" value={formData.categoryId} onChange={handleChange}>
+                            <option value={0}>Select Category</option>
+                            {categories.map((c) => (
+                                <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                        </select>
+                        {errors.categoryId && <p className="form-error">{errors.categoryId}</p>}
+
+                        <select name="conditionId" value={formData.conditionId} onChange={handleChange}>
+                            <option value={0}>Select Condition</option>
+                            {conditions.map((c) => (
+                                <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                        </select>
+                        {errors.conditionId && <p className="form-error">{errors.conditionId}</p>}
+
+                        <select name="brandId" value={formData.brandId} onChange={handleChange}>
+                            <option value={0}>Select Brand</option>
+                            {brands.map((b) => (
+                                <option key={b.id} value={b.id}>{b.name}</option>
+                            ))}
+                        </select>
+                        {errors.brandId && <p className="form-error">{errors.brandId}</p>}
+
+                        <input name="city" value={formData.city} onChange={handleChange} placeholder="City" />
+
+                        <label>
                             <input
-                                type="radio"
-                                name="pricing"
-                                value="negotiable"
-                                checked={pricing === "negotiable"}
-                                onChange={() => handlePricingChange("negotiable")}
+                                type="checkbox"
+                                name="isNegotiable"
+                                checked={formData.isNegotiable}
+                                onChange={handleChange}
                             />
                             Negotiable
                         </label>
-                        <label className="radio-wrapper">
-                            <input
-                                type="radio"
-                                name="pricing"
-                                value="free"
-                                checked={pricing === "free"}
-                                onChange={() => handlePricingChange("free")}
-                            />
+
+                        <label>
+                            <input type="checkbox" name="isFree" checked={formData.isFree} onChange={handleChange} />
                             Free
                         </label>
-                    </div>
 
-                    <div className="form-group">
-                        <label htmlFor="imageUpload" className="custom-file-label">
-                            Upload Photo
-                        </label>
-                        <input
-                            type="file"
-                            id="imageUpload"
-                            accept="image/*"
-                            onChange={(e) => {
-                                const file = e.target.files?.[0] ?? null;
-                                handleChange("image", file);
-                                if (file) {
-                                    const reader = new FileReader();
-                                    reader.onloadend = () => {
-                                        setImagePreview(reader.result as string);
-                                    };
-                                    reader.readAsDataURL(file);
-                                } else {
-                                    setImagePreview(null);
-                                }
-                            }}
-                            className="hidden-file-input"
-                        />
-                        {!imagePreview && listing.imageUrl && (
-                            <img src={listing.imageUrl} alt="Current image" className="image-preview" />
-                        )}
-                        {imagePreview && (
-                            <img src={imagePreview} alt="Preview" className="image-preview" />
-                        )}
-                        {errors.image && <p className="form-error">{errors.image}</p>}
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="imageUpload">Upload Photo</label>
+                            <input type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} />
+                            {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
+                            {errors.image && <p className="form-error">{errors.image}</p>}
+                        </div>
 
-                    <div className="form-actions">
-                        <button onClick={handleSubmit} disabled={submitting}>
-                            {submitting ? "Saving..." : "Save Changes"}
-                        </button>
-                        <button type="button" onClick={onClose}>
-                            Cancel
-                        </button>
-                    </div>
+                        <div className="form-actions">
+                            <button type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? "Saving..." : "Save Changes"}
+                            </button>
+                            <button type="button" onClick={onClose}>
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </Portal>

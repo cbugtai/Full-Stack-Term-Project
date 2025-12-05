@@ -1,7 +1,7 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import type { User } from "../../../../../../shared/types/user";
-import { getHydratedUser } from "@/apis/user/userRepo";
+import { getUser } from "@/apis/user/userRepo";
 import "./UserCard.css";
 
 export function UserCard({ onClose }: { onClose: () => void }) {
@@ -17,7 +17,7 @@ export function UserCard({ onClose }: { onClose: () => void }) {
                 const token = await getToken({ template: "default" });
                 if (!token) throw new Error("No session token");
 
-                const data = await getHydratedUser(token);
+                const data = await getUser(token);
                 if (isMounted) setBackendUser(data);
             } catch (err) {
                 console.error("Failed to fetch backend user:", err);

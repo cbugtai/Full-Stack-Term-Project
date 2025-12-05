@@ -1,24 +1,22 @@
-import type { Category } from "./catagory";
-import type { Condition } from "./condition";
 import type { ListingReview } from "./listingReviewModel";
 
 export type Listing = {
-    id: string;
-    userId: string;
+    id: number;
+    sellerId: number;
     title: string;
     description: string;
-    category: Category;
-    condition: Condition;
+    categoryId: number;
+    conditionId: number;
     price: number;
     isWishlisted: boolean;
     createdAt: string;
-    status: "active" | "sold";
+    statusId: number;
     imageUrl?: string;
     views?: number;
     city?: string;
     isNegotiable?: boolean;
     isFree?: boolean;
     updatedAt?: string;
-    brand?: string;
+    brandId?: number;
     reviews?: ListingReview[];
 };
