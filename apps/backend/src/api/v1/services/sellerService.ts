@@ -11,12 +11,20 @@ export const fetchAllSellers = async(
     const sellers = await prisma.seller.findMany({
         select: {
             id: true,
-            username: true,
             rating: true,
-            completedSales: true,
-            photo: true,
+            _count: {
+                select: {
+                    listings: {where: { status: { status: "Sold" } } }
+                }
+            },
+            user: {
+                select: {
+                    userName: true,
+                    profilePic: true,
+                }
+            },
             preferences: {
-                where: { userId },      
+                where: { userId },
                 select: {
                     isFavorite: true,
                     isBlocked: true,
@@ -30,10 +38,10 @@ export const fetchAllSellers = async(
 
         return {
             id: s.id,
-            username: s.username,
+            username: s.user.userName,
             rating: s.rating,
-            completedSales: s.completedSales,
-            photo: s.photo ?? undefined,
+            completedSales: s._count.listings,
+            photo: s.user.profilePic ?? undefined,
             isFavorite: pref?.isFavorite ?? false,
             isBlocked: pref?.isBlocked ?? false,
         }
@@ -46,20 +54,28 @@ export const fetchAllSellers = async(
 // requires userId asn sellerId as an argument
 // returns a single seller
 export const fetchSellerById = async(
-    userId: number, 
-    sellerId: number 
+    userId: number,
+    sellerId: number
 ) : Promise<SellerDto> => {
 
     const seller = await prisma.seller.findUnique({
         where: {id:  sellerId },
         select: {
             id: true,
-            username: true,
             rating: true,
-            completedSales: true,
-            photo: true,
+            _count: {
+                select: {
+                    listings: { where: { status: { status: "Sold" } } },
+                }
+            },
+            user: {
+                select: {
+                    userName: true,
+                    profilePic: true
+                }
+            },
             preferences: {
-                where: { userId },      
+                where: { userId },
                 select: {
                     isFavorite: true,
                     isBlocked: true,
@@ -76,10 +92,10 @@ export const fetchSellerById = async(
 
     const sellerDto: SellerDto = {
             id: seller.id,
-            username: seller.username,
+            username: seller.user.userName,
             rating: seller.rating,
-            completedSales: seller.completedSales,
-            photo: seller.photo ?? undefined,
+            completedSales: seller._count.listings,
+            photo: seller.user.profilePic ?? undefined,
             isFavorite: pref?.isFavorite ?? false,
             isBlocked: pref?.isBlocked ?? false,
         }
