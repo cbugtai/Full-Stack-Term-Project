@@ -1,12 +1,20 @@
-import type { SellerDto as Seller } from "../../../../shared/types/seller-terms";
+import type { SellerDto as Seller, SellersPageDto} from "../../../../shared/types/seller-terms";
 import * as sellerRepo from "../apis/sellers/sellerRepo";
 
 /**
  * Fetch all sellers from the repository.
  * @returns A promise that resolves to an array of sellers.
  */
-export async function getAllSellers(sessionToken? : string|null): Promise<Seller[]> {
-   const sellers = await sellerRepo.fetchAllSellers(sessionToken);
+export async function getAllSellers(
+    page?: number,
+    pageSize?: number,
+    sessionToken? : string|null
+): Promise<SellersPageDto> {
+   const sellers = await sellerRepo.fetchAllSellers(
+    page,
+    pageSize,
+    sessionToken
+);
    return sellers
 }
 
