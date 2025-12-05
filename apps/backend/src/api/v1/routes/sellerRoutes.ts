@@ -3,7 +3,7 @@ import { requireAuth } from "@clerk/express";
 import { findOrCreateUser } from "../middleware/findOrCreateUser";
 import * as sellerController from "../controllers/sellerController";
 import { validateRequest } from "../middleware/validate";
-import { sellerIdSchema, idSchema } from "../validations/sellerValidation";
+import { sellerIdSchema, idSchema, sellerCreateSchema } from "../validations/sellerValidation";
 
 const router: Router = Router();
 
@@ -16,6 +16,14 @@ router.get(
     "/:id",
     validateRequest(idSchema),
     sellerController.getSellerById
+)
+
+router.post(
+    "/",
+    requireAuth(),
+    findOrCreateUser,
+    validateRequest(sellerCreateSchema),
+    sellerController.addSeller
 )
 
 router.post(

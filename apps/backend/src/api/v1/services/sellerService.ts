@@ -1,6 +1,31 @@
 import prisma from "../../../../prisma/client"
 import type { SellerDto } from "../../../../../../shared/types/seller-terms"
 
+// creates a new seller linked to the given user
+// requires userId and optional rating (defaults to 50)
+// returns the created seller
+export const addSeller = async (
+    userId: number,
+    rating?: number,
+) : Promise<SellerDto> => {
+
+    const existingSeller = await prisma.seller.findUnique({where: {userId}})
+    if (existingSeller) {
+        throw new Error("Seller already exists for this user")
+    }
+
+    const newSeller = await prisma.seller.create({
+        data: {
+            userId,
+            rating: rating ?? 50,
+        }
+    })
+
+    const seller = await fetchSellerById(userId, newSeller.id)
+
+    return seller
+}
+
 // grabs the list of all sellers in the db
 // requires userId as an argument
 // returns list of sellers
