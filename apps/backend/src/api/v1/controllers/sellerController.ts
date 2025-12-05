@@ -12,11 +12,8 @@ function getUserId(req: Request): number {
     const userId = (req as AuthRequest).userId;
 
     if (!userId) {
-        // throw new Error("User not authenticated")
-
-        return 1 // TEMPORARY!!! DELETE ONCE AUTHENTICATION IS IMPLEMENTED!!!
+        throw new Error("User not authenticated")
     }
-
     return userId
 }
 
