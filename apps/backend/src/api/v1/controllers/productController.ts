@@ -14,12 +14,8 @@ export const getAllProducts = async (
 ): Promise<void> => {
   try {
     // check if userId is available in the request
-    let userId: number | undefined;
-    if (!req.userId) {
-      userId = undefined;
-    } else {
-      userId = req.userId;
-    }
+    let userId: number | undefined = req.userId ?? undefined;
+
     // console.log("userId in getAllProducts:", userId);
 
     // get the page and pageSize from query parameters
@@ -45,12 +41,7 @@ export const getProductById = async (
 ): Promise<void> => {
   try {
     // check if userId is available in the request
-    let userId: number | undefined;
-    if (!req.userId) {
-      userId = undefined;
-    } else {
-      userId = req.userId;
-    }
+    let userId: number | undefined = req.userId ?? undefined;
 
     const product: Product | null = await productService.fetchProductById(
       userId,
