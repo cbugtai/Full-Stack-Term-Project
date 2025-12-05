@@ -10,7 +10,7 @@ export function useSellers(
     const [sellers, setSellers] = useState<Seller[]>([]);
     const [error, setError] = useState<string | null>(null);
     const { getToken, isSignedIn, isLoaded } = useAuth();
-    const { page, setPage, maxPage, setMaxPage, pageSize } = usePagination(12);
+    const { page, setPage, maxPage, setMaxPage, pageSize } = usePagination(10);
 
     useEffect(() => {
         const fetchSellers = async () => {

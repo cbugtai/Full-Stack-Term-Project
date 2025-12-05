@@ -1,17 +1,40 @@
 import { SellersNav } from "../../../common/sellers/sellers-nav/SellersNav";
 import { SellersListDisplay } from "../../../common/sellers/sellersListDisplay/SellersListDisplay";
-import type { SellerDto as Seller } from "../../../../../../../shared/types/seller-terms";
+import Pagination from "@/components/common/pagination/Pagination";
+import { useSellers } from "@/hooks/useSellers";
 
 export function SellersBlocked() {
+  const {
+    sellers,
+    error,
+    toggleFavoriteSeller,
+    toggleBlockedSeller,
+    page,
+    setPage,
+    maxPage,
+  } = useSellers();
+
+  // Only show blocked sellers
+  const blockedSellers = sellers.filter((s) => s.isBlocked);
 
   return (
     <div>
       <SellersNav />
       <h1>Blocked Sellers</h1>
-      <SellersListDisplay 
-          filterFn={(s: Seller) => s.isBlocked} 
-          showFavoriteAction={false}
+
+      {error ? (
+        <p className="error-message">{error}</p>
+      ) : (
+        <SellersListDisplay
+          sellers={blockedSellers}
+          onFavoriteClick={toggleFavoriteSeller}
+          onBlockClick={toggleBlockedSeller}
+          showFavoriteAction={false}  // match your original behavior
+          showBlockedAction={true}    // allow Unblock button
         />
+      )}
+
+      <Pagination page={page} setPage={setPage} maxPage={maxPage} />
     </div>
   );
 }
