@@ -22,9 +22,10 @@ function URLWithQuery(
     return `${url}?${usp.toString()}`
 }
 
-export async function fetchAllSellers(): Promise<Seller[]> {
+export async function fetchAllSellers(sessionToken?: string | null): Promise<Seller[]> {
     const res: Response = await fetch(
-        `${BASE_URL}${SELLERS_ENDPOINT}`
+        `${BASE_URL}${SELLERS_ENDPOINT}`,
+        sessionToken?{ headers: { Authorization: `Bearer ${sessionToken}` } } : undefined
     )
 
     if (!res.ok) {
@@ -35,9 +36,10 @@ export async function fetchAllSellers(): Promise<Seller[]> {
     return json.data
 }
 
-export async function getSellerById(sellerId: number): Promise<Seller> {
+export async function getSellerById(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const res: Response = await fetch(
-        `${BASE_URL}${SELLERS_ENDPOINT}/${sellerId}`
+        `${BASE_URL}${SELLERS_ENDPOINT}/${sellerId}`,
+        sessionToken?{ headers: { Authorization: `Bearer ${sessionToken}` } } : undefined
     )
 
     if (!res.ok) {
@@ -48,7 +50,7 @@ export async function getSellerById(sellerId: number): Promise<Seller> {
     return json.data
 }
 
-export async function addFavoriteSeller(sellerId: number): Promise<Seller> {
+export async function addFavoriteSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/favorite`,
         { sellerId }
@@ -57,7 +59,8 @@ export async function addFavoriteSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "POST"
+            method: "POST",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 
@@ -69,7 +72,7 @@ export async function addFavoriteSeller(sellerId: number): Promise<Seller> {
     return json.data
 }
 
-export async function removeFavoriteSeller(sellerId: number): Promise<Seller> {
+export async function removeFavoriteSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/favorite`,
         { sellerId }
@@ -78,7 +81,8 @@ export async function removeFavoriteSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 
@@ -90,7 +94,7 @@ export async function removeFavoriteSeller(sellerId: number): Promise<Seller> {
     return json.data
 }
 
-export async function addBlockedSeller(sellerId: number): Promise<Seller> {
+export async function addBlockedSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/blocked`,
         { sellerId }
@@ -99,7 +103,8 @@ export async function addBlockedSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "POST"
+            method: "POST",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 
@@ -111,7 +116,7 @@ export async function addBlockedSeller(sellerId: number): Promise<Seller> {
     return json.data
 }
 
-export async function removeBlockedSeller(sellerId: number): Promise<Seller> {
+export async function removeBlockedSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/blocked`,
         { sellerId }
@@ -120,7 +125,8 @@ export async function removeBlockedSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 

@@ -18,6 +18,7 @@ import { Listings } from "./components/pages/dashboard/display/listings/Listings
 import { CurrentListings } from "./components/pages/dashboard/display/listings/currentListings/CurrentListings";
 import { ListingHistory } from "./components/pages/dashboard/display/listings/listingHistory/ListingHistory";
 import SignInPage from "./components/pages/signInPage/SignInPage";
+import { RequireAuth } from "./components/auth/RequireAuth";
 
 function App() {
   
@@ -36,10 +37,18 @@ function App() {
           <Route index element={<Sellers />} />
 
           <Route path="favorite-sellers" 
-            element={<SellersFavorites />} />
+            element={
+            <RequireAuth>
+              <SellersFavorites />
+            </RequireAuth>
+          } />
 
           <Route path="blocked-sellers" 
-            element={<SellersBlocked />} />
+            element={
+            <RequireAuth>
+              <SellersBlocked />
+            </RequireAuth>
+          } />
         </Route>
 
         {/* Nick's Routes */}

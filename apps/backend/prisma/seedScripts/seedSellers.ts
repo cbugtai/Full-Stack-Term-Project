@@ -5,14 +5,23 @@ export async function seedSellers(prisma: PrismaClient) {
     // adding mock sellers Data
     console.log("seeding sellers with mock data...");
 
-    await prisma.seller.createMany({
-        data: sellersData.map((s) => ({
-            username: s.username,
-            rating: s.rating,
-            completedSales: s.completedSales,
-            photo: s.photo
-        }))
-    })
+    for (const s of sellersData) {
+        const user = await prisma.user.create({
+            data: {
+                clerkId: `seed_${s.username}`,
+                userName: s.username,
+                email: `${s.username.toLowerCase()}@example.com`,
+                profilePic: s.photo,
+            },
+        });
+
+        await prisma.seller.create({
+            data: {
+                userId: user.id,
+                rating: s.rating,
+            },
+        });
+    }
 
     //query created users
     const mockUser = await prisma.user.findFirst({
