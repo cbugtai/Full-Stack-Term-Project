@@ -9,11 +9,11 @@ export function useSellers(
 ) {
     const [sellers, setSellers] = useState<Seller[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const { getToken, isSignedIn } = useAuth();
+    const { getToken, isSignedIn, isLoaded } = useAuth();
 
     const fetchSellers = async () => {
         try {
-            if (!isSignedIn) return;
+            if (!isLoaded) return;
 
             let sessionToken = isSignedIn? await getToken() : null;
             let result = await sellerService.getAllSellers(sessionToken);
