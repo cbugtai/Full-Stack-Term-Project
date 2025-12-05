@@ -1,0 +1,75 @@
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  max-width: 480px;
+  width: 100%;
+}
+
+/* Input */
+.search-form input[type="text"] {
+  flex: 1;
+  padding: 0.6rem 1rem;
+
+  border-radius: 9999px;
+  border: 1px solid #cbd5f5;
+  background: #f9fafb;
+
+  font-size: 0.95rem;
+  color: #0f172a;
+
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.search-form input[type="text"]::placeholder {
+  color: #9ca3af;
+}
+
+.search-form input[type="text"]:focus {
+  background: #ffffff;
+  border-color: #3364ad;
+  box-shadow: 0 0 0 2px rgba(51, 100, 173, 0.2);
+}
+
+/* Button */
+.search-form button[type="submit"] {
+  border: none;
+  border-radius: 9999px;
+  padding: 0.6rem 1.2rem;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  background: linear-gradient(90deg, #3364ad 0%, #274b82 100%);
+  color: #ffffff;
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.search-form button[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(51, 100, 173, 0.25);
+}
+
+.search-form button[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Mobile: stack input and button */
+@media (max-width: 640px) {
+  .search-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-form button[type="submit"] {
+    width: 100%;
+    text-align: center;
+  }
+}
