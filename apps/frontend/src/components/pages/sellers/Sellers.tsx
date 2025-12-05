@@ -11,7 +11,8 @@ function Sellers() {
 
   const {
     sellers,
-    error, 
+    error,
+    loading,
     toggleFavoriteSeller,
     toggleBlockedSeller,
     page, 
@@ -39,8 +40,10 @@ function Sellers() {
         }}
       />
 
-      {error ? (
-        <p className="error-message">{error}</p>
+      {error && <p className="error-message">{error}</p>}
+
+      {loading ? (
+        <p className="loading-placeholder">Loading Sellers...</p>
       ) : (
         <SellersListDisplay
           sellers={filteredSellers}

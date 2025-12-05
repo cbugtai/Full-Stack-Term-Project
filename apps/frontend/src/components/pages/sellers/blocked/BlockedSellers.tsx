@@ -7,6 +7,7 @@ export function SellersBlocked() {
   const {
     sellers,
     error,
+    loading,
     toggleFavoriteSeller,
     toggleBlockedSeller,
     page,
@@ -22,8 +23,10 @@ export function SellersBlocked() {
       <SellersNav />
       <h1>Blocked Sellers</h1>
 
-      {error ? (
-        <p className="error-message">{error}</p>
+      {error && <p className="error-message">{error}</p>}
+      
+      {loading ? (
+        <p className="loading-placeholder">Loading Sellers...</p>
       ) : (
         <SellersListDisplay
           sellers={blockedSellers}

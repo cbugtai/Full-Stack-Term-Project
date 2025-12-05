@@ -7,6 +7,7 @@ export function SellersFavorites() {
   const {
     sellers,
     error,
+    loading,
     toggleFavoriteSeller,
     toggleBlockedSeller,
     page,
@@ -24,8 +25,10 @@ export function SellersFavorites() {
       <SellersNav />
       <h1>Favorite Sellers</h1>
 
-      {error ? (
-        <p className="error-message">{error}</p>
+      {error && <p className="error-message">{error}</p>}
+      
+      {loading ? (
+        <p className="loading-placeholder">Loading Sellers...</p>
       ) : (
         <SellersListDisplay
           sellers={favoriteSellers}
