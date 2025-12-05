@@ -4,9 +4,11 @@ import "./TopSellers.css"
 
 export default function TopSellers() {
 
-    const { sellers } = useSellers([], (s: Seller) => !s.isBlocked)
+    const { sellers } = useSellers()
 
-    const topSellers = [...sellers]
+    const visibleSellers = sellers.filter((s: Seller) => !s.isBlocked);
+    
+    const topSellers = [...visibleSellers]
         .sort((a, b) => b.rating - a.rating)
         .slice(0, 5);
 

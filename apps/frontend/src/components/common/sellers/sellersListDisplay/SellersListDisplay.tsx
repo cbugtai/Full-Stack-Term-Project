@@ -18,10 +18,11 @@ export function SellersListDisplay({
     showBlockedAction = true
 }: SellersListDisplayProps ): JSX.Element {
     const { sellers, toggleFavoriteSeller, toggleBlockedSeller } =
-        useSellers(dependencies, filterFn);
+        useSellers(dependencies);
     const { isLoaded, isSignedIn} = useUser();
     const showActions = isLoaded && isSignedIn;
 
+    const visibleSellers = filterFn ? sellers.filter(filterFn) : sellers;
 
     async function handleSellerFavClick(target: Seller) {
         try {
@@ -41,7 +42,7 @@ export function SellersListDisplay({
 
     return (
         <div className="sellers-list">
-            {sellers.map((seller) => (
+            {visibleSellers.map((seller) => (
                 <SellerCard
                     key={seller.id}
                     seller={seller}
