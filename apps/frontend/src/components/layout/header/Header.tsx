@@ -70,7 +70,7 @@ function Header() {
                                 <img
                                     src={DefaultUser}
                                     className="profile-pic"
-                                    alt={`${user?.username || "User"}'s profile picture`}
+                                    alt="Default user profile icon"
                                 />
                                 </div>
                             </NavLink>
