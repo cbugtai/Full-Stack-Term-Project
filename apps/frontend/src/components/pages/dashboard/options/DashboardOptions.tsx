@@ -1,6 +1,5 @@
 import BoxIcon from "@/assets/icons/BoxIcon.svg?react";
 import ClipIcon from "@/assets/icons/ClipIcon.svg?react";
-import ClockIcon from "@/assets/icons/ClockIcon.svg?react";
 import CogIcon from "@/assets/icons/CogIcon.svg?react";
 import OptionsIcon from "@/assets/icons/OptionsIcon.svg?react";
 import PencilIcon from "@/assets/icons/PencilIcon.svg?react";
@@ -68,14 +67,6 @@ export function DashboardOptions() {
                             <div className="options-row">
                                 <ClipIcon className="icon" />
                                 <p>View Current Listings</p>
-                            </div>
-                        </NavLink>
-                    </li>
-                    <li className="option-item">
-                        <NavLink to="/dashboard/listings/history" className={({ isActive }) => isActive ? "active" : ""}>
-                            <div className="options-row">
-                                <ClockIcon className="icon" />
-                                <p>View Listing History</p>
                             </div>
                         </NavLink>
                     </li>

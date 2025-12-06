@@ -16,8 +16,8 @@ import { ProfilePage } from "./components/pages/dashboard/display/settings/profi
 import { ProfileInfoPage } from "./components/pages/dashboard/display/settings/profileInfo/ProfileInfo";
 import { Listings } from "./components/pages/dashboard/display/listings/Listings";
 import { CurrentListings } from "./components/pages/dashboard/display/listings/currentListings/CurrentListings";
-import { ListingHistory } from "./components/pages/dashboard/display/listings/listingHistory/ListingHistory";
 import SignInPage from "./components/pages/signInPage/SignInPage";
+import { RequireAuth } from "./components/auth/RequireAuth";
 
 function App() {
   
@@ -36,10 +36,18 @@ function App() {
           <Route index element={<Sellers />} />
 
           <Route path="favorite-sellers" 
-            element={<SellersFavorites />} />
+            element={
+            <RequireAuth>
+              <SellersFavorites />
+            </RequireAuth>
+          } />
 
           <Route path="blocked-sellers" 
-            element={<SellersBlocked />} />
+            element={
+            <RequireAuth>
+              <SellersBlocked />
+            </RequireAuth>
+          } />
         </Route>
 
         {/* Nick's Routes */}
@@ -50,7 +58,6 @@ function App() {
           <Route path="settings/profile-info/*" element={<ProfileInfoPage />} />
           <Route path="listings" element={<Listings />} />
           <Route path="listings/current" element={<CurrentListings />} />
-          <Route path="listings/history" element={<ListingHistory />} />
         </Route>
 
         <Route path="/sign-in/*" element={<SignInPage />} />

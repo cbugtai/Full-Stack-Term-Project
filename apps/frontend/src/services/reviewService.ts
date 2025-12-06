@@ -1,19 +1,28 @@
 import type { Review } from "../../../../shared/types/frontend-product";
 import * as reviewRepo from "../apis/product/reviewRepo";
 
-export async function fetchReviewByProductId(productId: number) {
-  const reviews: Review[] = await reviewRepo.fetchReviewByProductId(productId);
+export async function fetchReviewByProductId(
+  productId: number,
+  sessionToken?: string | null
+) {
+  const reviews: Review[] = await reviewRepo.fetchReviewByProductId(
+    productId,
+    sessionToken
+  );
   return reviews;
 }
 
 export async function addReview({
+  sessionToken,
   productId,
   comment,
 }: {
+  sessionToken: string;
   productId: number;
   comment: string;
 }) {
   const reviews: Review[] = await reviewRepo.addReview({
+    sessionToken,
     productId,
     comment,
   });

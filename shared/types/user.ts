@@ -10,6 +10,7 @@ export type User = {
     bio: string;
     listings: string[];
     profilePic: string | null;
+    seller?: number;
     createdAt?: string;
     updatedAt?: string;
 };

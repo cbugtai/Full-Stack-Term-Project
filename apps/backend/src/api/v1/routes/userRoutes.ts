@@ -6,8 +6,8 @@ import { updateUserSchema } from "../validations/userValidation";
 
 const router = express.Router();
 
-router.get("/user", findOrCreateUser, userController.getUser);
-router.put("/user", findOrCreateUser, validateRequest(updateUserSchema), userController.updateUser);
-router.delete("/user", findOrCreateUser, userController.deleteUser);
+router.get("/", findOrCreateUser, userController.getUser);
+router.put("/", findOrCreateUser, validateRequest(updateUserSchema), userController.updateUser);
+router.delete("/", findOrCreateUser, userController.deleteUser);
 
 export default router;

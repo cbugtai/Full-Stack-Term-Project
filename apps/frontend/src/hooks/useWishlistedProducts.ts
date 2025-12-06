@@ -7,6 +7,7 @@ import type {
 } from "../../../../shared/types/frontend-product";
 import { useLoading } from "./useLoading";
 import { usePagination } from "./usePagination";
+import { useAuth } from "@clerk/clerk-react";
 
 /**
  * userProducts Hook
@@ -20,6 +21,8 @@ import { usePagination } from "./usePagination";
  */
 
 export function useWishlistedProducts() {
+  const { getToken, isSignedIn } = useAuth();
+
   const [wishlistedProducts, setWishlistedProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { loading, start, stop } = useLoading();
@@ -29,7 +32,13 @@ export function useWishlistedProducts() {
   const fetchWishlistedProducts = async () => {
     try {
       start();
+      const sessionToken = isSignedIn ? await getToken() : null;
+
+      if (!sessionToken) {
+        throw new Error("Not Authorized");
+      }
       const result: ProductsRes = await productService.fetchWishlistedProducts(
+        sessionToken,
         page,
         pageSize
       );
@@ -38,7 +47,9 @@ export function useWishlistedProducts() {
         setPage(result.meta.totalPages);
       }
       setMaxPage(result.meta.totalPages);
-      setWishlistedProducts(result.products);
+      if (result.meta.totalPages > 0) {
+        setWishlistedProducts(result.products);
+      }
     } catch (errorObject) {
       // set the error state to the error object if an error is caught
       setError(`${errorObject}`);
@@ -50,7 +61,12 @@ export function useWishlistedProducts() {
   const toggleWishedProduct = async (productId: number) => {
     try {
       start();
-      await productService.toggleWishedProduct(productId);
+      const sessionToken = isSignedIn ? await getToken() : null;
+
+      if (!sessionToken) {
+        throw new Error("Not Authorized");
+      }
+      await productService.toggleWishedProduct(sessionToken, productId);
       await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
@@ -68,7 +84,12 @@ export function useWishlistedProducts() {
   }) => {
     try {
       start();
-      await reviewService.addReview({ productId, comment });
+      const sessionToken = isSignedIn ? await getToken() : null;
+
+      if (!sessionToken) {
+        throw new Error("Not Authorized");
+      }
+      await reviewService.addReview({ sessionToken, productId, comment });
       await fetchWishlistedProducts();
     } catch (errorObject) {
       setError(`${errorObject}`);
@@ -81,7 +102,9 @@ export function useWishlistedProducts() {
     const loadData = async () => {
       try {
         start();
-        await fetchWishlistedProducts();
+        if (page > 0) {
+          await fetchWishlistedProducts();
+        }
       } catch (errorObject) {
         setError(String(errorObject));
       } finally {

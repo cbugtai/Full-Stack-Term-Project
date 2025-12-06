@@ -29,15 +29,13 @@ datasource db {
 //Christian's Models
 model Seller {
   id Int @id @default(autoincrement())
-  username String @unique
   rating Int //1-100
-  completedSales Int
-  photo  String? //url
+  completedSales Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId Int?   @unique
-  user   User?  @relation(fields: [userId], references: [id])
+  userId Int   @unique
+  user   User  @relation(fields: [userId], references: [id])
   
   //relations
   preferences UserSellerPreference[]
@@ -160,8 +158,8 @@ model Reviews {
     comment String
     createdAt DateTime
 
-    listing Listings @relation(fields:[listingId], references:[id])
-    user User @relation(fields:[userId], references:[id])
+    listing Listings @relation(fields:[listingId], references:[id], onDelete: Cascade)
+    user User @relation(fields:[userId], references:[id], onDelete: Cascade)
     @@unique([userId, listingId]) // only allow one user add one review for a listing at most
 }
 
@@ -172,8 +170,8 @@ model Wishlist {
     
     @@id([userId, listingId])
 
-    user User @relation(fields:[userId], references:[id])
-    listing Listings @relation(fields:[listingId], references:[id])
+    user User @relation(fields:[userId], references:[id], onDelete: Cascade)
+    listing Listings @relation(fields:[listingId], references:[id], onDelete: Cascade)
 
 }
 

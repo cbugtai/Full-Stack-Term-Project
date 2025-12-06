@@ -6,8 +6,8 @@ import * as userService from "../services/userService";
 declare global {
     namespace Express {
         interface Request {
-            userId?: number;
-            clerkId?: string;
+        userId?: number;
+        clerkId?: string;
         }
     }
 }
@@ -19,7 +19,11 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
     try {
         const auth = getAuth(req);
         const clerkId = auth.userId;
-        if (!clerkId) return next();
+
+        if (!clerkId) {
+            console.warn("No Clerk session found in request");
+            return next();
+        }
 
         const clerkUser = await clerkClient.users.getUser(clerkId);
 
@@ -28,14 +32,14 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
         const email = clerkUser.emailAddresses[0]?.emailAddress;
 
         const userName: string =
-            clerkUser.username ??
-            `${firstName ?? "user"}${lastName ?? ""}`.toLowerCase() ??
-            (email ? email.split("@")[0] : `user_${clerkId}`);
+        clerkUser.username ??
+        `${firstName ?? "user"}${lastName ?? ""}`.toLowerCase() ??
+        (email ? email.split("@")[0] : `user_${clerkId}`);
 
         const profilePic = nullToUndefined(clerkUser.imageUrl);
 
         if (!email) {
-            console.error(`Clerk user ${clerkId} has no email!`);
+            console.error(`Clerk user ${clerkId} has no email`);
             return next();
         }
 
@@ -52,6 +56,7 @@ export const findOrCreateUser = async (req: Request, _res: Response, next: NextF
             });
         } else {
             const updates: Partial<typeof backendUser> = {};
+
             if (email && backendUser.email !== email) updates.email = email;
             if (firstName && backendUser.firstName !== firstName) updates.firstName = firstName;
             if (lastName && backendUser.lastName !== lastName) updates.lastName = lastName;

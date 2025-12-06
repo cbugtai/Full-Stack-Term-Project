@@ -1,24 +1,27 @@
-import type { Category } from "./catagory";
-import type { Condition } from "./condition";
 import type { ListingReview } from "./listingReviewModel";
+import type { Category, Condition, Brand } from "@prisma/client";
 
-export type Listing = {
-    id: string;
-    userId: string;
-    title: string;
-    description: string;
-    category: Category;
-    condition: Condition;
-    price: number;
-    isWishlisted: boolean;
-    createdAt: string;
-    status: "active" | "sold";
-    imageUrl?: string;
-    views?: number;
-    city?: string;
-    isNegotiable?: boolean;
-    isFree?: boolean;
-    updatedAt?: string;
-    brand?: string;
-    reviews?: ListingReview[];
+export type ListingWithRelations = {
+  id: number;
+  sellerId: number;
+  title: string;
+  description: string;
+  categoryId: number;
+  conditionId: number;
+  price: number;
+  isWishlisted: boolean;
+  createdAt: string;
+  statusId: number;
+  imageUrl?: string;
+  views?: number;
+  city?: string;
+  isNegotiable?: boolean;
+  isFree?: boolean;
+  updatedAt?: string;
+  brandId?: number;
+  reviews?: ListingReview[];
+
+  category: Category;   // use `category.category` for display
+  condition: Condition; // use `condition.condition` for display
+  brand: Brand;         // use `brand.brand` for display
 };

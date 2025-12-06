@@ -1,3 +1,5 @@
+import "./search.css"
+
 type SearchProps = {
     searchValue: string;
     handleSearchChange: (newValue: string) => void;

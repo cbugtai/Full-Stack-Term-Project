@@ -1,7 +1,12 @@
-import type { SellerDto as Seller } from "../../../../../shared/types/seller-terms";
+import type { SellerDto as Seller, SellersPageDto } from "../../../../../shared/types/seller-terms";
 
-type TermsResponseJSON = {message: String, data: Seller[]};
-type TermResponseJSON = {message: String, data: Seller};
+type SellersResponseJSON = {
+    message: String
+    data: SellersPageDto
+    status: "success"
+};
+type SellerResponseJSON = {message: String, data: Seller};
+type ErrResponseJSON = { message: string; code: string; status: "error" };
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 const SELLERS_ENDPOINT = "/sellers"
@@ -11,7 +16,7 @@ const SELLERS_ENDPOINT = "/sellers"
 // retruns a string of the full url with the query ex. "BASE_URL/sellers/favorite?sellerId=12"
 function URLWithQuery(
     url: string, 
-    query: Record<string, string | number>
+    query: Record<string | number, string | number>
 ): string {
     const usp = new URLSearchParams;
 
@@ -22,33 +27,61 @@ function URLWithQuery(
     return `${url}?${usp.toString()}`
 }
 
-export async function fetchAllSellers(): Promise<Seller[]> {
-    const res: Response = await fetch(
-        `${BASE_URL}${SELLERS_ENDPOINT}`
-    )
+export async function fetchAllSellers(
+    page?: number,
+    pageSize?: number,
+    sessionToken?: string | null
+): Promise<SellersPageDto> {
+    const baseUrl = `${BASE_URL}${SELLERS_ENDPOINT}`
+
+    const url = 
+        page !== undefined && pageSize !==undefined
+        ? URLWithQuery(baseUrl, {page, pageSize})
+        : baseUrl;
+
+    const res: Response = await fetch(url, {
+        ...(sessionToken
+        ? { headers: { Authorization: `Bearer ${sessionToken}` } } 
+        : {})
+    })
 
     if (!res.ok) {
         throw new Error("Failed to fetch Sellers from backend")
     }
 
-    const json: TermsResponseJSON = await res.json()
+    // if the server is unreachable, the json parsing will fail
+    let json: SellersResponseJSON | ErrResponseJSON;
+    try {
+        json = await res.json();
+    } catch (e) {
+        throw new Error(`SERVER_UNREACHABLE, ${e}`);
+    }
+
+    // if the response indicates there is an error, throw an error
+    if (json.status === "error") {
+        const error = new Error(`${json.message}`) as Error & { code: string };
+        error.code = json.code;
+        throw error;
+    }
+
     return json.data
 }
 
-export async function getSellerById(sellerId: number): Promise<Seller> {
+export async function getSellerById(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const res: Response = await fetch(
-        `${BASE_URL}${SELLERS_ENDPOINT}/${sellerId}`
+        `${BASE_URL}${SELLERS_ENDPOINT}/${sellerId}`,
+        sessionToken?{ headers: { Authorization: `Bearer ${sessionToken}` } } : undefined
     )
 
     if (!res.ok) {
         throw new Error("Failed to fetch Seller from backend")
     }
 
-    const json: TermResponseJSON = await res.json()
+    const json: SellerResponseJSON = await res.json()
     return json.data
 }
 
-export async function addFavoriteSeller(sellerId: number): Promise<Seller> {
+export async function addFavoriteSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/favorite`,
         { sellerId }
@@ -57,7 +90,8 @@ export async function addFavoriteSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "POST"
+            method: "POST",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 
@@ -65,11 +99,11 @@ export async function addFavoriteSeller(sellerId: number): Promise<Seller> {
         throw new Error(`Failed to add favorite seller with ID ${sellerId}`)
     }
 
-    const json: TermResponseJSON = await res.json()
+    const json: SellerResponseJSON = await res.json()
     return json.data
 }
 
-export async function removeFavoriteSeller(sellerId: number): Promise<Seller> {
+export async function removeFavoriteSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/favorite`,
         { sellerId }
@@ -78,7 +112,8 @@ export async function removeFavoriteSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 
@@ -86,11 +121,11 @@ export async function removeFavoriteSeller(sellerId: number): Promise<Seller> {
         throw new Error(`Failed to remove favorite seller with ID ${sellerId}`)
     }
 
-    const json: TermResponseJSON = await res.json()
+    const json: SellerResponseJSON = await res.json()
     return json.data
 }
 
-export async function addBlockedSeller(sellerId: number): Promise<Seller> {
+export async function addBlockedSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/blocked`,
         { sellerId }
@@ -99,7 +134,8 @@ export async function addBlockedSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "POST"
+            method: "POST",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 
@@ -107,11 +143,11 @@ export async function addBlockedSeller(sellerId: number): Promise<Seller> {
         throw new Error(`Failed to block seller with ID ${sellerId}`)
     }
 
-    const json: TermResponseJSON = await res.json()
+    const json: SellerResponseJSON = await res.json()
     return json.data
 }
 
-export async function removeBlockedSeller(sellerId: number): Promise<Seller> {
+export async function removeBlockedSeller(sellerId: number, sessionToken?: string | null): Promise<Seller> {
     const queryUrl = URLWithQuery(
         `${BASE_URL}${SELLERS_ENDPOINT}/blocked`,
         { sellerId }
@@ -120,7 +156,8 @@ export async function removeBlockedSeller(sellerId: number): Promise<Seller> {
     const res: Response = await fetch(
         queryUrl,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${sessionToken}` }
         }
     )
 
@@ -128,6 +165,44 @@ export async function removeBlockedSeller(sellerId: number): Promise<Seller> {
         throw new Error(`Failed to unblock seller with ID ${sellerId}`)
     }
 
-    const json: TermResponseJSON = await res.json()
+    const json: SellerResponseJSON = await res.json()
     return json.data
+}
+
+export async function createSeller(rating: number = 50, sessionToken?: string | null): Promise<Seller> {
+    const res: Response = await fetch(
+        `${BASE_URL}${SELLERS_ENDPOINT}`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                ...(sessionToken && { Authorization: `Bearer ${sessionToken}` })
+            },
+            body: JSON.stringify({ rating })
+        }
+    );
+
+    if (!res.ok) {
+        if (res.status === 409) throw new Error("Seller already exists for this user");
+        throw new Error("Failed to create Seller");
+    }
+
+    const json: TermResponseJSON = await res.json();
+    return json.data;
+}
+
+export async function getSellerForCurrentUser(sessionToken?: string | null): Promise<Seller | null> {
+    const res: Response = await fetch(
+        `${BASE_URL}${SELLERS_ENDPOINT}/me`,
+        sessionToken ? { headers: { Authorization: `Bearer ${sessionToken}` } } : undefined
+    );
+
+    if (res.status === 404) return null;
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch seller profile for current user");
+    }
+
+    const json: TermResponseJSON = await res.json();
+    return json.data;
 }

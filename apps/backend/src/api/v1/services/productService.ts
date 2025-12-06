@@ -11,10 +11,11 @@ import { Wishlist } from "@prisma/client";
 import { ExtendedError } from "../middleware/errorHandler";
 
 export const fetchAllProducts = async (
-  userId: number,
+  userId: number | undefined,
   page: number,
   pageSize: number
 ): Promise<ProductsRes | undefined> => {
+  // console.log("fetchAllProducts called with userId in service layer:", userId);
   try {
     // pagination calculation
     const skip: number = (page - 1) * pageSize;
@@ -28,11 +29,7 @@ export const fetchAllProducts = async (
         brand: true,
         condition: true,
         // check the wishlist for the current user
-        wishlist: {
-          where: {
-            userId,
-          },
-        },
+        wishlist: userId ? { where: { userId } } : true,
         reviews: {
           include: {
             user: true, // join the user table to get userName
@@ -45,7 +42,7 @@ export const fetchAllProducts = async (
     });
     // get the toal count of listings for pagination info
     const totalCount = await prisma.listings.count();
-
+    // console.log("user id in fetchAllProducts:", userId);
     // generate the Product[] to return
     const products: Product[] = listings.map((listing) => ({
       id: listing.id,
@@ -56,8 +53,12 @@ export const fetchAllProducts = async (
       price: listing.price.toNumber(), // Decimal -> number
       originalPrice: listing.originalPrice.toNumber(),
       imgUrl: listing.imageUrl,
-      isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
-      hasReviewed: listing.reviews.some((r) => r.userId === userId),
+      isWishlisted: userId
+        ? listing.wishlist.some((w) => w.userId === userId)
+        : false, // if there is a record in wishlist for this user and listing
+      hasReviewed: userId
+        ? listing.reviews.some((r) => r.userId === userId)
+        : false,
       reviews: listing.reviews.map((r) => ({
         id: r.id,
         productId: listing.id,
@@ -88,7 +89,7 @@ export const fetchAllProducts = async (
 };
 
 export const fetchProductById = async (
-  userId: number,
+  userId: number | undefined,
   productId: number
 ): Promise<Product | null> => {
   try {
@@ -100,11 +101,7 @@ export const fetchProductById = async (
         brand: true,
         condition: true,
         // check the wishlist for the current user
-        wishlist: {
-          where: {
-            userId,
-          },
-        },
+        wishlist: userId ? { where: { userId } } : true,
         reviews: {
           include: {
             user: true, // join the user table to get userName
@@ -129,8 +126,12 @@ export const fetchProductById = async (
         price: listing.price.toNumber(), // Decimal -> number
         originalPrice: listing.originalPrice.toNumber(),
         imgUrl: listing.imageUrl,
-        isWishlisted: listing.wishlist.length > 0, // if there is a record in wishlist for this user and listing
-        hasReviewed: listing.reviews.some((r) => r.userId === userId),
+        isWishlisted: userId
+          ? listing.wishlist.some((w) => w.userId === userId)
+          : false, // if there is a record in wishlist for this user and listing
+        hasReviewed: userId
+          ? listing.reviews.some((r) => r.userId === userId)
+          : false,
         reviews: listing.reviews.map((r) => ({
           id: r.id,
           productId: listing.id,

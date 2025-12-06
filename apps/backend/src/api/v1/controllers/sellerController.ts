@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { SellerDto } from "../../../../../../shared/types/seller-terms";
+import { SellerDto, SellersPageDto } from "../../../../../../shared/types/seller-terms";
 import * as sellerService from "../services/sellerService";
 import { successResponse } from "../models/responseModel";
 
@@ -12,12 +12,28 @@ function getUserId(req: Request): number {
     const userId = (req as AuthRequest).userId;
 
     if (!userId) {
-        // throw new Error("User not authenticated")
-
-        return 1 // TEMPORARY!!! DELETE ONCE AUTHENTICATION IS IMPLEMENTED!!!
+        throw new Error("User not authenticated")
     }
-
     return userId
+}
+
+export const addSeller = async(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try{
+        const userId = getUserId(req);
+        const { rating } = req.body;
+
+        const seller: SellerDto = await sellerService.addSeller(userId, rating)
+
+        res.status(200).json(
+            successResponse(seller, "Seller created Successfully")
+        )
+    } catch (error) {
+        next (error)
+    }
 }
 
 export const getAllSellers = async(
@@ -26,12 +42,20 @@ export const getAllSellers = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const userId = getUserId(req);
+        const userId = (req as AuthRequest).userId;
 
-        const sellers: SellerDto[] = await sellerService.fetchAllSellers(userId)
+        // get the page and pageSize from query parameters
+        const page: number = Number.parseInt(req.query.page as string) || 1;
+        let pageSize: number = Number.parseInt(req.query.pageSize as string) || 12;
+        if (pageSize > 20) {
+        pageSize = 20; // set a maximum page size limit
+        }
+
+        const sellersRes: SellersPageDto | undefined = 
+            await sellerService.fetchAllSellers(userId, page, pageSize)
         
         res.status(200).json(
-            successResponse(sellers, `Sellers retrieved successfully`)
+            successResponse(sellersRes, `Sellers retrieved successfully`)
         )
 
     } catch (error) {
@@ -45,7 +69,7 @@ export const getSellerById = async(
     next: NextFunction
 ): Promise<void> => {
     try {
-        const userId = getUserId(req);
+        const userId = (req as AuthRequest).userId;
         const sellerId = Number(req.params.id)
 
         if (Number.isNaN(sellerId)) {
@@ -158,3 +182,20 @@ export const removeBlockedSeller = async(
         next(error)
     }
 }
+
+export const getSellerByUserId = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const userId = getUserId(req);
+        const seller = await sellerService.fetchSellerByUser(userId);
+
+        res.status(200).json(
+            successResponse(seller, "Seller retrieved for current user")
+        );
+    } catch (err) {
+        next(err);
+    }
+};
