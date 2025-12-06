@@ -4,6 +4,8 @@ import { FaHome } from "react-icons/fa";
 import { SignedIn, SignedOut, SignOutButton, useUser } from "@clerk/clerk-react";
 import { UserCard } from "@/components/common/userCard/UserCard";
 import "./Header.css";
+import LogoHeader from "@/assets/logo-header.png";
+import DefaultUser from "@/assets/default-user.png";
 
 function Header() {
     const { user } = useUser();
@@ -15,9 +17,9 @@ function Header() {
                 <div className="left-section">
                     <NavLink to="/" aria-label="Home">
                         <img
-                            src="/src/assets/logo-header.png"
+                            src={LogoHeader}
                             className="app-logo"
-                            alt="RRC Discount Ebay logo"
+                            alt="RRC Marketplace Logo"
                         />
                     </NavLink>
                 </div>
@@ -47,7 +49,7 @@ function Header() {
                                     <div className="profile-content">
                                         {user?.username || user?.primaryEmailAddress?.emailAddress}
                                         <img
-                                            src={user?.imageUrl}
+                                            src={DefaultUser}
                                             className="profile-pic"
                                             alt={`${user?.username || "User"}'s profile picture`}
                                         />
