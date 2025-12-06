@@ -1,0 +1,9 @@
+.sellers-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centers cards horizontally */
+
+  max-width: 700px; /* keeps column narrow and centered */
+  margin: 0 auto;
+  padding: 1rem;
+}

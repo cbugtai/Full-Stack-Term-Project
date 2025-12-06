@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { SellerDto } from "../../../../../../shared/types/seller-terms";
+import { SellerDto, SellersPageDto } from "../../../../../../shared/types/seller-terms";
 import * as sellerService from "../services/sellerService";
 import { successResponse } from "../models/responseModel";
 
@@ -44,10 +44,18 @@ export const getAllSellers = async(
     try {
         const userId = (req as AuthRequest).userId;
 
-        const sellers: SellerDto[] = await sellerService.fetchAllSellers(userId)
+        // get the page and pageSize from query parameters
+        const page: number = Number.parseInt(req.query.page as string) || 1;
+        let pageSize: number = Number.parseInt(req.query.pageSize as string) || 12;
+        if (pageSize > 20) {
+        pageSize = 20; // set a maximum page size limit
+        }
+
+        const sellersRes: SellersPageDto | undefined = 
+            await sellerService.fetchAllSellers(userId, page, pageSize)
         
         res.status(200).json(
-            successResponse(sellers, `Sellers retrieved successfully`)
+            successResponse(sellersRes, `Sellers retrieved successfully`)
         )
 
     } catch (error) {

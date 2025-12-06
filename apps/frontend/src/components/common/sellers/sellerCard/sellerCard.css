@@ -1,0 +1,187 @@
+/* Card container: 4-column grid */
+.seller-card {
+  border: 3px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  width: 600px;
+  background-color: #b7caec;
+
+  display: grid;
+  grid-template-columns: 75px 1fr 140px 120px; /* avatar | text | rating | actions */
+  grid-template-rows: auto auto; /* row 1: name, row 2: sales */
+  column-gap: 10px;
+  row-gap: 6px;
+  align-items: center;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.seller-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(17, 24, 39, 0.12);
+}
+
+/* Avatar */
+.seller-avatar {
+  grid-column: 1;
+  grid-row: 1 / 3; /* spans both rows */
+}
+
+.seller-avatar img {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+
+  border-radius: 50%;
+  border: 3px solid #e0e7ff;
+  background: #f8fafc;
+}
+
+/* Name + badges (row 1, column 2) */
+.seller-name-row {
+  grid-column: 2;
+  grid-row: 1;
+
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.seller-name {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 1.05rem;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.badge-favorite {
+  background: #eef2ff;
+  color: #4338ca;
+  border-color: #c7d2fe;
+}
+
+.badge-blocked {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+/* Completed sales (row 2, column 2) */
+.seller-sold {
+  grid-column: 2;
+  grid-row: 2;
+
+  width: 125px;
+  padding: 6px 10px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px dashed #e2e8f0;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+/* Rating pill (column 3, spanning both rows) */
+.seller-rating {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  justify-self: end;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-size: 0.95rem;
+}
+
+/* Star rating internals */
+.rating-stars {
+  position: relative;
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+  color: #e2e8f0;
+  letter-spacing: 2px;
+}
+
+.rating-stars-bg {
+  color: #1e293b;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.rating-stars-fill {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
+.rating-value {
+  color: #e2e8f0;
+  font-size: 0.95rem;
+}
+
+/* Actions column (far right, spanning both rows) */
+.seller-actions {
+  grid-column: 4;
+  grid-row: 1 / 3;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Buttons */
+.seller-button {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.seller-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(51, 100, 173, 0.16);
+}
+
+.seller-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Primary (Favorite / Unfavorite) */
+.seller-button-primary {
+  background: linear-gradient(90deg, #3364ad 0%, #274b82 100%);
+  color: #fff;
+  border-color: #274b82;
+}
+
+/* Ghost (Block / Unblock) */
+.seller-button-ghost {
+  background: #fff;
+  color: #0f172a;
+  border-color: #e2e8f0;
+}
+
+.seller-button-ghost:hover {
+  background: #f8fafc;
+}

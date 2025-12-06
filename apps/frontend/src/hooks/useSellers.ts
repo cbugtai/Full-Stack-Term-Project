@@ -2,6 +2,8 @@ import { useEffect,useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import * as sellerService from "../services/sellerService";
 import type { SellerDto as Seller } from "../../../../shared/types/seller-terms";
+import { usePagination } from "./usePagination";
+import { useLoading } from "./useLoading";
 
 export function useSellers(
     dependencies: unknown[] = [],
@@ -9,23 +11,34 @@ export function useSellers(
     const [sellers, setSellers] = useState<Seller[]>([]);
     const [error, setError] = useState<string | null>(null);
     const { getToken, isSignedIn, isLoaded } = useAuth();
+    const { page, setPage, maxPage, setMaxPage, pageSize } = usePagination(10);
+    const { loading, start, stop } = useLoading();
 
     useEffect(() => {
         const fetchSellers = async () => {
             try {
                 if (!isLoaded) return;
 
-                let sessionToken = isSignedIn? await getToken() : null;
-                let result = await sellerService.getAllSellers(sessionToken);
+                start();
+                
+                const sessionToken = isSignedIn? await getToken() : null;
+                const result = await sellerService.getAllSellers(
+                    page,
+                    pageSize,
+                    sessionToken
+                );
 
-                setSellers(result);
+                setSellers(result.sellers);
+                setMaxPage(result.meta.totalPages || 1);
             } catch (err) {
                 setError(`${err}`);
+            } finally {
+                stop();
             }
         };
 
         fetchSellers();
-    }, [isLoaded, isSignedIn, getToken, ...dependencies]);
+    }, [isLoaded, isSignedIn, getToken, page, pageSize, ...dependencies]);
 
     const toggleFavoriteSeller = async (sellerId: number) => {
         try {
@@ -62,7 +75,11 @@ export function useSellers(
     return {
         sellers,
         error,
+        loading,
         toggleFavoriteSeller,
-        toggleBlockedSeller
+        toggleBlockedSeller,
+        page,
+        setPage,
+        maxPage
     };
 }

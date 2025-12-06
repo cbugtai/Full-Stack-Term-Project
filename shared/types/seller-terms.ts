@@ -7,3 +7,13 @@ export type SellerDto = {
   isFavorite: boolean;
   isBlocked: boolean;
 };
+
+export type SellersPageDto = {
+  sellers: SellerDto[];
+    meta: {
+      page: number;
+      pageSize: number;
+      totalCount: number;
+      totalPages: number;
+    };
+}
