@@ -49,7 +49,7 @@ function Header() {
                                     <div className="profile-content">
                                         {user?.username || user?.primaryEmailAddress?.emailAddress}
                                         <img
-                                            src={DefaultUser}
+                                            src={user?.imageUrl}
                                             className="profile-pic"
                                             alt={`${user?.username || "User"}'s profile picture`}
                                         />
@@ -68,9 +68,9 @@ function Header() {
                                 <div className="profile-content">
                                     Login
                                 <img
-                                    src="/src/assets/default-user.png"
+                                    src={DefaultUser}
                                     className="profile-pic"
-                                    alt="Default user profile icon"
+                                    alt={`${user?.username || "User"}'s profile picture`}
                                 />
                                 </div>
                             </NavLink>
