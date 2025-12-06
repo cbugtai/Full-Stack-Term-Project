@@ -187,7 +187,7 @@ export async function createSeller(rating: number = 50, sessionToken?: string | 
         throw new Error("Failed to create Seller");
     }
 
-    const json: TermResponseJSON = await res.json();
+    const json: SellerResponseJSON = await res.json();
     return json.data;
 }
 
@@ -203,6 +203,6 @@ export async function getSellerForCurrentUser(sessionToken?: string | null): Pro
         throw new Error("Failed to fetch seller profile for current user");
     }
 
-    const json: TermResponseJSON = await res.json();
+    const json: SellerResponseJSON = await res.json();
     return json.data;
 }
