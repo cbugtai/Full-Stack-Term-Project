@@ -14,6 +14,13 @@ router.get(
 )
 
 router.get(
+    "/me",
+    requireAuth(),
+    findOrCreateUser,
+    sellerController.getSellerByUserId
+);
+
+router.get(
     "/:id",
     findOrCreateUser,
     validateRequest(idSchema),

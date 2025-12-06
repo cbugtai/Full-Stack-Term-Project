@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useUser, useAuth } from "@clerk/clerk-react";
 import PencilIcon from "@/assets/icons/PencilIcon.svg?react";
 import { DashboardDisplay } from "../../DashboardDisplay";
-import { saveUser, getHydratedUser } from "@/apis/user/userRepo";
+import { saveUser, getUser } from "@/apis/user/userRepo";
 import { SettingsNav } from "../SettingsNav";
 import "../Settings.css";
 import { useBioValidation } from "@/hooks/profileValidation/useBioValidation";
@@ -36,12 +36,14 @@ export function ProfileInfoPage() {
                 const token = await getToken({ template: "default" });
                 if (!token) throw new Error("No session token available");
 
-                const backendUser = await getHydratedUser(token);
+                const backendUser = await getUser(token);
 
-                setUserData({
-                    bio: backendUser.bio ?? "",
-                    phone: backendUser.phone ?? "",
-                });
+                if (backendUser) {
+                    setUserData({
+                        bio: backendUser.bio ?? "",
+                        phone: backendUser.phone ?? "",
+                    });
+                }
             } catch (err) {
                 console.error("Failed to load profile info:", err);
             } finally {
@@ -60,7 +62,6 @@ export function ProfileInfoPage() {
         setSavingField(field);
         setSuccessField(null);
 
-        // Validate field
         let isValid = true;
         if (field === "bio") isValid = validateBio(userData.bio);
         if (field === "phone") isValid = validatePhone(userData.phone);
@@ -110,7 +111,6 @@ export function ProfileInfoPage() {
                 icon={<PencilIcon className="icon" />}
                 disableGrid
             >
-                {/* Bio */}
                 <div className="form-group">
                     <label htmlFor="bio">Bio</label>
                     <textarea
@@ -135,7 +135,6 @@ export function ProfileInfoPage() {
                     </div>
                 </div>
 
-                {/* Phone */}
                 <div className="form-group">
                     <label htmlFor="phone">Phone</label>
                     <input

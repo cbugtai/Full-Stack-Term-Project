@@ -12,6 +12,8 @@ import sellerRoutes from "./api/v1/routes/sellerRoutes";
 import productRoutes from "./api/v1/routes/productRoutes";
 import reviewRoutes from "./api/v1/routes/reviewRoutes";
 import userRoutes from "./api/v1/routes/userRoutes";
+import listingRoutes from "./api/v1/routes/listingRoutes";
+import metaRoutes from "./api/v1/routes/metaRoutes";
 
 // initialize express application
 const app: Express = express();
@@ -49,6 +51,8 @@ app.use("/api/v1/reviews", reviewRoutes);
 
 // ---------------------- Nick part ----------------------
 app.use("/api/v1/users", requireAuth(), userRoutes);
+app.use("/api/v1/listings", requireAuth(), listingRoutes);
+app.use("/api/v1/meta", metaRoutes);
 
 //errorhandler catches errors as last element in middleware chain
 // occurs when "next" is invoked

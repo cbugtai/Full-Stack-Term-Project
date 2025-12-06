@@ -1,79 +1,154 @@
-import { openDB } from "@/utils/openDB";
-import type { Listing } from "@/types/listing/listingModel";
+import type { ListingWithRelations } from "@/types/listing/listingModel";
 
-const LISTING_STORE = "listings";
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+const LISTING_ENDPOINT = "/listings";
 
-export async function saveListing(listing: Listing): Promise<void> {
-    const db = await openDB();
-    const tx = db.transaction(LISTING_STORE, "readwrite");
-    tx.objectStore(LISTING_STORE).put(listing, listing.id);
+export type CreateListingPayload = {
+    sellerId: number;
+    title: string;
+    description: string;
+    price: number;
+    originalPrice: number;
+    categoryId: number;
+    conditionId: number;
+    brandId: number;
+    statusId: number;
+    city: string;
+    isNegotiable: boolean;
+    isFree: boolean;
+};
 
-    return new Promise((resolve, reject) => {
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
+export type UpdateListingPayload = Partial<{
+    title: string;
+    description: string;
+    price: number;
+    originalPrice: number;
+    categoryId: number;
+    conditionId: number;
+    brandId: number;
+    statusId: number;
+    city: string;
+    isNegotiable: boolean;
+    isFree: boolean;
+}>;
+
+function getHeaders(token?: string, isJson = true): HeadersInit {
+    const headers: HeadersInit = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    if (isJson) headers["Content-Type"] = "application/json";
+    return headers;
+}
+
+export async function createListing(
+    payload: CreateListingPayload,
+    image?: File,
+    token?: string
+): Promise<ListingWithRelations> {
+    const formData = new FormData();
+    Object.entries(payload).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) formData.append(key, String(value));
     });
-}
 
-export async function getAllListings(): Promise<Listing[]> {
-    const db = await openDB();
-    const tx = db.transaction(LISTING_STORE, "readonly");
-    const request = tx.objectStore(LISTING_STORE).getAll();
+    if (image) formData.append("file", image);
 
-    return new Promise((resolve, reject) => {
-        request.onsuccess = () => resolve(request.result || []);
-        request.onerror = () => reject(request.error);
+    const res = await fetch(`${BASE_URL}${LISTING_ENDPOINT}`, {
+        method: "POST",
+        body: formData,
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
+
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to create listing: ${text}`);
+    }
+
+    const json = await res.json();
+    return json.data ?? json;
 }
 
-export async function getListingById(id: string): Promise<Listing | null> {
-    const db = await openDB();
-    const tx = db.transaction(LISTING_STORE, "readonly");
-    const request = tx.objectStore(LISTING_STORE).get(id);
+export async function getAllListings(token?: string): Promise<ListingWithRelations[]> {
+    const res = await fetch(`${BASE_URL}${LISTING_ENDPOINT}`, { headers: getHeaders(token) });
+    if (!res.ok) throw new Error("Failed to fetch listings");
+    const json = await res.json();
+    return json.data ?? json;
+}
 
-    return new Promise((resolve, reject) => {
-        request.onsuccess = () => resolve(request.result || null);
-        request.onerror = () => reject(request.error);
+export async function getListingById(
+    id: number,
+    token?: string
+): Promise<ListingWithRelations | null> {
+    const res = await fetch(`${BASE_URL}${LISTING_ENDPOINT}/${id}`, { headers: getHeaders(token) });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.data ?? json;
+}
+
+export async function getListingsBySeller(
+    sellerId: number,
+    token?: string
+): Promise<ListingWithRelations[]> {
+    const res = await fetch(`${BASE_URL}${LISTING_ENDPOINT}/seller/${sellerId}`, {
+        headers: getHeaders(token),
     });
+    if (res.status === 404) return [];
+    if (!res.ok) throw new Error("Failed to fetch listings for seller");
+    const json = await res.json();
+    return json.data ?? json;
 }
 
-export async function getListingsByUserId(userId: string): Promise<Listing[]> {
-    const all = await getAllListings();
-    return all.filter((listing) => listing.userId === userId);
-}
+export async function updateListing(
+    id: number,
+    updates: UpdateListingPayload,
+    image?: File,
+    token?: string
+): Promise<ListingWithRelations> {
+    const headers: HeadersInit = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
 
-export async function updateListing(id: string, updates: Partial<Listing>): Promise<void> {
-    const existing = await getListingById(id);
-    if (!existing) throw new Error("Listing not found");
+    let body: FormData | string;
 
-    const updated = { ...existing, ...updates, updatedAt: new Date().toISOString() };
-    await saveListing(updated);
-}
+    if (image) {
+        const formData = new FormData();
+        Object.entries(updates).forEach(([key, value]) => {
+            if (key !== "id" && value !== undefined && value !== null) {
+                formData.append(key, String(value));
+            }
+        });
+        formData.append("file", image);
+        body = formData;
+    } else {
+        const filtered: Record<string, any> = {};
+        Object.entries(updates).forEach(([key, value]) => {
+            if (key !== "id" && value !== undefined && value !== null) {
+                filtered[key] = value;
+            }
+        });
+        body = JSON.stringify(filtered);
+        headers["Content-Type"] = "application/json";
+    }
 
-export async function deleteListing(id: string): Promise<void> {
-    const db = await openDB();
-    const tx = db.transaction(LISTING_STORE, "readwrite");
-    tx.objectStore(LISTING_STORE).delete(id);
-
-    return new Promise((resolve, reject) => {
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
+    const res = await fetch(`${BASE_URL}${LISTING_ENDPOINT}/${id}`, {
+        method: "PUT",
+        body,
+        headers,
     });
+
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to update listing: ${text}`);
+    }
+
+    const json = await res.json();
+    return json.data ?? json;
 }
 
-export async function getHydratedListing(id: string): Promise<Listing | null> {
-    const listing = await getListingById(id);
-    if (!listing) return null;
-
-    const db = await openDB();
-    const tx = db.transaction("listingImages", "readonly");
-    const request = tx.objectStore("listingImages").get(id);
-
-    return new Promise((resolve, reject) => {
-        request.onsuccess = () => {
-            const file = request.result as File | null;
-            const imageUrl = file ? URL.createObjectURL(file) : "";
-            resolve({ ...listing, imageUrl });
-        };
-        request.onerror = () => reject(request.error);
+export async function deleteListing(id: number, token?: string): Promise<void> {
+    const res = await fetch(`${BASE_URL}${LISTING_ENDPOINT}/${id}`, {
+        method: "DELETE",
+        headers: getHeaders(token),
     });
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to delete listing: ${text}`);
+    }
 }

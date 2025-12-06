@@ -1,142 +1,187 @@
-import { useState } from "react";
-import { useUser } from "@clerk/clerk-react";
-import { CategoryOptions } from "../CatagoryOptions";
-import { ConditionOptions } from "../ConditionOptions";
-import { generateId } from "@/utils/generateId";
-import { saveListing } from "@/apis/listing/listingRepo";
-import { saveListingImage } from "@/apis/listing/listingImageRepo";
-import { useListingValidation } from "@/hooks/useListingValidation";
-import type { Category } from "@/types/listing/catagory";
-import type { Condition } from "@/types/listing/condition";
+import { useState, useEffect, useCallback } from "react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import Portal from "@/components/common/drawer/Portal";
+import { useListingValidation } from "@/hooks/useListingValidation";
+import type { MetaOption } from "../../../../../../../../../shared/types/metaTypes";
+import type { ListingFormData } from "@/types/listing/listingFormData";
+import { createListing, type CreateListingPayload } from "@/apis/listing/listingRepo";
+import { getBrands, getCategories, getConditions, getStatuses } from "@/apis/meta/metaRepo";
+import { getSellerForCurrentUser } from "@/apis/sellers/sellerRepo";
 import "../ListingPortal.css";
 
-export function CreateListing({ onClose }: { onClose: () => void }) {
+type CreateListingProps = { onClose: () => void };
+
+export function CreateListing({ onClose }: CreateListingProps) {
     const { user } = useUser();
+    const { getToken } = useAuth();
     const { errors, validate } = useListingValidation();
 
-    const [pricing, setPricing] = useState<"standard" | "negotiable" | "free">("standard");
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const [formData, setFormData] = useState<{
-        title: string;
-        description: string;
-        price: number;
-        category: Category;
-        condition: Condition;
-        city: string;
-        image: File | null;
-    }>({
+    const [formData, setFormData] = useState<ListingFormData & { originalPrice?: number }>({
         title: "",
         description: "",
         price: 0,
-        category: "" as Category,
-        condition: "" as Condition,
+        originalPrice: 0,
+        categoryId: 0,
+        conditionId: 0,
+        brandId: 0,
         city: "",
         image: null,
+        isNegotiable: false,
+        isFree: false,
     });
 
-    const handlePricingChange = (value: "standard" | "negotiable" | "free") => {
-        setPricing(value);
-        if (value === "free") {
-            setFormData((prev) => ({ ...prev, price: 0 }));
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [metaOptions, setMetaOptions] = useState<{
+        categories: MetaOption[];
+        conditions: MetaOption[];
+        brands: MetaOption[];
+        statuses: MetaOption[];
+    }>({ categories: [], conditions: [], brands: [], statuses: [] });
+
+    const loadMeta = useCallback(async () => {
+        try {
+            const [categories, conditions, brands, statuses] = await Promise.all([
+                getCategories(),
+                getConditions(),
+                getBrands(),
+                getStatuses(),
+            ]);
+
+            setMetaOptions({
+                categories: categories.map(c => ({ id: Number(c.id), name: c.name })),
+                conditions: conditions.map(c => ({ id: Number(c.id), name: c.name })),
+                brands: brands.map(b => ({ id: Number(b.id), name: b.name })),
+                statuses: statuses.map(s => ({ id: Number(s.id), name: s.name })),
+            });
+        } catch (err) {
+            console.error("Failed to load meta data:", err);
+        }
+    }, []);
+
+    useEffect(() => {
+        loadMeta();
+    }, [loadMeta]);
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
+        const { name, value, type } = e.target;
+
+        if (type === "checkbox") {
+            setFormData(p => ({ ...p, [name]: (e.target as HTMLInputElement).checked }));
+        } else if (type === "number") {
+            setFormData(p => ({ ...p, [name]: Number(value) }));
+        } else if (e.target instanceof HTMLSelectElement) {
+            setFormData(p => ({ ...p, [name]: value ? Number(value) : 0 }));
+        } else {
+            setFormData(p => ({ ...p, [name]: value }));
         }
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
-        setFormData((prev) => ({ ...prev, image: file }));
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => setImagePreview(reader.result as string);
-            reader.readAsDataURL(file);
-        } else {
-            setImagePreview(null);
-        }
-    };
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: name === "price" ? (value === "" ? 0 : parseFloat(value)) : value,
-        }));
-    };
-
-    const resetForm = () => {
-        setFormData({
-            title: "",
-            description: "",
-            price: 0,
-            category: "" as Category,
-            condition: "" as Condition,
-            city: "",
-            image: null,
-        });
-        setImagePreview(null);
-        setPricing("standard");
+        setFormData(p => ({ ...p, image: file }));
+        setImagePreview(file ? URL.createObjectURL(file) : null);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!user) {
-            alert("No user found. Please log in.");
+            console.warn("User not found");
+            return alert("User not found");
+        }
+
+        const pricingType = formData.isFree
+        ? "free"
+        : formData.isNegotiable
+        ? "negotiable"
+        : "standard";
+
+        if (!validate(formData, pricingType)) {
             return;
         }
 
-        if (!validate(formData, pricing)) return;
-
-        setIsSubmitting(true);
-
         try {
-            const id = generateId("listing");
-            const status: "active" | "sold" = "active";
+            setIsSubmitting(true);
 
-            if (formData.image) {
-                await saveListingImage(id, formData.image);
+            const token = await getToken();
+
+            const seller = await getSellerForCurrentUser(token ?? undefined);
+            if (!seller) {
+                console.warn("Seller record not found");
+                return alert("Seller record not found");
             }
 
-            const listing = {
-                id,
-                userId: user.id,
+            const activeStatus = metaOptions.statuses.find(
+                s => s.name.toLowerCase() === "active"
+            );
+            if (!activeStatus) throw new Error("Active status not found");
+
+            const payload: CreateListingPayload = {
+                sellerId: seller.id,
                 title: formData.title,
                 description: formData.description,
-                category: formData.category,
-                condition: formData.condition,
-                price: pricing === "free" ? 0 : formData.price,
-                isWishlisted: false,
-                createdAt: new Date().toISOString(),
-                status,
+                price: formData.price,
+                originalPrice: formData.originalPrice ?? formData.price,
+                categoryId: formData.categoryId,
+                conditionId: formData.conditionId,
+                brandId: formData.brandId,
+                statusId: activeStatus.id,
                 city: formData.city,
-                isNegotiable: pricing === "negotiable",
-                isFree: pricing === "free",
+                isNegotiable: formData.isNegotiable,
+                isFree: formData.isFree,
             };
 
-            await saveListing(listing);
+            await createListing(payload, formData.image ?? undefined, token ?? undefined);
 
-            resetForm();
+            setFormData({
+                title: "",
+                description: "",
+                price: 0,
+                originalPrice: 0,
+                categoryId: 0,
+                conditionId: 0,
+                brandId: 0,
+                city: "",
+                image: null,
+                isNegotiable: false,
+                isFree: false,
+            });
+            setImagePreview(null);
             onClose();
-        } catch (err) {
-            console.error("Error saving listing:", err);
-            alert("Something went wrong while saving your listing.");
+        } catch (err: any) {
+            console.error("Listing creation failed:", err);
+            alert(`Failed to create listing: ${err.message ?? err}`);
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    const renderSelect = (
+        field: "categoryId" | "conditionId" | "brandId",
+        list: MetaOption[],
+        label: string
+    ) => (
+        <select name={field} value={formData[field] || 0} onChange={handleChange}>
+            <option value={0}>{label}</option>
+            {list.map(opt => (
+                <option key={opt.id} value={opt.id}>
+                    {opt.name}
+                </option>
+            ))}
+        </select>
+    );
+
     return (
         <Portal>
             <div className="modal-overlay" onClick={onClose}>
-                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-content" onClick={e => e.stopPropagation()}>
                     <h2>Create New Listing</h2>
+
                     <form onSubmit={handleSubmit}>
                         <input
-                            type="text"
                             name="title"
                             placeholder="Title"
                             value={formData.title}
@@ -152,39 +197,31 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                         />
                         {errors.description && <p className="form-error">{errors.description}</p>}
 
-                        {pricing !== "free" && (
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Price"
-                            value={formData.price || ""}
-                            onChange={handleChange}
-                        />
+                        {!formData.isFree && (
+                            <>
+                                <input
+                                    type="number"
+                                    name="originalPrice"
+                                    placeholder="Original Price (optional)"
+                                    value={formData.originalPrice || ""}
+                                    onChange={handleChange}
+                                />
+                                <input
+                                    type="number"
+                                    name="price"
+                                    placeholder="Price"
+                                    value={formData.price || ""}
+                                    onChange={handleChange}
+                                />
+                            </>
                         )}
                         {errors.price && <p className="form-error">{errors.price}</p>}
 
-                        <select name="category" value={formData.category} onChange={handleChange}>
-                            <option value="">Select Category</option>
-                            {CategoryOptions.map((cat) => (
-                                <option key={cat} value={cat}>
-                                    {cat}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.category && <p className="form-error">{errors.category}</p>}
-
-                        <select name="condition" value={formData.condition} onChange={handleChange}>
-                            <option value="">Select Condition</option>
-                            {ConditionOptions.map((cond) => (
-                                <option key={cond} value={cond}>
-                                    {cond}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.condition && <p className="form-error">{errors.condition}</p>}
+                        {renderSelect("categoryId", metaOptions.categories, "Select Category")}
+                        {renderSelect("conditionId", metaOptions.conditions, "Select Condition")}
+                        {renderSelect("brandId", metaOptions.brands, "Select Brand")}
 
                         <input
-                            type="text"
                             name="city"
                             placeholder="City"
                             value={formData.city}
@@ -192,37 +229,37 @@ export function CreateListing({ onClose }: { onClose: () => void }) {
                         />
                         {errors.city && <p className="form-error">{errors.city}</p>}
 
-                        <div className="radio-group">
-                            {["standard", "negotiable", "free"].map((option) => (
-                                <label key={option} className="radio-wrapper">
-                                    <input
-                                        type="radio"
-                                        name="pricing"
-                                        value={option}
-                                        checked={pricing === option}
-                                        onChange={() => handlePricingChange(option as typeof pricing)}
-                                    />
-                                    {option === "standard"
-                                        ? "Set a Price"
-                                        : option.charAt(0).toUpperCase() + option.slice(1)}
-                                </label>
-                            ))}
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="imageUpload" className="custom-file-label">
-                                Upload Photo
-                            </label>
+                        <label>
                             <input
-                                type="file"
-                                id="imageUpload"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                className="hidden-file-input"
+                                type="checkbox"
+                                name="isNegotiable"
+                                checked={formData.isNegotiable}
+                                onChange={handleChange}
                             />
-                            {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
-                            {errors.image && <p className="form-error">{errors.image}</p>}
-                        </div>
+                            Negotiable
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="isFree"
+                                checked={formData.isFree}
+                                onChange={handleChange}
+                            />
+                            Free
+                        </label>
+
+                        <label className="custom-file-label" htmlFor="imageUpload">
+                            Upload Image
+                        </label>
+                        <input
+                            id="imageUpload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                        />
+                        {imagePreview && (
+                            <img src={imagePreview} className="image-preview" alt="Preview" />
+                        )}
 
                         <div className="form-actions">
                             <button type="submit" disabled={isSubmitting}>

@@ -264,3 +264,34 @@ export const removeBlockedSeller = async (
 
     return seller
 }
+
+export const fetchSellerByUser = async (userId: number): Promise<SellerDto | null> => {
+    const seller = await prisma.seller.findUnique({
+        where: { userId },
+        select: {
+            id: true,
+            rating: true,
+            _count: {
+                select: { listings: { where: { status: { status: "Sold" } } } }
+            },
+            user: {
+                select: {
+                    userName: true,
+                    profilePic: true
+                }
+            }
+        }
+    });
+
+    if (!seller || !seller.user) return null;
+
+    return {
+        id: seller.id,
+        username: seller.user.userName,
+        rating: seller.rating,
+        completedSales: seller._count.listings,
+        photo: seller.user.profilePic ?? undefined,
+        isFavorite: false,
+        isBlocked: false
+    };
+};

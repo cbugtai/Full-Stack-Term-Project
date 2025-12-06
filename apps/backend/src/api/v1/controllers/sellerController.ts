@@ -182,3 +182,20 @@ export const removeBlockedSeller = async(
         next(error)
     }
 }
+
+export const getSellerByUserId = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const userId = getUserId(req);
+        const seller = await sellerService.fetchSellerByUser(userId);
+
+        res.status(200).json(
+            successResponse(seller, "Seller retrieved for current user")
+        );
+    } catch (err) {
+        next(err);
+    }
+};

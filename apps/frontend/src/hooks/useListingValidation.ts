@@ -6,13 +6,16 @@ import {
     isValidCity,
 } from "@/services/listingValidationService";
 import { containsProfanity } from "@/services/containsProfanity";
+import type { ListingFormData } from "@/types/listing/listingFormData";
 
 type ListingErrors = {
     title?: string;
     description?: string;
     price?: string;
-    category?: string;
-    condition?: string;
+    categoryId?: string;
+    conditionId?: string;
+    brandId?: string;
+    statusId?: string;
     city?: string;
     image?: string;
 };
@@ -21,16 +24,8 @@ export function useListingValidation() {
     const [errors, setErrors] = useState<ListingErrors>({});
 
     const validate = (
-        listing: {
-            title: string;
-            description: string;
-            price: number;
-            category: string;
-            condition: string;
-            city: string;
-            image: File | null;
-        },
-        pricing: string,
+        listing: ListingFormData,
+        pricing: "standard" | "negotiable" | "free",
         existingImageUrl?: string
     ) => {
         const newErrors: ListingErrors = {};
@@ -47,22 +42,16 @@ export function useListingValidation() {
             newErrors.description = "Description contains inappropriate language.";
         }
 
-        if (pricing !== "free") {
-            if (!isValidPrice(listing.price)) {
-                newErrors.price = "Price must be between $0 and $1,000,000 with up to 2 decimal places.";
-            }
+        if (pricing !== "free" && !isValidPrice(listing.price)) {
+            newErrors.price = "Price must be between $0 and $1,000,000.";
         }
 
-        if (!listing.category) {
-            newErrors.category = "Please select a category.";
-        }
-
-        if (!listing.condition) {
-            newErrors.condition = "Please select a condition.";
-        }
+        if (!listing.categoryId) newErrors.categoryId = "Please select a category.";
+        if (!listing.conditionId) newErrors.conditionId = "Please select a condition.";
+        if (!listing.brandId) newErrors.brandId = "Please select a brand.";
 
         if (listing.city && !isValidCity(listing.city)) {
-            newErrors.city = "City name must be 2-50 letters.";
+            newErrors.city = "City name must be 2–50 letters.";
         }
 
         if (!listing.image && !existingImageUrl) {

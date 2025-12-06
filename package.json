@@ -11,7 +11,6 @@
     "migrate:backend": "npx --workspace=@full-stack-term-project/backend prisma migrate dev",
     "start:frontend": "npm run dev --workspace=@full-stack-term-project/frontend",
     "start:backend": "npm start --workspace=@full-stack-term-project/backend",
-
     "docker:up": "npm run docker:up --workspace=@full-stack-term-project/backend",
     "seed": "npm run seed --workspace=@full-stack-term-project/backend",
     "migrate": "npx --workspace=@full-stack-term-project/backend prisma migrate dev",
@@ -28,6 +27,7 @@
   },
   "dependencies": {
     "@clerk/types": "^4.50.2",
+    "@vercel/blob": "^2.0.0",
     "dotenv": "^16.4.7"
   }
 }
