@@ -14,6 +14,13 @@ router.get(
 )
 
 router.get(
+    "/me",
+    requireAuth(),
+    findOrCreateUser,
+    sellerController.getSellerByUserId
+);
+
+router.get(
     "/:id",
     findOrCreateUser,
     validateRequest(idSchema),
@@ -59,12 +66,5 @@ router.delete(
     validateRequest(sellerIdSchema),
     sellerController.removeBlockedSeller
 )
-
-router.get(
-    "/me",
-    requireAuth(),
-    findOrCreateUser,
-    sellerController.getSellerByUserId
-);
 
 export default router;

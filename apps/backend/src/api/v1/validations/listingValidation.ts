@@ -13,20 +13,18 @@ export const createListingSchema = Joi.object({
     city: Joi.string().required(),
     isNegotiable: Joi.boolean().required(),
     isFree: Joi.boolean().required(),
-    imageUrl: Joi.string().uri().optional(),
 });
 
 export const updateListingSchema = Joi.object({
-    title: Joi.string().min(3).max(100).optional(),
-    description: Joi.string().max(2000).optional(),
-    brandId: Joi.number().optional(),
+    title: Joi.string().optional(),
+    description: Joi.string().optional(),
+    price: Joi.number().optional(),
+    originalPrice: Joi.number().optional(),
     categoryId: Joi.number().optional(),
     conditionId: Joi.number().optional(),
+    brandId: Joi.number().optional(),
     statusId: Joi.number().optional(),
-    price: Joi.number().min(0).optional(),
-    originalPrice: Joi.number().min(0).optional(),
     city: Joi.string().optional(),
     isNegotiable: Joi.boolean().optional(),
     isFree: Joi.boolean().optional(),
-    imageUrl: Joi.string().uri().optional(),
-}).min(1);
+}).required();

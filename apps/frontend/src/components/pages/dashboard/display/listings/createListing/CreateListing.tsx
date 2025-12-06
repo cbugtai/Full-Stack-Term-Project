@@ -1,22 +1,26 @@
-import { useState, useEffect } from "react";
-import { useUser } from "@clerk/clerk-react";
+import { useState, useEffect, useCallback } from "react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import Portal from "@/components/common/drawer/Portal";
 import { useListingValidation } from "@/hooks/useListingValidation";
 import type { MetaOption } from "../../../../../../../../../shared/types/metaTypes";
 import type { ListingFormData } from "@/types/listing/listingFormData";
-import { createListing, CreateListingPayload } from "@/apis/listing/listingRepo";
+import { createListing, type CreateListingPayload } from "@/apis/listing/listingRepo";
+import { getBrands, getCategories, getConditions, getStatuses } from "@/apis/meta/metaRepo";
+import { getSellerForCurrentUser } from "@/apis/sellers/sellerRepo";
 import "../ListingPortal.css";
 
 type CreateListingProps = { onClose: () => void };
 
 export function CreateListing({ onClose }: CreateListingProps) {
     const { user } = useUser();
+    const { getToken } = useAuth();
     const { errors, validate } = useListingValidation();
 
-    const [formData, setFormData] = useState<ListingFormData>({
+    const [formData, setFormData] = useState<ListingFormData & { originalPrice?: number }>({
         title: "",
         description: "",
         price: 0,
+        originalPrice: 0,
         categoryId: 0,
         conditionId: 0,
         brandId: 0,
@@ -29,101 +33,98 @@ export function CreateListing({ onClose }: CreateListingProps) {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [categories, setCategories] = useState<MetaOption[]>([]);
-    const [conditions, setConditions] = useState<MetaOption[]>([]);
-    const [brands, setBrands] = useState<MetaOption[]>([]);
-    const [statuses, setStatuses] = useState<MetaOption[]>([]);
+    const [metaOptions, setMetaOptions] = useState<{
+        categories: MetaOption[];
+        conditions: MetaOption[];
+        brands: MetaOption[];
+        statuses: MetaOption[];
+    }>({ categories: [], conditions: [], brands: [], statuses: [] });
+
+    const loadMeta = useCallback(async () => {
+        try {
+            const [categories, conditions, brands, statuses] = await Promise.all([
+                getCategories(),
+                getConditions(),
+                getBrands(),
+                getStatuses(),
+            ]);
+
+            setMetaOptions({
+                categories: categories.map(c => ({ id: Number(c.id), name: c.name })),
+                conditions: conditions.map(c => ({ id: Number(c.id), name: c.name })),
+                brands: brands.map(b => ({ id: Number(b.id), name: b.name })),
+                statuses: statuses.map(s => ({ id: Number(s.id), name: s.name })),
+            });
+        } catch (err) {
+            console.error("Failed to load meta data:", err);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchMeta = async () => {
-            try {
-                const [catRes, condRes, brandRes, statusRes] = await Promise.all([
-                    fetch("/api/v1/meta/categories"),
-                    fetch("/api/v1/meta/conditions"),
-                    fetch("/api/v1/meta/brands"),
-                    fetch("/api/v1/meta/statuses"),
-                ]);
-
-                setCategories(await catRes.json());
-                setConditions(await condRes.json());
-                setBrands(await brandRes.json());
-                setStatuses(await statusRes.json());
-            } catch (err) {
-                console.error("Failed to load meta options:", err);
-            }
-        };
-        fetchMeta();
-    }, []);
+        loadMeta();
+    }, [loadMeta]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
-        const target = e.target as HTMLInputElement;
-        const { name, type } = target;
-        let value: string | number | boolean = target.value;
+        const { name, value, type } = e.target;
 
-        if (type === "checkbox") value = target.checked;
-        if (type === "number") value = parseFloat(target.value);
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        if (type === "checkbox") {
+            setFormData(p => ({ ...p, [name]: (e.target as HTMLInputElement).checked }));
+        } else if (type === "number") {
+            setFormData(p => ({ ...p, [name]: Number(value) }));
+        } else if (e.target instanceof HTMLSelectElement) {
+            setFormData(p => ({ ...p, [name]: value ? Number(value) : 0 }));
+        } else {
+            setFormData(p => ({ ...p, [name]: value }));
+        }
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
-        setFormData((prev) => ({ ...prev, image: file }));
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => setImagePreview(reader.result as string);
-            reader.readAsDataURL(file);
-        } else {
-            setImagePreview(null);
-        }
-    };
-
-    const resetForm = () => {
-        setFormData({
-            title: "",
-            description: "",
-            price: 0,
-            categoryId: 0,
-            conditionId: 0,
-            brandId: 0,
-            city: "",
-            image: null,
-            isNegotiable: false,
-            isFree: false,
-        });
-        setImagePreview(null);
+        setFormData(p => ({ ...p, image: file }));
+        setImagePreview(file ? URL.createObjectURL(file) : null);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!user) return alert("No user found. Please log in.");
+        if (!user) {
+            console.warn("User not found");
+            return alert("User not found");
+        }
 
-        const pricing = formData.isFree
-            ? "free"
-            : formData.isNegotiable
-            ? "negotiable"
-            : "standard";
+        const pricingType = formData.isFree
+        ? "free"
+        : formData.isNegotiable
+        ? "negotiable"
+        : "standard";
 
-        if (!validate(formData, pricing)) return;
-
-        setIsSubmitting(true);
+        if (!validate(formData, pricingType)) {
+            return;
+        }
 
         try {
-            const activeStatus = statuses.find(s => s.name.toLowerCase() === "active");
+            setIsSubmitting(true);
+
+            const token = await getToken();
+
+            const seller = await getSellerForCurrentUser(token ?? undefined);
+            if (!seller) {
+                console.warn("Seller record not found");
+                return alert("Seller record not found");
+            }
+
+            const activeStatus = metaOptions.statuses.find(
+                s => s.name.toLowerCase() === "active"
+            );
             if (!activeStatus) throw new Error("Active status not found");
 
             const payload: CreateListingPayload = {
-                sellerId: Number(user.id),
+                sellerId: seller.id,
                 title: formData.title,
                 description: formData.description,
                 price: formData.price,
-                originalPrice: formData.price,
+                originalPrice: formData.originalPrice ?? formData.price,
                 categoryId: formData.categoryId,
                 conditionId: formData.conditionId,
                 brandId: formData.brandId,
@@ -133,25 +134,54 @@ export function CreateListing({ onClose }: CreateListingProps) {
                 isFree: formData.isFree,
             };
 
-            await createListing(payload, formData.image ?? undefined);
-            resetForm();
+            await createListing(payload, formData.image ?? undefined, token ?? undefined);
+
+            setFormData({
+                title: "",
+                description: "",
+                price: 0,
+                originalPrice: 0,
+                categoryId: 0,
+                conditionId: 0,
+                brandId: 0,
+                city: "",
+                image: null,
+                isNegotiable: false,
+                isFree: false,
+            });
+            setImagePreview(null);
             onClose();
-        } catch (err) {
-            console.error("Error creating listing:", err);
-            alert("Failed to create listing.");
+        } catch (err: any) {
+            console.error("Listing creation failed:", err);
+            alert(`Failed to create listing: ${err.message ?? err}`);
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    const renderSelect = (
+        field: "categoryId" | "conditionId" | "brandId",
+        list: MetaOption[],
+        label: string
+    ) => (
+        <select name={field} value={formData[field] || 0} onChange={handleChange}>
+            <option value={0}>{label}</option>
+            {list.map(opt => (
+                <option key={opt.id} value={opt.id}>
+                    {opt.name}
+                </option>
+            ))}
+        </select>
+    );
+
     return (
         <Portal>
             <div className="modal-overlay" onClick={onClose}>
-                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-content" onClick={e => e.stopPropagation()}>
                     <h2>Create New Listing</h2>
+
                     <form onSubmit={handleSubmit}>
                         <input
-                            type="text"
                             name="title"
                             placeholder="Title"
                             value={formData.title}
@@ -168,42 +198,30 @@ export function CreateListing({ onClose }: CreateListingProps) {
                         {errors.description && <p className="form-error">{errors.description}</p>}
 
                         {!formData.isFree && (
-                            <input
-                                type="number"
-                                name="price"
-                                placeholder="Price"
-                                value={formData.price || ""}
-                                onChange={handleChange}
-                            />
+                            <>
+                                <input
+                                    type="number"
+                                    name="originalPrice"
+                                    placeholder="Original Price (optional)"
+                                    value={formData.originalPrice || ""}
+                                    onChange={handleChange}
+                                />
+                                <input
+                                    type="number"
+                                    name="price"
+                                    placeholder="Price"
+                                    value={formData.price || ""}
+                                    onChange={handleChange}
+                                />
+                            </>
                         )}
                         {errors.price && <p className="form-error">{errors.price}</p>}
 
-                        <select name="categoryId" value={formData.categoryId} onChange={handleChange}>
-                            <option value={0}>Select Category</option>
-                            {categories.map((c) => (
-                                <option key={c.id} value={c.id}>{c.name}</option>
-                            ))}
-                        </select>
-                        {errors.categoryId && <p className="form-error">{errors.categoryId}</p>}
-
-                        <select name="conditionId" value={formData.conditionId} onChange={handleChange}>
-                            <option value={0}>Select Condition</option>
-                            {conditions.map((c) => (
-                                <option key={c.id} value={c.id}>{c.name}</option>
-                            ))}
-                        </select>
-                        {errors.conditionId && <p className="form-error">{errors.conditionId}</p>}
-
-                        <select name="brandId" value={formData.brandId} onChange={handleChange}>
-                            <option value={0}>Select Brand</option>
-                            {brands.map((b) => (
-                                <option key={b.id} value={b.id}>{b.name}</option>
-                            ))}
-                        </select>
-                        {errors.brandId && <p className="form-error">{errors.brandId}</p>}
+                        {renderSelect("categoryId", metaOptions.categories, "Select Category")}
+                        {renderSelect("conditionId", metaOptions.conditions, "Select Condition")}
+                        {renderSelect("brandId", metaOptions.brands, "Select Brand")}
 
                         <input
-                            type="text"
                             name="city"
                             placeholder="City"
                             value={formData.city}
@@ -220,7 +238,6 @@ export function CreateListing({ onClose }: CreateListingProps) {
                             />
                             Negotiable
                         </label>
-
                         <label>
                             <input
                                 type="checkbox"
@@ -231,26 +248,26 @@ export function CreateListing({ onClose }: CreateListingProps) {
                             Free
                         </label>
 
-                        <div className="form-group">
-                            <label htmlFor="imageUpload" className="custom-file-label">
-                                Upload Photo
-                            </label>
-                            <input
-                                type="file"
-                                id="imageUpload"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                className="hidden-file-input"
-                            />
-                            {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
-                            {errors.image && <p className="form-error">{errors.image}</p>}
-                        </div>
+                        <label className="custom-file-label" htmlFor="imageUpload">
+                            Upload Image
+                        </label>
+                        <input
+                            id="imageUpload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                        />
+                        {imagePreview && (
+                            <img src={imagePreview} className="image-preview" alt="Preview" />
+                        )}
 
                         <div className="form-actions">
                             <button type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? "Creating..." : "Create Listing"}
                             </button>
-                            <button type="button" onClick={onClose}>Cancel</button>
+                            <button type="button" onClick={onClose}>
+                                Cancel
+                            </button>
                         </div>
                     </form>
                 </div>
