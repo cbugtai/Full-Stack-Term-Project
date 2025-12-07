@@ -162,3 +162,28 @@ npm run dev
 - I.2: Resource Database Schema
   - Define models (User, Listings, Category, Condition, Brand, Status, ListingViews, BrandCategory)
   - Create seed function to initialize data
+
+
+### Sprint 5
+
+**Christian Bugtai**
+- T.2: Team Vercel Account/Management
+
+- I.1: Custom User-Associated Data and Session Management
+  - Implement pagination for seller page
+  - Implement fetures for logged-in user and guest
+  - Enhance the css style for seller page
+
+**Pinyi Rao**
+- I.1: Custom User-Associated Data and Session Management
+  - Implement pagination for featured product and wishlist page
+  - Implement fetures for logged-in user and guest
+
+**Nick Gowler**
+- T.1: Clerk Auth Setup
+- T.3: Back-end User Management
+- T.4: User Login/Registration
+
+- I.1: Custom User-Associated Data and Session Management
+  - Implement fetures for logged-in user and guest
+  - Implement listing create and view features for seller
